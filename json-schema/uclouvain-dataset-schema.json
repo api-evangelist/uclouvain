@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/uclouvain/main/json-schema/uclouvain-dataset-schema.json",
+  "title": "UCLouvain Dataverse Search Item (Dataset)",
+  "description": "A single dataset item as returned in the data.items array of the Dataverse Native Search API (GET /api/search?type=dataset) on the Open Data @ UCLouvain instance.",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "description": "Title of the dataset." },
+    "type": { "type": "string", "description": "Item type.", "enum": ["dataset", "dataverse", "file"] },
+    "url": { "type": "string", "format": "uri", "description": "Persistent URL (DOI landing page) for the dataset." },
+    "global_id": { "type": "string", "description": "Persistent identifier, typically a DOI (e.g. doi:10.14428/DVN/DEQCIM)." },
+    "description": { "type": "string", "description": "Free-text description of the dataset." },
+    "published_at": { "type": "string", "format": "date-time", "description": "Timestamp the dataset version was published." },
+    "publisher": { "type": "string", "description": "Name of the publishing dataverse collection." },
+    "citationHtml": { "type": "string", "description": "HTML-formatted citation." },
+    "identifier_of_dataverse": { "type": "string", "description": "Alias of the owning dataverse collection." },
+    "name_of_dataverse": { "type": "string", "description": "Display name of the owning dataverse collection." },
+    "citation": { "type": "string", "description": "Plain-text citation." },
+    "publicationStatuses": { "type": "array", "items": { "type": "string" }, "description": "Publication status flags (e.g. Published, Draft)." },
+    "storageIdentifier": { "type": "string", "description": "Internal storage identifier for the dataset." },
+    "keywords": { "type": "array", "items": { "type": "string" }, "description": "Subject keywords." },
+    "subjects": { "type": "array", "items": { "type": "string" }, "description": "Controlled subject categories." },
+    "fileCount": { "type": "integer", "minimum": 0, "description": "Number of files in the dataset version." },
+    "versionId": { "type": "integer", "description": "Internal dataset version identifier." },
+    "versionState": { "type": "string", "description": "Version state.", "enum": ["RELEASED", "DRAFT", "DEACCESSIONED"] },
+    "majorVersion": { "type": "integer", "minimum": 0 },
+    "minorVersion": { "type": "integer", "minimum": 0 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "affiliation": { "type": "string" }
+        }
+      }
+    },
+    "authors": { "type": "array", "items": { "type": "string" }, "description": "Author names." },
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "citation": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["name", "type", "url", "global_id"]
+}

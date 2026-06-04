@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://dataverse.uclouvain.be/api/search?q=*&type=dataset&per_page=2"
+  },
+  "response": {
+    "status": "OK",
+    "data": {
+      "q": "*",
+      "total_count": 208,
+      "start": 0,
+      "count_in_response": 2,
+      "items": [
+        {
+          "name": "Raw Natural Image Noise Dataset",
+          "type": "dataset",
+          "url": "https://doi.org/10.14428/DVN/DEQCIM",
+          "global_id": "doi:10.14428/DVN/DEQCIM",
+          "description": "Raw Natural Image Noise Dataset, used to train effective raw image denoising models",
+          "published_at": "2025-01-15T20:46:22Z",
+          "publisher": "Dataverse of ICTEAM",
+          "citationHtml": "Brummer, Benoit; De Vleeschouwer, Christophe, 2025, \"Raw Natural Image Noise Dataset\", <a href=\"https://doi.org/10.14428/DVN/DEQCIM\" target=\"_blank\">https://doi.org/10.14428/DVN/DEQCIM</a>, Open Data @ UCLouvain, V1",
+          "identifier_of_dataverse": "icteam",
+          "name_of_dataverse": "Dataverse of ICTEAM",
+          "citation": "Brummer, Benoit; De Vleeschouwer, Christophe, 2025, \"Raw Natural Image Noise Dataset\", https://doi.org/10.14428/DVN/DEQCIM, Open Data @ UCLouvain, V1",
+          "publicationStatuses": ["Published"],
+          "storageIdentifier": "s3://10.14428/DVN/DEQCIM",
+          "keywords": [
+            "Computer vision",
+            "Neural networks (Computer science)",
+            "Image reconstruction",
+            "Images, Photographic"
+          ],
+          "subjects": ["Computer and Information Science"],
+          "fileCount": 2845,
+          "versionId": 177,
+          "versionState": "RELEASED",
+          "majorVersion": 1,
+          "minorVersion": 0,
+          "createdAt": "2022-06-21T11:30:41Z",
+          "updatedAt": "2025-01-17T13:29:39Z",
+          "contacts": [
+            { "name": "Brummer, Benoit", "affiliation": "Universite catholique de Louvain" }
+          ],
+          "publications": [
+            { "citation": "Benoit Brummer and Christophe De Vleeschouwer. Joint Denoising, Demosaicing, and Compression with the Raw Natural Image Noise Dataset. To be published." }
+          ],
+          "authors": ["Brummer, Benoit", "De Vleeschouwer, Christophe"]
+        }
+      ]
+    }
+  }
+}

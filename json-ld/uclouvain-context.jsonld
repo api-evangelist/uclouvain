@@ -1,0 +1,41 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "dvcore": "https://dataverse.org/schema/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "ucl": "https://dataverse.uclouvain.be/schema#",
+    "@vocab": "https://dataverse.uclouvain.be/schema#",
+
+    "University": "schema:CollegeOrUniversity",
+    "name": "schema:name",
+    "url": { "@id": "schema:url", "@type": "@id" },
+
+    "Dataset": "schema:Dataset",
+    "global_id": { "@id": "schema:identifier" },
+    "description": "schema:description",
+    "publisher": "schema:publisher",
+    "published_at": { "@id": "schema:datePublished", "@type": "schema:DateTime" },
+    "createdAt": { "@id": "schema:dateCreated", "@type": "schema:DateTime" },
+    "updatedAt": { "@id": "schema:dateModified", "@type": "schema:DateTime" },
+    "keywords": "schema:keywords",
+    "subjects": "schema:about",
+    "citation": "dcterms:bibliographicCitation",
+    "fileCount": { "@id": "ucl:fileCount", "@type": "schema:Integer" },
+    "versionState": "ucl:versionState",
+    "majorVersion": "ucl:majorVersion",
+    "minorVersion": "ucl:minorVersion",
+    "storageIdentifier": "ucl:storageIdentifier",
+
+    "authors": { "@id": "schema:author", "@container": "@set" },
+    "contacts": { "@id": "schema:contactPoint", "@container": "@set" },
+    "affiliation": "schema:affiliation",
+
+    "name_of_dataverse": { "@id": "dvcore:dataverse", "@type": "schema:Text" },
+    "identifier_of_dataverse": "ucl:dataverseAlias",
+    "publications": { "@id": "dcterms:isReferencedBy", "@container": "@set" }
+  },
+  "@type": "University",
+  "name": "UCLouvain (Universite catholique de Louvain)",
+  "url": "https://uclouvain.be/en/index.html"
+}

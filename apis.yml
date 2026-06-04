@@ -45,6 +45,20 @@ apis:
     properties:
       - type: Documentation
         url: https://guides.dataverse.org/en/latest/api/
+      - type: OpenAPI
+        url: openapi/uclouvain-dataverse-api.yaml
+      - type: x-json-schema
+        url: json-schema/uclouvain-dataset-schema.json
+      - type: x-json-structure
+        url: json-structure/uclouvain-dataset-structure.json
+      - type: x-example
+        url: examples/uclouvain-search-example.json
+      - type: x-rules
+        url: rules/uclouvain-rules.yml
+      - type: x-vocabulary
+        url: vocabulary/uclouvain-vocabulary.yml
+      - type: x-json-ld
+        url: json-ld/uclouvain-context.jsonld
   - aid: uclouvain:dataverse-oai
     name: Open Data @ UCLouvain Dataverse OAI-PMH
     description: >-

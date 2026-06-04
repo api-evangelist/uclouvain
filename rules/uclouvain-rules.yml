@@ -1,0 +1,50 @@
+extends: [[spectral:oas, off]]
+formats: [oas3]
+documentationUrl: https://guides.dataverse.org/en/latest/api/
+rules:
+  uclouvain-info-title:
+    description: API document must declare an info.title.
+    severity: error
+    given: $.info
+    then:
+      field: title
+      function: truthy
+
+  uclouvain-info-version:
+    description: API document must declare an info.version (Dataverse release, e.g. 6.8).
+    severity: error
+    given: $.info
+    then:
+      field: version
+      function: truthy
+
+  uclouvain-server-defined:
+    description: At least one server should be defined pointing at the institutional Dataverse /api base.
+    severity: warn
+    given: $.servers
+    then:
+      function: truthy
+
+  uclouvain-operation-tags:
+    description: Every operation should carry at least one tag (Dataverse groups operations by resource area).
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: tags
+      function: truthy
+
+  uclouvain-operation-responses:
+    description: Every operation must define at least one response.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: responses
+      function: truthy
+
+  uclouvain-persistent-id-path-params:
+    description: Path parameters must be declared (Dataverse paths commonly use {id}, {fileId}, {identifier} for persistent identifiers).
+    severity: warn
+    given: $.paths[*][*].parameters[?(@.in=='path')]
+    then:
+      field: required
+      function: truthy

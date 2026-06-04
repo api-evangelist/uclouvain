@@ -1,0 +1,62 @@
+vocabulary:
+  name: UCLouvain Open Data and Repository Vocabulary
+  description: >-
+    Controlled terms observed across the Open Data @ UCLouvain Dataverse API
+    (Native and Search APIs) and the institutional OAI-PMH harvesting endpoints
+    for the Dataverse and DIAL repositories. Terms reflect real fields and
+    concepts confirmed against the live UCLouvain Dataverse v6.8 instance.
+  version: "1.0.0"
+  terms:
+    - term: Dataverse
+      definition: >-
+        A container (collection) within the Dataverse software that holds
+        datasets and/or other dataverses; UCLouvain organizes collections such
+        as the ICTEAM dataverse under the Open Data @ UCLouvain root.
+      tags: [collection, dataverse, open-data]
+    - term: Dataset
+      definition: >-
+        A versioned bundle of files plus descriptive metadata and a persistent
+        identifier (DOI), the primary unit of publication in the Dataverse API.
+      tags: [dataset, research-data, doi]
+    - term: Datafile
+      definition: >-
+        An individual file belonging to a dataset, retrievable via the Dataverse
+        Access API (/access/datafile/{fileId}).
+      tags: [file, access, download]
+    - term: Global ID
+      definition: >-
+        The persistent identifier of a dataset, typically a DOI such as
+        doi:10.14428/DVN/DEQCIM, used for citation and retrieval.
+      tags: [identifier, doi, persistent-id]
+    - term: Version State
+      definition: >-
+        The lifecycle state of a dataset version (RELEASED, DRAFT, or
+        DEACCESSIONED).
+      tags: [versioning, lifecycle]
+    - term: Search API
+      definition: >-
+        The Dataverse Native Search API (GET /api/search) that returns
+        dataverses, datasets, and files matching a query and facet filters.
+      tags: [search, discovery, native-api]
+    - term: OAI-PMH
+      definition: >-
+        Open Archives Initiative Protocol for Metadata Harvesting 2.0, exposed
+        by both the Dataverse instance (/oai) and DIAL (/oai) for bulk metadata
+        harvesting by external aggregators.
+      tags: [oai-pmh, harvesting, metadata, interoperability]
+    - term: DIAL
+      definition: >-
+        Digital Access to Libraries, UCLouvain's institutional repository for
+        research publications, exposing an OAI-PMH endpoint ("DIAL UCLouvain
+        Repository").
+      tags: [repository, library, open-access, publications]
+    - term: Subject
+      definition: >-
+        A controlled high-level research category assigned to a dataset (e.g.
+        "Computer and Information Science").
+      tags: [metadata, classification, subject]
+    - term: Keyword
+      definition: >-
+        A free or controlled-term tag describing dataset topics, returned as the
+        keywords array in search results.
+      tags: [metadata, keyword, discovery]

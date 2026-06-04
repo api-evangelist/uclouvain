@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/uclouvain/main/json-structure/uclouvain-dataset-structure.json",
+  "name": "UCLouvainDataset",
+  "description": "JSON Structure for a dataset item returned by the Open Data @ UCLouvain Dataverse Native Search API.",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "type": { "type": "string" },
+    "url": { "type": "string" },
+    "global_id": { "type": "string" },
+    "description": { "type": "string" },
+    "published_at": { "type": "string" },
+    "publisher": { "type": "string" },
+    "identifier_of_dataverse": { "type": "string" },
+    "name_of_dataverse": { "type": "string" },
+    "citation": { "type": "string" },
+    "publicationStatuses": { "type": "array", "items": { "type": "string" } },
+    "storageIdentifier": { "type": "string" },
+    "keywords": { "type": "array", "items": { "type": "string" } },
+    "subjects": { "type": "array", "items": { "type": "string" } },
+    "fileCount": { "type": "int32" },
+    "versionId": { "type": "int32" },
+    "versionState": { "type": "string" },
+    "majorVersion": { "type": "int32" },
+    "minorVersion": { "type": "int32" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "authors": { "type": "array", "items": { "type": "string" } },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "affiliation": { "type": "string" }
+        }
+      }
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "citation": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["name", "type", "url", "global_id"]
+}
