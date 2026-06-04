@@ -1,0 +1,105 @@
+---
+aid: uclouvain
+name: UCLouvain
+description: >-
+  UCLouvain (Universite catholique de Louvain) is Belgium's largest French-speaking
+  university, based in Louvain-la-Neuve, and is ranked #203 in the QS World University
+  Rankings 2025. Its public, machine-readable footprint is concentrated in open
+  science and library infrastructure rather than a single unified developer portal:
+  the institution operates an institutional Dataverse open-data repository and the
+  DIAL (Digital Access to Libraries) institutional repository, both of which expose
+  standards-based APIs (Dataverse Native/Search API and OAI-PMH metadata harvesting).
+  UCLouvain also maintains a public GitHub organization and originated the open-source
+  OSIS (Open Student Information System) project. No single gated, key-issuing
+  developer portal was confirmed at the time of review.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/uclouvain/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Open Data
+  - Open Science
+  - Research Data
+  - Library
+  - OAI-PMH
+  - Belgium
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: uclouvain:dataverse-api
+    name: Open Data @ UCLouvain Dataverse API
+    description: >-
+      UCLouvain's institutional research-data repository runs on Dataverse (v6.8 at
+      time of review) and exposes the standard Dataverse Native and Search APIs under
+      /api, allowing programmatic search and retrieval of datasets, files, and
+      metadata. UCLouvain was the first Belgian university to deploy an institutional
+      open-data repository.
+    humanURL: https://dataverse.uclouvain.be/
+    baseURL: https://dataverse.uclouvain.be/api
+    tags: [ Open Data, Research Data, Dataverse, Open Science ]
+    properties:
+      - type: Documentation
+        url: https://guides.dataverse.org/en/latest/api/
+  - aid: uclouvain:dataverse-oai
+    name: Open Data @ UCLouvain Dataverse OAI-PMH
+    description: >-
+      The UCLouvain Dataverse repository exposes an OAI-PMH 2.0 metadata-harvesting
+      endpoint ("Open Data @ UCLouvain Dataverse OAI Archive") for harvesting dataset
+      metadata by external aggregators and service providers.
+    humanURL: https://dataverse.uclouvain.be/
+    baseURL: https://dataverse.uclouvain.be/oai
+    tags: [ OAI-PMH, Open Data, Metadata, Research Data ]
+    properties:
+      - type: Documentation
+        url: https://guides.dataverse.org/en/latest/api/oai.html
+  - aid: uclouvain:dial-oai
+    name: DIAL UCLouvain OAI-PMH
+    description: >-
+      DIAL (Digital Access to Libraries) is UCLouvain's institutional repository for
+      research publications. It exposes an OAI-PMH 2.0 endpoint ("DIAL UCLouvain
+      Repository") for harvesting publication metadata into discovery systems and
+      aggregators.
+    humanURL: https://dial.uclouvain.be/
+    baseURL: https://dial.uclouvain.be/oai
+    tags: [ OAI-PMH, Institutional Repository, Library, Metadata, Open Access ]
+    properties:
+      - type: Documentation
+        url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - aid: uclouvain:osis
+    name: OSIS - Open Student Information System
+    description: >-
+      OSIS (Open Student Information System) is an open-source higher-education
+      management platform originated and maintained by UCLouvain to manage students,
+      teachers, courses, and programs. It is a Django application published on GitHub
+      and includes REST API and SDK components; it is run by the institution rather
+      than offered as a hosted public API.
+    humanURL: https://github.com/uclouvain/osis
+    tags: [ Open Source, Student Information System, Higher Education, Django ]
+    properties:
+      - type: Documentation
+        url: https://github.com/uclouvain/osis
+      - type: GitHub
+        url: https://github.com/uclouvain/osis
+common:
+  - type: Website
+    url: https://uclouvain.be/en/index.html
+  - type: GitHub
+    url: https://github.com/uclouvain
+  - type: LinkedIn
+    url: https://be.linkedin.com/school/uclouvain/
+  - type: Plans
+    url: plans/uclouvain-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/uclouvain-rate-limits.yml
+  - type: FinOps
+    url: finops/uclouvain-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

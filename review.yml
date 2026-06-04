@@ -1,0 +1,48 @@
+---
+name: UCLouvain
+description: UCLouvain public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/uclouvain/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 3
+    summary: >-
+      Verified live, standards-based APIs rather than a unified gated developer
+      portal. The institutional Dataverse repository (v6.8) responds on its Native
+      and Search API and on OAI-PMH; the DIAL institutional repository serves a valid
+      OAI-PMH Identify response. The official uclouvain GitHub org exists, and the
+      open-source OSIS project is published there. No key-issuing developer portal or
+      published rate limits were found. All endpoints below were probed live; nothing
+      was fabricated.
+    endpoints:
+      - url: https://dataverse.uclouvain.be/api/search?q=*&type=dataset&per_page=1
+        status: 200
+        note: Dataverse Search API responds.
+      - url: https://dataverse.uclouvain.be/api/info/version
+        status: 200
+        note: Returns Dataverse version 6.8 build 1994-92d1ec8.
+      - url: https://dataverse.uclouvain.be/oai?verb=Identify
+        status: 200
+        note: Valid OAI-PMH Identify, repo "Open Data @ UCLouvain Dataverse OAI Archive".
+      - url: https://dial.uclouvain.be/oai?verb=Identify
+        status: 200
+        note: Valid OAI-PMH Identify, repo "DIAL UCLouvain Repository".
+      - url: https://dial.uclouvain.be/
+        status: 200
+        note: DIAL institutional repository homepage.
+      - url: https://github.com/uclouvain
+        status: 200
+        note: Official UCLouvain GitHub org (openjpeg, OSIS-related repos).
+      - url: https://orthanc.uclouvain.be/book/users/rest.html
+        status: 200
+        note: Orthanc open-source DICOM server REST API docs hosted on a UCLouvain domain.
+      - url: https://data.gov.be/en/organisations/uclouvain
+        status: 200
+        note: UCLouvain organization listing on the Belgian federal open-data portal.
+      - url: https://uclouvain.be/en/index.html
+        status: 301
+        note: Redirects to www.uclouvain.be; official institutional website.
+      - url: https://uclouvain.github.io/
+        status: 404
+        note: No GitHub Pages site served at the org root.
