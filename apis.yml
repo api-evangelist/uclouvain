@@ -100,6 +100,10 @@ apis:
       - type: GitHub
         url: https://github.com/uclouvain/osis
 common:
+  - type: VulnerabilityDisclosure
+    url: security/uclouvain-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/uclouvain-domain-security.yml
   - type: Website
     url: https://uclouvain.be/en/index.html
   - type: GitHub
