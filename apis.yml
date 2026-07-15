@@ -100,6 +100,8 @@ apis:
       - type: GitHub
         url: https://github.com/uclouvain/osis
 common:
+  - type: AgenticAccess
+    url: agentic-access/uclouvain-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/uclouvain-vulnerability-disclosure.yml
   - type: DomainSecurity
