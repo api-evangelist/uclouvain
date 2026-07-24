@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Dataverse Access Workflows API
+  description: Open source research data repository software.
+  version: '6.8'
+servers:
+- url: https://dataverse.uclouvain.be/api
+  description: Open Data @ UCLouvain Dataverse instance (v6.8)
+tags:
+- name: Workflows
+paths:
+  /workflows/{invocationId}:
+    post:
+      operationId: Workflows_resumeWorkflow
+      parameters:
+      - name: invocationId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      tags:
+      - Workflows

@@ -1,0 +1,44 @@
+openapi: 3.0.3
+info:
+  title: Dataverse Access Localcontexts API
+  description: Open source research data repository software.
+  version: '6.8'
+servers:
+- url: https://dataverse.uclouvain.be/api
+  description: Open Data @ UCLouvain Dataverse instance (v6.8)
+tags:
+- name: Localcontexts
+paths:
+  /localcontexts/datasets/{id}:
+    get:
+      operationId: LocalContexts_getDatasetLocalContexts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      tags:
+      - Localcontexts
+  /localcontexts/datasets/{id}/{projectId}:
+    get:
+      operationId: LocalContexts_searchLocalContexts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+      tags:
+      - Localcontexts
