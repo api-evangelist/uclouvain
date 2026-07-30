@@ -13,9 +13,21 @@ description: >-
   OSIS (Open Student Information System) project. No single gated, key-issuing
   developer portal was confirmed at the time of review.
 type: Index
+accessModel:
+  pricing: free
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Free
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/uclouvain.png
 url: https://raw.githubusercontent.com/api-evangelist/uclouvain/refs/heads/main/apis.yml
 tags:
   - Education
@@ -31,74 +43,922 @@ created: '2026-06-03'
 modified: '2026-06-03'
 specificationVersion: '0.19'
 apis:
-  - aid: uclouvain:dataverse-api
-    name: Open Data @ UCLouvain Dataverse API
-    description: >-
-      UCLouvain's institutional research-data repository runs on Dataverse (v6.8 at
-      time of review) and exposes the standard Dataverse Native and Search APIs under
-      /api, allowing programmatic search and retrieval of datasets, files, and
-      metadata. UCLouvain was the first Belgian university to deploy an institutional
-      open-data repository.
-    humanURL: https://dataverse.uclouvain.be/
-    baseURL: https://dataverse.uclouvain.be/api
-    tags: [ Open Data, Research Data, Dataverse, Open Science ]
-    properties:
-      - type: Documentation
-        url: https://guides.dataverse.org/en/latest/api/
-      - type: OpenAPI
-        url: openapi/uclouvain-dataverse-api.yaml
-      - type: x-json-schema
-        url: json-schema/uclouvain-dataset-schema.json
-      - type: x-json-structure
-        url: json-structure/uclouvain-dataset-structure.json
-      - type: x-example
-        url: examples/uclouvain-search-example.json
-      - type: x-rules
-        url: rules/uclouvain-rules.yml
-      - type: x-vocabulary
-        url: vocabulary/uclouvain-vocabulary.yml
-      - type: x-json-ld
-        url: json-ld/uclouvain-context.jsonld
-  - aid: uclouvain:dataverse-oai
-    name: Open Data @ UCLouvain Dataverse OAI-PMH
-    description: >-
-      The UCLouvain Dataverse repository exposes an OAI-PMH 2.0 metadata-harvesting
-      endpoint ("Open Data @ UCLouvain Dataverse OAI Archive") for harvesting dataset
-      metadata by external aggregators and service providers.
-    humanURL: https://dataverse.uclouvain.be/
-    baseURL: https://dataverse.uclouvain.be/oai
-    tags: [ OAI-PMH, Open Data, Metadata, Research Data ]
-    properties:
-      - type: Documentation
-        url: https://guides.dataverse.org/en/latest/api/oai.html
-  - aid: uclouvain:dial-oai
-    name: DIAL UCLouvain OAI-PMH
-    description: >-
-      DIAL (Digital Access to Libraries) is UCLouvain's institutional repository for
-      research publications. It exposes an OAI-PMH 2.0 endpoint ("DIAL UCLouvain
-      Repository") for harvesting publication metadata into discovery systems and
-      aggregators.
-    humanURL: https://dial.uclouvain.be/
-    baseURL: https://dial.uclouvain.be/oai
-    tags: [ OAI-PMH, Institutional Repository, Library, Metadata, Open Access ]
-    properties:
-      - type: Documentation
-        url: https://www.openarchives.org/OAI/openarchivesprotocol.html
-  - aid: uclouvain:osis
-    name: OSIS - Open Student Information System
-    description: >-
-      OSIS (Open Student Information System) is an open-source higher-education
-      management platform originated and maintained by UCLouvain to manage students,
-      teachers, courses, and programs. It is a Django application published on GitHub
-      and includes REST API and SDK components; it is run by the institution rather
-      than offered as a hosted public API.
-    humanURL: https://github.com/uclouvain/osis
-    tags: [ Open Source, Student Information System, Higher Education, Django ]
-    properties:
-      - type: Documentation
-        url: https://github.com/uclouvain/osis
-      - type: GitHub
-        url: https://github.com/uclouvain/osis
+- aid: uclouvain:dataverse-oai
+  name: Open Data @ UCLouvain Dataverse OAI-PMH
+  description: >-
+    The UCLouvain Dataverse repository exposes an OAI-PMH 2.0 metadata-harvesting endpoint ("Open Data
+    @ UCLouvain Dataverse OAI Archive") for harvesting dataset metadata by external aggregators and service
+    providers.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/oai
+  tags:
+  - OAI-PMH
+  - Open Data
+  - Metadata
+  - Research Data
+  properties:
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/oai.html
+- aid: uclouvain:dial-oai
+  name: DIAL UCLouvain OAI-PMH
+  description: >-
+    DIAL (Digital Access to Libraries) is UCLouvain's institutional repository for research publications.
+    It exposes an OAI-PMH 2.0 endpoint ("DIAL UCLouvain Repository") for harvesting publication metadata
+    into discovery systems and aggregators.
+  humanURL: https://dial.uclouvain.be/
+  baseURL: https://dial.uclouvain.be/oai
+  tags:
+  - OAI-PMH
+  - Institutional Repository
+  - Library
+  - Metadata
+  - Open Access
+  properties:
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+- aid: uclouvain:osis
+  name: OSIS - Open Student Information System
+  description: >-
+    OSIS (Open Student Information System) is an open-source higher-education management platform originated
+    and maintained by UCLouvain to manage students, teachers, courses, and programs. It is a Django application
+    published on GitHub and includes REST API and SDK components; it is run by the institution rather
+    than offered as a hosted public API.
+  humanURL: https://github.com/uclouvain/osis
+  tags:
+  - Open Source
+  - Student Information System
+  - Higher Education
+  - Django
+  properties:
+  - type: Documentation
+    url: https://github.com/uclouvain/osis
+  - type: GitHub
+    url: https://github.com/uclouvain/osis
+- aid: uclouvain:uclouvain-access-api
+  name: UCLouvain Access API
+  description: The Access API from UCLouvain — 23 operation(s) for access.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Access
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-access-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-addfilestodataset-api
+  name: UCLouvain addFilesToDataset API
+  description: Uploads a set of files to a dataset
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - addFilesToDataset
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-addfilestodataset-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-addfiletodataset-api
+  name: UCLouvain addFileToDataset API
+  description: Uploads a file for a dataset
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - addFileToDataset
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-addfiletodataset-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-addglobusfilestodataset-api
+  name: UCLouvain addGlobusFilesToDataset API
+  description: Uploads a Globus file for a dataset
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - addGlobusFilesToDataset
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-addglobusfilestodataset-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-admin-api
+  name: UCLouvain Admin API
+  description: The Admin API from UCLouvain — 127 operation(s) for admin.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-admin-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-batch-api
+  name: UCLouvain Batch API
+  description: The Batch API from UCLouvain — 3 operation(s) for batch.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Batch
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-batch-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-builtin-users-api
+  name: UCLouvain Builtin Users API
+  description: The Builtin Users API from UCLouvain — 4 operation(s) for builtin users.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Builtin Users
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-builtin-users-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-datasetfields-api
+  name: UCLouvain Datasetfields API
+  description: The Datasetfields API from UCLouvain — 1 operation(s) for datasetfields.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Datasetfields
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-datasetfields-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-datasets-api
+  name: UCLouvain Datasets API
+  description: The Datasets API from UCLouvain — 94 operation(s) for datasets.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-datasets-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-datatags-api
+  name: UCLouvain Datatags API
+  description: The Datatags API from UCLouvain — 1 operation(s) for datatags.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Datatags
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-datatags-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-dataversefeatureditems-api
+  name: UCLouvain DataverseFeaturedItems API
+  description: >-
+    The DataverseFeaturedItems API from UCLouvain — 1 operation(s) for dataversefeatureditems.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - DataverseFeaturedItems
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-dataversefeatureditems-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-dataverses-api
+  name: UCLouvain Dataverses API
+  description: The Dataverses API from UCLouvain — 40 operation(s) for dataverses.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Dataverses
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-dataverses-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-edit-api
+  name: UCLouvain Edit API
+  description: The Edit API from UCLouvain — 1 operation(s) for edit.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Edit
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-edit-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-externaltools-api
+  name: UCLouvain ExternalTools API
+  description: The ExternalTools API from UCLouvain — 2 operation(s) for externaltools.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - ExternalTools
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-externaltools-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-files-api
+  name: UCLouvain Files API
+  description: The Files API from UCLouvain — 21 operation(s) for files.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Files
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-files-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-harvest-api
+  name: UCLouvain Harvest API
+  description: The Harvest API from UCLouvain — 7 operation(s) for harvest.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Harvest
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-harvest-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-inbox-api
+  name: UCLouvain Inbox API
+  description: The Inbox API from UCLouvain — 1 operation(s) for inbox.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Inbox
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-inbox-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-info-api
+  name: UCLouvain Info API
+  description: The Info API from UCLouvain — 50 operation(s) for info.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Info
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-info-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-ingest-api
+  name: UCLouvain Ingest API
+  description: The Ingest API from UCLouvain — 1 operation(s) for ingest.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Ingest
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-ingest-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-licenses-api
+  name: UCLouvain Licenses API
+  description: The Licenses API from UCLouvain — 6 operation(s) for licenses.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Licenses
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-licenses-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-localcontexts-api
+  name: UCLouvain Localcontexts API
+  description: The Localcontexts API from UCLouvain — 2 operation(s) for localcontexts.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Localcontexts
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-localcontexts-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-logout-api
+  name: UCLouvain Logout API
+  description: The Logout API from UCLouvain — 1 operation(s) for logout.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Logout
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-logout-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-mail-api
+  name: UCLouvain Mail API
+  description: The Mail API from UCLouvain — 1 operation(s) for mail.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Mail
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-mail-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-meta-api
+  name: UCLouvain Meta API
+  description: The Meta API from UCLouvain — 2 operation(s) for meta.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Meta
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-meta-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-metadatablocks-api
+  name: UCLouvain Metadatablocks API
+  description: The Metadatablocks API from UCLouvain — 2 operation(s) for metadatablocks.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Metadatablocks
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-metadatablocks-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-mydata-api
+  name: UCLouvain Mydata API
+  description: The Mydata API from UCLouvain — 2 operation(s) for mydata.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Mydata
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-mydata-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-notifications-api
+  name: UCLouvain Notifications API
+  description: The Notifications API from UCLouvain — 8 operation(s) for notifications.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-pids-api
+  name: UCLouvain Pids API
+  description: The Pids API from UCLouvain — 6 operation(s) for pids.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Pids
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-pids-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-replacefilesindataset-api
+  name: UCLouvain replaceFilesInDataset API
+  description: Replace a file to a dataset
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - replaceFilesInDataset
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-replacefilesindataset-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-roles-api
+  name: UCLouvain Roles API
+  description: The Roles API from UCLouvain — 3 operation(s) for roles.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-roles-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-saveauxiliaryfilewithversion-api
+  name: UCLouvain saveAuxiliaryFileWithVersion API
+  description: Save Auxiliary File With Version
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - saveAuxiliaryFileWithVersion
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-saveauxiliaryfilewithversion-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-search-api
+  name: UCLouvain Search API
+  description: The Search API from UCLouvain — 2 operation(s) for search.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-search-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-sendfeedback-api
+  name: UCLouvain Sendfeedback API
+  description: The Sendfeedback API from UCLouvain — 1 operation(s) for sendfeedback.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Sendfeedback
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-sendfeedback-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-uploaddatasetlogo-api
+  name: UCLouvain uploadDatasetLogo API
+  description: Uploads a logo for a dataset
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - uploadDatasetLogo
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-uploaddatasetlogo-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-users-api
+  name: UCLouvain Users API
+  description: The Users API from UCLouvain — 10 operation(s) for users.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-users-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
+- aid: uclouvain:uclouvain-workflows-api
+  name: UCLouvain Workflows API
+  description: The Workflows API from UCLouvain — 1 operation(s) for workflows.
+  humanURL: https://dataverse.uclouvain.be/
+  baseURL: https://dataverse.uclouvain.be/api
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: x-json-schema
+    url: json-schema/uclouvain-dataset-schema.json
+  - type: x-json-structure
+    url: json-structure/uclouvain-dataset-structure.json
+  - type: x-example
+    url: examples/uclouvain-search-example.json
+  - type: x-rules
+    url: rules/uclouvain-rules.yml
+  - type: x-vocabulary
+    url: vocabulary/uclouvain-vocabulary.yml
+  - type: x-json-ld
+    url: json-ld/uclouvain-context.jsonld
 common:
   - type: AgenticAccess
     url: agentic-access/uclouvain-agentic-access.yml
