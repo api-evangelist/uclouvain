@@ -1,0 +1,89 @@
+{
+  "item": [
+    {
+      "id": "b8ff6a0f-a788-43fe-8e53-5e6721eb42c4",
+      "name": "Datasetfields",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "954c6dc4-50b1-4ae9-8de9-ff16558f7ba6",
+          "name": "Dataset Fields list All Facetable Dataset Fields",
+          "request": {
+            "name": "Dataset Fields list All Facetable Dataset Fields",
+            "description": {},
+            "url": {
+              "path": [
+                "datasetfields",
+                "facetables"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cee65371-9833-426d-a69a-db48ececad4f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "datasetfields",
+                    "facetables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dataverse.uclouvain.be/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e66ad23b-ff26-4bf9-b7a7-168d5a889180",
+    "name": "Dataverse Access Datasetfields API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open source research data repository software.",
+      "type": "text/plain"
+    }
+  }
+}

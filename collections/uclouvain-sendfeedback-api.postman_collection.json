@@ -1,0 +1,87 @@
+{
+  "item": [
+    {
+      "id": "308a8b7d-2d8b-4ca7-a8ae-999d296bfad8",
+      "name": "Sendfeedback",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "93e1cb3a-5ffe-42b5-a246-8864bea5e328",
+          "name": "Send Feedback API submit Feedback",
+          "request": {
+            "name": "Send Feedback API submit Feedback",
+            "description": {},
+            "url": {
+              "path": [
+                "sendfeedback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "508dabe1-72f9-49e2-ac7d-11af27943147",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sendfeedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dataverse.uclouvain.be/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "40d38e7b-6f0f-4bca-aa7b-61abeb2d43f8",
+    "name": "Dataverse Access Sendfeedback API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open source research data repository software.",
+      "type": "text/plain"
+    }
+  }
+}

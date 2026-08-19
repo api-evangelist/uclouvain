@@ -1,0 +1,107 @@
+{
+  "item": [
+    {
+      "id": "29f25835-449a-4467-9d22-e1dcc64027ed",
+      "name": "Datatags",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f7dd774e-bb29-49e9-a46c-b44490ac9811",
+          "name": "Data Tags API receive Tags",
+          "request": {
+            "name": "Data Tags API receive Tags",
+            "description": {},
+            "url": {
+              "path": [
+                "datatags",
+                "receiveTags",
+                ":uniqueCacheId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uniqueCacheId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0336315e-eb51-4875-8a2a-32bbd4c71608",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "datatags",
+                    "receiveTags",
+                    ":uniqueCacheId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uniqueCacheId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://dataverse.uclouvain.be/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a327bdfe-a8c8-4431-9226-a53179e1fc57",
+    "name": "Dataverse Access Datatags API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open source research data repository software.",
+      "type": "text/plain"
+    }
+  }
+}
