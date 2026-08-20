@@ -85,6 +85,11 @@ apis:
     than offered as a hosted public API.
   humanURL: https://github.com/uclouvain/osis
   tags:
+  - Open-Source
+  - Student Information System
+  - Higher Education
+  - Django
+  tags_raw:
   - Open Source
   - Student Information System
   - Higher Education
@@ -437,6 +442,8 @@ apis:
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -725,6 +732,8 @@ apis:
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
@@ -820,7 +829,8 @@ apis:
   description: Save Auxiliary File With Version
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
-  tags:
+  tags: []
+  tags_raw:
   - saveAuxiliaryFileWithVersion
   properties:
   - type: OpenAPI
@@ -892,7 +902,8 @@ apis:
   description: Uploads a logo for a dataset
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
-  tags:
+  tags: []
+  tags_raw:
   - uploadDatasetLogo
   properties:
   - type: OpenAPI
@@ -917,6 +928,8 @@ apis:
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
