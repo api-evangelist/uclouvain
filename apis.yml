@@ -13,6 +13,18 @@ description: >-
   OSIS (Open Student Information System) project. No single gated, key-issuing
   developer portal was confirmed at the time of review.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: unknown
@@ -973,6 +985,9 @@ apis:
   - type: x-json-ld
     url: json-ld/uclouvain-context.jsonld
 common:
+  - type: CapabilityMap
+    url: capabilities/uclouvain-capability-edges.yml
+    name: UCLouvain Business Capability Map
   - type: AgenticAccess
     url: agentic-access/uclouvain-agentic-access.yml
   - type: VulnerabilityDisclosure
