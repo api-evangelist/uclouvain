@@ -148,62 +148,22 @@ x-attribution-note: 'Re-profiled 2026-08-30 under the university pipeline. 36 Op
   derived from two of the removed Dataverse specs; it was left on disk because it is untracked work from
   another run, but its apis.yml pointer has been removed so it is no longer credited.'
 apis:
-- aid: uclouvain:orthanc-api
-  name: Orthanc API
-  description: 'Orthanc is a free and open-source, vendor-neutral DICOM server and medical-imaging ecosystem.
-    UCLouvain describes itself as "the innovation engine behind Orthanc": the project is led by its author
-    Sebastien Jodogne inside the Health Informatics Lab at ICTEAM, and the INGI department hosts and maintains
-    the server infrastructure at orthanc.uclouvain.be. The REST API contract is generated from the Orthanc
-    source and covers 239 paths / 299 operations across patients, studies, series, instances, modalities,
-    peers, jobs, plugins and storage. This is the one surface in this repository that is UCLouvain''s
-    own engineering rather than a purchased platform''s, and the public demo server answers unauthenticated
-    GET /system live.'
-  humanURL: https://orthanc.uclouvain.be/
-  baseURL: https://orthanc.uclouvain.be/demo/
-  x-operator: institution
-  x-operator-evidence: servers[0].url is https://orthanc.uclouvain.be/demo/ under the institution registrable
-    domain; info.description links to orthanc.uclouvain.be/book; the project homepage names UCLouvain
-    ICTEAM/INGI as host and maintainer
-  tags:
-  - Medical Imaging
-  - DICOM
-  - Open-Source
-  - Research Software
-  - Health Informatics
-  - Belgium
-  tags_raw:
-  - Medical Imaging
-  - DICOM
-  - Open Source
-  - Research Software
-  - Health Informatics
-  - Belgium
-  properties:
-  - type: OpenAPI
-    url: openapi/uclouvain-orthanc-api-openapi.yml
-  - type: x-openapi-original
-    url: openapi/_original/uclouvain-orthanc-api.json
-  - type: APIReference
-    url: https://orthanc.uclouvain.be/api/index.html
-  - type: Documentation
-    url: https://orthanc.uclouvain.be/book/
-  - type: x-example
-    url: examples/uclouvain-orthanc-system-example.json
 - aid: uclouvain:dataverse-native-api
   name: Open Data @ UCLouvain -- Dataverse deployment (Native + Search API)
-  description: Open Data @ UCLouvain is the institution's research-data repository, running Dataverse
-    6.8 on UCLouvain infrastructure at dataverse.uclouvain.be and minting DOIs under UCLouvain's own Crossref
-    prefix 10.14428. The data, the collections and the DOIs are UCLouvain's; the API contract is not.
-    The Dataverse Native and Search APIs are the Dataverse project's product contract, shipped identically
-    by eight institutions in this catalog, so the deployment is recorded here and the generic spec is
-    deliberately not saved under this slug. GET /api/info/version returned 200 with build 6.8/1994-92d1ec8
-    on 2026-08-30.
+  description: >-
+    Open Data @ UCLouvain is the institution's research-data repository, running Dataverse 6.8 on UCLouvain
+    infrastructure at dataverse.uclouvain.be and minting DOIs under UCLouvain's own Crossref prefix 10.14428.
+    The data, the collections and the DOIs are UCLouvain's; the API contract is not. The Dataverse Native
+    and Search APIs are the Dataverse project's product contract, shipped identically by eight institutions
+    in this catalog, so the deployment is recorded here and the generic spec is deliberately not saved
+    under this slug. GET /api/info/version returned 200 with build 6.8/1994-92d1ec8 on 2026-08-30.
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/api
   x-operator: tenant
-  x-operator-evidence: host dataverse.uclouvain.be is UCLouvain-owned, but info.title "Dataverse API"
-    / description "Open source research data repository software." is the Dataverse project product contract;
-    same title shipped by harvard, maastricht, ntnu, queens-university-at-kingston and others
+  x-operator-evidence: >-
+    host dataverse.uclouvain.be is UCLouvain-owned, but info.title "Dataverse API" / description "Open
+    source research data repository software." is the Dataverse project product contract; same title shipped
+    by harvard, maastricht, ntnu, queens-university-at-kingston and others
   x-vendor: Dataverse (The Global Dataverse Community Consortium / Harvard IQSS)
   tags:
   - Open Data
@@ -220,16 +180,18 @@ apis:
     url: https://uclouvain.be/en/university-libraries/uclouvain-dataverse
 - aid: uclouvain:dataverse-oai
   name: Open Data @ UCLouvain Dataverse OAI-PMH
-  description: OAI-PMH 2.0 metadata-harvesting endpoint for the UCLouvain research-data repository. Identify
-    returns repositoryName "Open Data @ UCLouvain Dataverse OAI Archive", adminEmail cism-support@uclouvain.be,
+  description: >-
+    OAI-PMH 2.0 metadata-harvesting endpoint for the UCLouvain research-data repository. Identify returns
+    repositoryName "Open Data @ UCLouvain Dataverse OAI Archive", adminEmail cism-support@uclouvain.be,
     granularity YYYY-MM-DDThh:mm:ssZ, earliestDatestamp 2025-11-28. OAI-PMH is an Open Archives Initiative
     standard rather than a vendor contract, and this endpoint is operated by UCLouvain on a UCLouvain
     host, so it is attributed to the institution even though the repository software underneath is Dataverse.
   humanURL: https://dataverse.uclouvain.be/
   baseURL: https://dataverse.uclouvain.be/oai
   x-operator: institution
-  x-operator-evidence: Identify adminEmail cism-support@uclouvain.be on host dataverse.uclouvain.be; protocol
-    is the OAI-PMH 2.0 open standard, not a vendor-authored contract
+  x-operator-evidence: >-
+    Identify adminEmail cism-support@uclouvain.be on host dataverse.uclouvain.be; protocol is the OAI-PMH
+    2.0 open standard, not a vendor-authored contract
   tags:
   - OAI-PMH
   - Open Data
@@ -243,8 +205,9 @@ apis:
     url: conformance/uclouvain-education-standards.yml
 - aid: uclouvain:dial-pr-rest
   name: DIAL.pr (BOREAL) -- DSpace-CRIS REST API
-  description: DIAL.pr, branded BOREAL, is UCLouvain's institutional repository for the research publications
-    of its professors and staff. It runs DSpace-CRIS 8.1 (cris-2025.01.00) on the UCLouvain host research.dial.uclouvain.be
+  description: >-
+    DIAL.pr, branded BOREAL, is UCLouvain's institutional repository for the research publications of
+    its professors and staff. It runs DSpace-CRIS 8.1 (cris-2025.01.00) on the UCLouvain host research.dial.uclouvain.be
     and exposes the DSpace HAL+JSON REST API at /server/api, including a live ORCID integration and a
     591-field metadata registry. The repository and its content are UCLouvain's; the REST contract is
     DSpace-CRIS's, so this is recorded as a tenant deployment. The previously catalogued host dial.uclouvain.be
@@ -252,8 +215,9 @@ apis:
   humanURL: https://research.dial.uclouvain.be/home
   baseURL: https://research.dial.uclouvain.be/server/api
   x-operator: tenant
-  x-operator-evidence: GET /server/api returns dspaceVersion "DSpace 8.1", crisVersion "cris-2025.01.00-SNAPSHOT";
-    the HAL API contract is authored by the DSpace/DSpace-CRIS projects, not by UCLouvain
+  x-operator-evidence: >-
+    GET /server/api returns dspaceVersion "DSpace 8.1", crisVersion "cris-2025.01.00-SNAPSHOT"; the HAL
+    API contract is authored by the DSpace/DSpace-CRIS projects, not by UCLouvain
   x-vendor: DSpace-CRIS (Lyrasis / 4Science)
   tags:
   - Institutional Repository
@@ -269,15 +233,16 @@ apis:
     url: https://www.uclouvain.be/en/university-libraries/dial.pr
 - aid: uclouvain:dial-pr-oai
   name: DIAL.pr OAI-PMH
-  description: 'OAI-PMH 2.0 harvesting endpoint for DIAL.pr, UCLouvain''s research-publications repository.
-    Identify returns repositoryName "Dial.pr", adminEmail bibsys@uclouvain.be, earliestDatestamp 2026-04-07
-    (the migration date onto DSpace-CRIS). ListMetadataFormats advertises oai_dc, mods, mets and didl.
-    Institution-operated: the protocol is an open standard and the endpoint, host and contact are UCLouvain''s.'
+  description: >-
+    OAI-PMH 2.0 harvesting endpoint for DIAL.pr, UCLouvain's research-publications repository. Identify
+    returns repositoryName "Dial.pr", adminEmail bibsys@uclouvain.be, earliestDatestamp 2026-04-07 (the
+    migration date onto DSpace-CRIS). ListMetadataFormats advertises oai_dc, mods, mets and didl. Institution-operated:
+    the protocol is an open standard and the endpoint, host and contact are UCLouvain's.
   humanURL: https://research.dial.uclouvain.be/home
   baseURL: https://research.dial.uclouvain.be/server/oai/request
   x-operator: institution
-  x-operator-evidence: Identify adminEmail bibsys@uclouvain.be on host research.dial.uclouvain.be; OAI-PMH
-    2.0 open standard
+  x-operator-evidence: >-
+    Identify adminEmail bibsys@uclouvain.be on host research.dial.uclouvain.be; OAI-PMH 2.0 open standard
   tags:
   - OAI-PMH
   - Institutional Repository
@@ -291,15 +256,17 @@ apis:
     url: conformance/uclouvain-education-standards.yml
 - aid: uclouvain:dial-mem-rest
   name: DIAL.mem -- DSpace-CRIS REST API
-  description: 'DIAL.mem is UCLouvain''s institutional repository for master''s theses, part of the DIAL
-    (Digital Access to Libraries) family. It runs the same DSpace-CRIS 8.1 stack as DIAL.pr, on the UCLouvain
-    host thesis.dial.uclouvain.be, exposing the DSpace HAL+JSON REST API at /server/api. Institution-hosted,
-    vendor-contracted: recorded as a tenant deployment.'
+  description: >-
+    DIAL.mem is UCLouvain's institutional repository for master's theses, part of the DIAL (Digital Access
+    to Libraries) family. It runs the same DSpace-CRIS 8.1 stack as DIAL.pr, on the UCLouvain host thesis.dial.uclouvain.be,
+    exposing the DSpace HAL+JSON REST API at /server/api. Institution-hosted, vendor-contracted: recorded
+    as a tenant deployment.
   humanURL: https://thesis.dial.uclouvain.be/
   baseURL: https://thesis.dial.uclouvain.be/server/api
   x-operator: tenant
-  x-operator-evidence: GET /server/api returns dspaceName "Dial.mem", dspaceVersion "DSpace 8.1"; contract
-    authored by the DSpace/DSpace-CRIS projects
+  x-operator-evidence: >-
+    GET /server/api returns dspaceName "Dial.mem", dspaceVersion "DSpace 8.1"; contract authored by the
+    DSpace/DSpace-CRIS projects
   x-vendor: DSpace-CRIS (Lyrasis / 4Science)
   tags:
   - Institutional Repository
@@ -313,14 +280,15 @@ apis:
     url: https://github.com/DSpace/RestContract
 - aid: uclouvain:dial-mem-oai
   name: DIAL.mem OAI-PMH
-  description: OAI-PMH 2.0 harvesting endpoint for DIAL.mem, UCLouvain's master's-thesis repository. Identify
-    returns repositoryName "Dial.mem", adminEmail bibsys@uclouvain.be, earliestDatestamp 2025-05-14. Institution-operated
+  description: >-
+    OAI-PMH 2.0 harvesting endpoint for DIAL.mem, UCLouvain's master's-thesis repository. Identify returns
+    repositoryName "Dial.mem", adminEmail bibsys@uclouvain.be, earliestDatestamp 2025-05-14. Institution-operated
     open-standard harvesting surface.
   humanURL: https://thesis.dial.uclouvain.be/
   baseURL: https://thesis.dial.uclouvain.be/server/oai/request
   x-operator: institution
-  x-operator-evidence: Identify adminEmail bibsys@uclouvain.be on host thesis.dial.uclouvain.be; OAI-PMH
-    2.0 open standard
+  x-operator-evidence: >-
+    Identify adminEmail bibsys@uclouvain.be on host thesis.dial.uclouvain.be; OAI-PMH 2.0 open standard
   tags:
   - OAI-PMH
   - Theses
@@ -334,16 +302,18 @@ apis:
     url: conformance/uclouvain-education-standards.yml
 - aid: uclouvain:oer-oai
   name: OER-UCLouvain OAI-PMH
-  description: OER-UCLouvain is the institution's open educational resources repository, running DSpace
-    JSPUI on oer.uclouvain.be (CNAME dspace.sipr.ucl.ac.be, UCLouvain's own SIPR infrastructure). Its
-    OAI-PMH 2.0 endpoint answers at /oai/request with repositoryName "OER-UCLouvain", adminEmail openeducation-lll@uclouvain.be
+  description: >-
+    OER-UCLouvain is the institution's open educational resources repository, running DSpace JSPUI on
+    oer.uclouvain.be (CNAME dspace.sipr.ucl.ac.be, UCLouvain's own SIPR infrastructure). Its OAI-PMH 2.0
+    endpoint answers at /oai/request with repositoryName "OER-UCLouvain", adminEmail openeducation-lll@uclouvain.be
     and an earliestDatestamp of 2016-09-01. It also holds UCLouvain's published generative-AI strategy
     documents, making it the machine-readable route to the institution's AI policy.
   humanURL: https://oer.uclouvain.be/
   baseURL: https://oer.uclouvain.be/oai/request
   x-operator: institution
-  x-operator-evidence: Identify adminEmail openeducation-lll@uclouvain.be; host oer.uclouvain.be CNAMEs
-    to dspace.sipr.ucl.ac.be, both UCLouvain registrable domains; OAI-PMH 2.0 open standard
+  x-operator-evidence: >-
+    Identify adminEmail openeducation-lll@uclouvain.be; host oer.uclouvain.be CNAMEs to dspace.sipr.ucl.ac.be,
+    both UCLouvain registrable domains; OAI-PMH 2.0 open standard
   tags:
   - OAI-PMH
   - Open Educational Resources
@@ -357,20 +327,21 @@ apis:
     url: conformance/uclouvain-education-standards.yml
 - aid: uclouvain:identity-federation
   name: UCLouvain Shibboleth Identity Provider -- SAML 2.0 metadata
-  description: 'UCLouvain runs its own Shibboleth identity provider and publishes signed SAML 2.0 entity
-    metadata at a stable, unauthenticated URL. entityID https://idp.uclouvain.be/idp/shibboleth, shibmd:Scope
-    uclouvain.be, OrganizationName "Universite catholique de Louvain", registered with the Belnet federation
-    since 2012 and exported to eduGAIN (SIRTFI asserted). It carries an IDPSSODescriptor and an AttributeAuthorityDescriptor
+  description: >-
+    UCLouvain runs its own Shibboleth identity provider and publishes signed SAML 2.0 entity metadata
+    at a stable, unauthenticated URL. entityID https://idp.uclouvain.be/idp/shibboleth, shibmd:Scope uclouvain.be,
+    OrganizationName "Universite catholique de Louvain", registered with the Belnet federation since 2012
+    and exported to eduGAIN (SIRTFI asserted). It carries an IDPSSODescriptor and an AttributeAuthorityDescriptor
     with HTTP-Redirect, HTTP-POST, POST-SimpleSign and SOAP bindings. Two further UCLouvain SAML service
-    providers are in eduGAIN: ipb.uclouvain.be and the CECL ICLE corpus SP. This is the institution''s
+    providers are in eduGAIN: ipb.uclouvain.be and the CECL ICLE corpus SP. This is the institution's
     most unambiguously institution-owned machine-readable surface, and it is the authentication layer
-    for everything gated behind UCLouvain affiliation -- there is no API-key portal.'
+    for everything gated behind UCLouvain affiliation -- there is no API-key portal.
   humanURL: https://idp.uclouvain.be/idp/shibboleth
   baseURL: https://idp.uclouvain.be/idp/shibboleth
   x-operator: institution
-  x-operator-evidence: entityID and metadata host are under uclouvain.be; OrganizationName "Universite
-    catholique de Louvain"; registrationAuthority http://federation.belnet.be/ with UCLouvain as the registered
-    entity
+  x-operator-evidence: >-
+    entityID and metadata host are under uclouvain.be; OrganizationName "Universite catholique de Louvain";
+    registrationAuthority http://federation.belnet.be/ with UCLouvain as the registered entity
   tags:
   - Identity Federation
   - Shibboleth
@@ -385,6 +356,186 @@ apis:
     url: conformance/uclouvain-education-standards.yml
   - type: Documentation
     url: https://federation.belnet.be/
+- aid: uclouvain:uclouvain-instances-api
+  name: UCLouvain Instances API
+  description: The Instances API from UCLouvain — 51 operation(s) for instances.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Instances
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-instances-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-jobs-api
+  name: UCLouvain Jobs API
+  description: The Jobs API from UCLouvain — 7 operation(s) for jobs.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-jobs-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-logs-api
+  name: UCLouvain Logs API
+  description: The Logs API from UCLouvain — 8 operation(s) for logs.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-logs-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-networking-api
+  name: UCLouvain Networking API
+  description: The Networking API from UCLouvain — 37 operation(s) for networking.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Networking
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-networking-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-other-api
+  name: UCLouvain Other API
+  description: The Other API from UCLouvain — 6 operation(s) for other.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Other
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-other-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-patients-api
+  name: UCLouvain Patients API
+  description: The Patients API from UCLouvain — 32 operation(s) for patients.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Patients
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-patients-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-series-api
+  name: UCLouvain Series API
+  description: The Series API from UCLouvain — 33 operation(s) for series.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Series
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-series-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-studies-api
+  name: UCLouvain Studies API
+  description: The Studies API from UCLouvain — 34 operation(s) for studies.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Studies
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-studies-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-system-api
+  name: UCLouvain System API
+  description: The System API from UCLouvain — 33 operation(s) for system.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - System
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-system-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
+- aid: uclouvain:uclouvain-tracking-changes-api
+  name: UCLouvain Tracking changes API
+  description: The Tracking changes API from UCLouvain — 2 operation(s) for tracking changes.
+  humanURL: https://orthanc.uclouvain.be/
+  baseURL: https://orthanc.uclouvain.be/demo/
+  tags:
+  - Tracking changes
+  properties:
+  - type: OpenAPI
+    url: openapi/uclouvain-tracking-changes-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/uclouvain-orthanc-api.json
+  - type: APIReference
+    url: https://orthanc.uclouvain.be/api/index.html
+  - type: Documentation
+    url: https://orthanc.uclouvain.be/book/
+  - type: x-example
+    url: examples/uclouvain-orthanc-system-example.json
 common:
 - type: Website
   url: https://uclouvain.be/en
