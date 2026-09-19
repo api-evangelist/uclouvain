@@ -347,6 +347,13 @@ apis:
   - Shibboleth
   - SAML
   - eduGAIN
+  - SSO
+  - Belgium
+  tags_raw:
+  - Identity Federation
+  - Shibboleth
+  - SAML
+  - eduGAIN
   - Single Sign-On
   - Belgium
   properties:
@@ -380,6 +387,8 @@ apis:
   humanURL: https://orthanc.uclouvain.be/
   baseURL: https://orthanc.uclouvain.be/demo/
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
@@ -433,7 +442,8 @@ apis:
   description: The Other API from UCLouvain — 6 operation(s) for other.
   humanURL: https://orthanc.uclouvain.be/
   baseURL: https://orthanc.uclouvain.be/demo/
-  tags:
+  tags: []
+  tags_raw:
   - Other
   properties:
   - type: OpenAPI
