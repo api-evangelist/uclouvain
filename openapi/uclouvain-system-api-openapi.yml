@@ -1,0 +1,1616 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc System API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: System
+paths:
+  /plugins:
+    get:
+      deprecated: false
+      description: List all the installed plugins
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the identifiers of the installed plugins
+                example:
+                - explorer.js
+                - AWS S3 Storage
+                - authorization
+                - connectivity-checks
+                - delayed-deletion
+                - dicom-web
+                - education
+                - gdcm
+                - housekeeper
+                - indexer
+                - multitenant-dicom
+                - mysql-index
+                - mysql-storage
+                - neuro
+                - odbc-index
+                - odbc-storage
+                - ohif
+                - orthanc-explorer-2
+                - postgresql-index
+                - postgresql-storage
+                - serve-folders
+                - stl
+                - stone-rtviewer
+                - stone-webviewer
+                - tcia
+                - transfers
+                - volview
+                - web-viewer
+                - worklists
+                - wsi
+          description: ''
+      summary: List plugins
+      tags:
+      - System
+      operationId: getPlugins
+      x-operation-id-source: derived
+  /plugins/explorer.js:
+    get:
+      deprecated: false
+      description: Get the JavaScript extensions that are installed by all the plugins using the `OrthancPluginExtendOrthancExplorer()` function of the plugin SDK. This route is for internal use of Orthanc Explorer.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/javascript:
+              examples: {}
+              schema:
+                description: The JavaScript extensions
+          description: ''
+      summary: JavaScript extensions to Orthanc Explorer
+      tags:
+      - System
+      operationId: getPluginsExplorerJs
+      x-operation-id-source: derived
+  /plugins/{id}:
+    get:
+      deprecated: false
+      description: Get system information about the plugin whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing information about the plugin
+                example:
+                  Description: Implementation of DICOMweb (QIDO-RS, STOW-RS and WADO-RS) and WADO-URI.
+                  ExtendsOrthancExplorer: true
+                  ID: dicom-web
+                  RootUri: ../dicom-web/app/client/index.html
+                  Version: '1.23'
+          description: ''
+      summary: Get plugin
+      tags:
+      - System
+      operationId: getPluginsById
+      x-operation-id-source: derived
+  /statistics:
+    get:
+      deprecated: false
+      description: Get statistics related to the database of Orthanc
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: ''
+                example:
+                  CountInstances: 2552
+                  CountPatients: 8
+                  CountSeries: 26
+                  CountStudies: 8
+                  TotalDiskSize: '1030997023'
+                  TotalDiskSizeMB: 983
+                  TotalUncompressedSize: '1030997023'
+                  TotalUncompressedSizeMB: 983
+                properties:
+                  CountInstances:
+                    description: Number of DICOM instances stored in Orthanc
+                    type: number
+                  CountPatients:
+                    description: Number of patients stored in Orthanc
+                    type: number
+                  CountSeries:
+                    description: Number of DICOM series stored in Orthanc
+                    type: number
+                  CountStudies:
+                    description: Number of DICOM studies stored in Orthanc
+                    type: number
+                  TotalDiskSize:
+                    description: Size of the storage area (in bytes)
+                    type: string
+                  TotalDiskSizeMB:
+                    description: Size of the storage area (in megabytes)
+                    type: number
+                  TotalUncompressedSize:
+                    description: Total size of all the files once uncompressed (in bytes). This corresponds to `TotalDiskSize` if no compression is enabled, cf. `StorageCompression` configuration option
+                    type: string
+                  TotalUncompressedSizeMB:
+                    description: Total size of all the files once uncompressed (in megabytes)
+                    type: number
+          description: ''
+      summary: Get database statistics
+      tags:
+      - System
+      operationId: getStatistics
+      x-operation-id-source: derived
+  /system:
+    get:
+      deprecated: false
+      description: Get system information about Orthanc
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: ''
+                example:
+                  ApiVersion: 31
+                  Capabilities:
+                    HasExtendedChanges: true
+                    HasExtendedFind: true
+                    HasKeyValueStores: true
+                    HasQueues: true
+                    HasReserveQueueValue: true
+                  CheckRevisions: false
+                  DatabaseBackendPlugin: null
+                  DatabaseServerIdentifier: a67fa91c-20328956-26614107-bbaec3f4-5cbbc6f9
+                  DatabaseVersion: 6
+                  DicomAet: ORTHANC
+                  DicomDefaultRetrieveMethod: C-MOVE
+                  DicomPort: 4242
+                  HasLabels: true
+                  HttpPort: 8042
+                  IngestTranscoding: ''
+                  IsHttpServerSecure: false
+                  MainDicomTags:
+                    Instance: 0008,0012;0008,0013;0008,0018;0020,0012;0020,0013;0020,0032;0020,0037;0020,0100;0020,4000;0028,0008;0054,1330
+                    Patient: 0010,0010;0010,0020;0010,0030;0010,0040;0010,1000
+                    Series: 0008,0021;0008,0031;0008,0060;0008,0070;0008,0201;0008,1010;0008,103e;0008,1070;0018,0010;0018,0015;0018,0024;0018,1030;0018,1090;0018,1400;0020,000e;0020,0011;0020,0037;0020,0105;0020,1002;0040,0244;0040,0245;0040,0254;0040,0275;0054,0081;0054,0101;0054,1000
+                    Study: 0008,0020;0008,0030;0008,0050;0008,0080;0008,0090;0008,0201;0008,1030;0020,000d;0020,0010;0032,1032;0032,1060
+                  MaximumPatientCount: 0
+                  MaximumStorageMode: Recycle
+                  MaximumStorageSize: 0
+                  Name: Orthanc Demo
+                  OverwriteInstances: false
+                  OverwriteInstancesMode: Never
+                  PatientLevelEnabled: true
+                  Performance:
+                    ConcurrentJobs: 2
+                    DicomParserCacheSize: 256
+                    DicomParserMemoryCapacity: 256
+                    DicomParserThreadsCount: 2
+                    DicomThreadsCount: 4
+                    HttpThreadsCount: 50
+                    MaximumStorageCacheSize: 128
+                    SequentialDicomReaderThreadsCount: 4
+                    StorageLoaderThreadsCount: 4
+                    StorageMemoryCapacity: 512
+                    TranscoderCacheSize: 256
+                    TranscoderMemoryCapacity: 256
+                    TranscoderThreadsCount: 4
+                  PluginsEnabled: true
+                  ReadOnly: false
+                  StorageAreaPlugin: null
+                  StorageCompression: false
+                  StoreMD5ForAttachments: true
+                  ThirdPartyPatches:
+                  - civetweb-1.16.patch
+                  - dcmtk-3.7.0-max-nested-sequence.patch
+                  ThirdPartyVersions:
+                    boost: 1.69.0
+                    civetweb: 1.16.0
+                    dcmtk: 3.7.0
+                    jsoncpp: 0.10.6
+                    libcurl: 8.17.0
+                    libjpeg: '9.0'
+                    libpng: 1.6.50
+                    lua: 5.4.7
+                    openssl: 3.1.4
+                    protobuf: 3.5.1
+                    pugixml: 1.14.0
+                    sqlite: 3.50.4
+                    zlib: 1.3.1
+                  UserMetadata: {}
+                  Version: 1.13.0
+                properties:
+                  ApiVersion:
+                    description: Version of the REST API
+                    type: number
+                  Capabilities:
+                    description: Whether the database back-end supports optional features like 'HasExtendedChanges', 'HasExtendedFind' (new in Orthanc 1.12.5), 'HasKeyValueStores', 'HasQueues' (new in Orthanc 1.12.8), and 'HasReserveQueueValue' (new in Orthanc 1.12.10)
+                    type: object
+                  CheckRevisions:
+                    description: Whether Orthanc handle revisions of metadata and attachments to deal with multiple writers (new in Orthanc 1.9.2)
+                    type: boolean
+                  DatabaseBackendPlugin:
+                    description: Information about the installed database index plugin (`null` if no such plugin is installed)
+                    type: string
+                  DatabaseServerIdentifier:
+                    description: ID of the server in the database (when running multiple Orthanc on the same DB)
+                    type: string
+                  DatabaseVersion:
+                    description: 'Version of the database: https://orthanc.uclouvain.be/book/developers/db-versioning.html'
+                    type: number
+                  DicomAet:
+                    description: The DICOM AET of Orthanc
+                    type: string
+                  DicomDefaultRetrieveMethod:
+                    description: The DicomDefaultRetrieveMethod configuration
+                    type: string
+                  DicomPort:
+                    description: The port to the DICOM server of Orthanc
+                    type: number
+                  HasLabels:
+                    description: Whether the database back-end supports labels (new in Orthanc 1.12.0)
+                    type: boolean
+                  HttpPort:
+                    description: The port to the HTTP server of Orthanc
+                    type: number
+                  IngestTranscoding:
+                    description: Whether instances are transcoded when ingested into Orthanc (`` if no transcoding is performed) (new in Orthanc 1.11.0)
+                    type: string
+                  IsHttpServerSecure:
+                    description: 'Whether the REST API is properly secured (assuming no reverse proxy is in use): https://orthanc.uclouvain.be/book/faq/security.html#securing-the-http-server'
+                    type: boolean
+                  MainDicomTags:
+                    description: The list of MainDicomTags saved in DB for each resource level (new in Orthanc 1.11.0)
+                    type: object
+                  MaximumPatientCount:
+                    description: The configured MaximumPatientCount (new in Orthanc 1.12.4)
+                    type: number
+                  MaximumStorageMode:
+                    description: The configured MaximumStorageMode (new in Orthanc 1.11.3)
+                    type: string
+                  MaximumStorageSize:
+                    description: The configured MaximumStorageSize in MB (new in Orthanc 1.11.3)
+                    type: number
+                  Name:
+                    description: The name of the Orthanc server, cf. the `Name` configuration option
+                    type: string
+                  OverwriteInstances:
+                    description: Whether instances are overwritten when re-ingested (new in Orthanc 1.11.0 and kept as a Boolean for backward compatibility)
+                    type: boolean
+                  OverwriteInstancesMode:
+                    description: Overwriting mode governing how instances are re-ingested (new in Orthanc 1.13.0)
+                    type: string
+                  PatientLevelEnabled:
+                    description: Whether Patient level routes and sanity checks are enabled (new in Orthanc 1.12.11)
+                    type: boolean
+                  Performance:
+                    description: The performance options from the configuration file, with sizes expressed in MB (new in Orthanc 1.13.0)
+                    type: object
+                  PluginsEnabled:
+                    description: Whether Orthanc was built with support for plugins
+                    type: boolean
+                  ReadOnly:
+                    description: Whether Orthanc is running in read only mode (new in Orthanc 1.12.5)
+                    type: boolean
+                  StorageAreaPlugin:
+                    description: Information about the installed storage area plugin (`null` if no such plugin is installed)
+                    type: string
+                  StorageCompression:
+                    description: Whether storage compression is enabled (new in Orthanc 1.11.0)
+                    type: boolean
+                  StoreMD5ForAttachments:
+                    description: The configured StoreMD5ForAttachments (new in Orthanc 1.13.0)
+                    type: boolean
+                  ThirdPartyPatches:
+                    description: Patches applied to the third-party libraries included in this binary version of Orthanc (new in Orthanc 1.13.0)
+                    items:
+                      type: string
+                    type: array
+                  ThirdPartyVersions:
+                    description: Versions of the third-party libraries (new in Orthanc 1.13.0)
+                    type: object
+                  UserMetadata:
+                    description: The configured UserMetadata (new in Orthanc 1.12.0)
+                    type: object
+                  Version:
+                    description: Version of Orthanc
+                    type: string
+          description: ''
+      summary: Get system information
+      tags:
+      - System
+      operationId: getSystem
+      x-operation-id-source: derived
+  /tools/accepted-sop-classes:
+    get:
+      deprecated: false
+      description: Get the list of SOP Class UIDs that are accepted by Orthanc C-STORE SCP. This corresponds to the configuration options `AcceptedSopClasses` and `RejectedSopClasses`.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the SOP Class UIDs
+          description: ''
+      summary: Get accepted SOPClassUID
+      tags:
+      - System
+      operationId: getToolsAcceptedSopClasses
+      x-operation-id-source: derived
+  /tools/accepted-transfer-syntaxes:
+    get:
+      deprecated: false
+      description: Get the list of UIDs of the DICOM transfer syntaxes that are accepted by Orthanc C-STORE SCP. This corresponds to the configuration options `AcceptedTransferSyntaxes` and `XXXTransferSyntaxAccepted`.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the transfer syntax UIDs
+          description: ''
+      summary: Get accepted transfer syntaxes
+      tags:
+      - System
+      operationId: getToolsAcceptedTransferSyntaxes
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the DICOM transfer syntaxes that accepted by Orthanc C-STORE SCP
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: JSON array containing a list of transfer syntax UIDs to be accepted. Wildcards `?` and `*` are accepted.
+          text/plain:
+            schema:
+              description: UID of the transfer syntax to be accepted. Wildcards `?` and `*` are accepted.
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the now-accepted transfer syntax UIDs
+          description: ''
+      summary: Set accepted transfer syntaxes
+      tags:
+      - System
+      operationId: putToolsAcceptedTransferSyntaxes
+      x-operation-id-source: derived
+  /tools/bulk-anonymize:
+    post:
+      deprecated: false
+      description: Start a job that will anonymize all the DICOM patients, studies, series or instances whose identifiers are provided in the `Resources` field.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                DicomVersion:
+                  description: Version of the DICOM standard to be used for anonymization. Check out configuration option `DeidentifyLogsDicomVersion` for possible values.
+                  type: string
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: List of DICOM tags whose value must not be destroyed by the anonymization. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                KeepLabels:
+                  description: Keep the labels of all resources level (defaults to `false`)
+                  type: boolean
+                KeepPrivateTags:
+                  description: Keep the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of additional tags to be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Resources:
+                  description: List of the Orthanc identifiers of the patients/studies/series/instances of interest.
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: The list of all the resources that have been created by this anonymization
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Anonymize a set of resources
+      tags:
+      - System
+      operationId: postToolsBulkAnonymize
+      x-operation-id-source: derived
+  /tools/bulk-content:
+    post:
+      deprecated: false
+      description: Get the content all the DICOM patients, studies, series or instances whose identifiers are provided in the `Resources` field, in one single call.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Level:
+                  description: This optional argument specifies the level of interest (can be `Patient`, `Study`, `Series` or `Instance`). Orthanc will loop over the items inside `Resources`, and explore upward or downward in the DICOM hierarchy in order to find the level of interest.
+                  type: string
+                Metadata:
+                  description: If set to `true` (default value), the metadata associated with the resources will also be retrieved.
+                  type: boolean
+                Resources:
+                  description: List of the Orthanc identifiers of the patients/studies/series/instances of interest.
+                  items:
+                    type: string
+                  type: array
+                Short:
+                  description: If set to `true`, report the DICOM tags in hexadecimal format
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Describe a set of resources
+      tags:
+      - System
+      operationId: postToolsBulkContent
+      x-operation-id-source: derived
+  /tools/bulk-delete:
+    post:
+      deprecated: false
+      description: Delete all the DICOM patients, studies, series or instances whose identifiers are provided in the `Resources` field.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Resources:
+                  description: 'List of the Orthanc identifiers of the patients/studies/series/instances of interest.  Starting from Orthanc 1.13.0, this array can also contain an array of JSON objects with 2 fields each: ''Level'' and ''ID''.'
+                  items:
+                    type: string
+                  type: array
+      responses:
+        '200':
+          description: ''
+      summary: Delete a set of resources
+      tags:
+      - System
+      operationId: postToolsBulkDelete
+      x-operation-id-source: derived
+  /tools/bulk-modify:
+    post:
+      deprecated: false
+      description: Start a job that will modify all the DICOM patients, studies, series or instances whose identifiers are provided in the `Resources` field.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: Keep the original value of the specified tags, to be chosen among the `StudyInstanceUID`, `SeriesInstanceUID` and `SOPInstanceUID` tags. Avoid this feature as much as possible, as this breaks the DICOM model of the real world.
+                  items:
+                    type: string
+                  type: array
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                Level:
+                  description: Level of the modification (`Patient`, `Study`, `Series` or `Instance`). If absent, the level defaults to `Instance`, but is set to `Patient` if `PatientID` is modified, to `Study` if `StudyInstanceUID` is modified, or to `Series` if `SeriesInstancesUID` is modified. (new in Orthanc 1.9.7)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of tags that must be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                RemovePrivateTags:
+                  description: Remove the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Resources:
+                  description: List of the Orthanc identifiers of the patients/studies/series/instances of interest.
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: The list of all the resources that have been altered by this modification
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Modify a set of resources
+      tags:
+      - System
+      operationId: postToolsBulkModify
+      x-operation-id-source: derived
+  /tools/count-resources:
+    post:
+      deprecated: false
+      description: This URI can be used to count the resources that are matching criteria on the content of the local Orthanc server, in a way that is similar to tools/find
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Labels:
+                  description: List of strings specifying which labels to look for in the resources (new in Orthanc 1.12.0)
+                  items:
+                    type: string
+                  type: array
+                LabelsConstraint:
+                  description: 'Constraint on the labels, can be `All`, `Any`, or `None` (defaults to `All`, new in Orthanc 1.12.0). From 1.12.11: using `None` together with an empty list of labels looks for the resources that do not have any labels attached.'
+                  type: string
+                Level:
+                  description: Level of the query (`Patient`, `Study`, `Series` or `Instance`)
+                  type: string
+                MetadataQuery:
+                  description: Associative array containing the filter on the values of the metadata (new in Orthanc 1.12.5)
+                  type: object
+                ParentPatient:
+                  description: Limit the reported resources to descendants of this patient (new in Orthanc 1.12.5)
+                  type: string
+                ParentSeries:
+                  description: Limit the reported resources to descendants of this series (new in Orthanc 1.12.5)
+                  type: string
+                ParentStudy:
+                  description: Limit the reported resources to descendants of this study (new in Orthanc 1.12.5)
+                  type: string
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Short:
+                  description: If set to `true`, report the DICOM tags in hexadecimal format
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: A JSON object with the `Count` of matching resources
+          description: ''
+      summary: Count local resources
+      tags:
+      - System
+      operationId: postToolsCountResources
+      x-operation-id-source: derived
+  /tools/create-archive:
+    get:
+      deprecated: false
+      description: Create a ZIP archive containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the 'resources' argument
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: A comma separated list of Orthanc resource identifiers to include in the ZIP archive.
+        in: query
+        name: resources
+        required: true
+        schema:
+          type: string
+      - description: 'If present, the DICOM files will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Create ZIP archive
+      tags:
+      - System
+      operationId: getToolsCreateArchive
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      description: Create a ZIP archive containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the body
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, create the archive in asynchronous mode, which means that a job is submitted to create the archive in background.
+                  type: boolean
+                Filename:
+                  description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in 1.12.7)
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.
+                  type: number
+                Resources:
+                  description: The list of Orthanc identifiers of interest.
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, create the archive in synchronous mode, which means that the HTTP answer will directly contain the ZIP file. This is the default, easy behavior. However, if global configuration option "SynchronousZipStream" is set to "false", asynchronous transfers should be preferred for large amount of data, as the creation of the temporary file might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: In asynchronous mode, user data that will be attached to the job.
+                  type: object
+                Utf8:
+                  description: If `true`, filenames will be encoded using UTF-8 in the ZIP archive, which may not be supported by your operating system or by your ZIP uncompression software. If `false`, filenames will be encoded using plain ASCII, which was the default in Orthanc <= 1.12.10. Default value is defined by the "ZipUseUtf8" configuration option. (new in 1.12.11)
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: 'In asynchronous mode, information about the job that has been submitted to generate the archive: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+                properties:
+                  ID:
+                    description: Identifier of the job
+                    type: string
+                  Path:
+                    description: Path to access the job in the REST API
+                    type: string
+            application/zip:
+              examples: {}
+              schema:
+                description: In synchronous mode, the ZIP file containing the archive
+          description: ''
+      summary: Create ZIP archive
+      tags:
+      - System
+      operationId: postToolsCreateArchive
+      x-operation-id-source: derived
+  /tools/create-dicom:
+    post:
+      deprecated: false
+      description: Create one DICOM instance, and store it into Orthanc
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Content:
+                  description: This field can be used to embed an image (pixel data encoded as PNG or JPEG), a PDF, or a 3D manufactoring model (MTL/OBJ/STL) inside the created DICOM instance. The file to be encapsulated must be provided using its [data URI scheme encoding](https://en.wikipedia.org/wiki/Data_URI_scheme). This field can possibly contain a JSON array, in which case a DICOM series is created containing one DICOM instance for each item in the `Content` field.
+                  type: string
+                Encapsulate:
+                  description: If set to `true`, encapsulate the binary data of `ContentData` as such, using a compressed transfer syntax. Only applicable if `ContentData` contains a grayscale or color JPEG image in 8bpp, in which case the transfer syntax is set to "1.2.840.10008.1.2.4.50". (new in Orthanc 1.12.7)
+                  type: boolean
+                Force:
+                  description: Avoid the consistency checks for the DICOM tags that enforce the DICOM model of the real-world. You can notably use this flag if you need to manually set the tags `StudyInstanceUID`, `SeriesInstanceUID`, or `SOPInstanceUID`. Be careful with this feature.
+                  type: boolean
+                InterpretBinaryTags:
+                  description: If some value in the `Tags` associative array is formatted according to some [data URI scheme encoding](https://en.wikipedia.org/wiki/Data_URI_scheme), whether this value is decoded to a binary value or kept as such (`true` by default)
+                  type: boolean
+                Parent:
+                  description: If present, the newly created instance will be attached to the parent DICOM resource whose Orthanc identifier is contained in this field. The DICOM tags of the parent modules in the DICOM hierarchy will be automatically copied to the newly created instance.
+                  type: string
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Tags`
+                  type: string
+                Tags:
+                  description: Associative array containing the tags of the new instance to be created
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Orthanc identifier of the newly created instance
+                    type: string
+                  Path:
+                    description: Path to access the instance in the REST API
+                    type: string
+          description: ''
+      summary: Create one DICOM instance
+      tags:
+      - System
+      operationId: postToolsCreateDicom
+      x-operation-id-source: derived
+  /tools/create-media:
+    get:
+      deprecated: false
+      description: Create a DICOMDIR media containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the 'resources' argument
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: A comma separated list of Orthanc resource identifiers to include in the DICOMDIR media.
+        in: query
+        name: resources
+        required: true
+        schema:
+          type: string
+      - description: 'If present, the DICOM files will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - System
+      operationId: getToolsCreateMedia
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      description: Create a DICOMDIR media containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the body
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, create the archive in asynchronous mode, which means that a job is submitted to create the archive in background.
+                  type: boolean
+                Extended:
+                  description: If `true`, will include additional tags such as `SeriesDescription`, leading to a so-called *extended DICOMDIR*. Default value is `false`.
+                  type: boolean
+                Filename:
+                  description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in 1.12.7)
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.
+                  type: number
+                Resources:
+                  description: The list of Orthanc identifiers of interest.
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, create the archive in synchronous mode, which means that the HTTP answer will directly contain the ZIP file. This is the default, easy behavior. However, if global configuration option "SynchronousZipStream" is set to "false", asynchronous transfers should be preferred for large amount of data, as the creation of the temporary file might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: In asynchronous mode, user data that will be attached to the job.
+                  type: object
+                Utf8:
+                  description: If `true`, filenames will be encoded using UTF-8 in the ZIP archive, which may not be supported by your operating system or by your ZIP uncompression software. If `false`, filenames will be encoded using plain ASCII, which was the default in Orthanc <= 1.12.10. Default value is defined by the "ZipUseUtf8" configuration option. (new in 1.12.11)
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: 'In asynchronous mode, information about the job that has been submitted to generate the archive: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+                properties:
+                  ID:
+                    description: Identifier of the job
+                    type: string
+                  Path:
+                    description: Path to access the job in the REST API
+                    type: string
+            application/zip:
+              examples: {}
+              schema:
+                description: In synchronous mode, the ZIP file containing the archive
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - System
+      operationId: postToolsCreateMedia
+      x-operation-id-source: derived
+  /tools/create-media-extended:
+    get:
+      deprecated: false
+      description: Create a DICOMDIR media containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the 'resources' argument
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: A comma separated list of Orthanc resource identifiers to include in the DICOMDIR media.
+        in: query
+        name: resources
+        required: true
+        schema:
+          type: string
+      - description: 'If present, the DICOM files will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - System
+      operationId: getToolsCreateMediaExtended
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      description: Create a DICOMDIR media containing the DICOM resources (patients, studies, series, or instances) whose Orthanc identifiers are provided in the body
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, create the archive in asynchronous mode, which means that a job is submitted to create the archive in background.
+                  type: boolean
+                Extended:
+                  description: If `true`, will include additional tags such as `SeriesDescription`, leading to a so-called *extended DICOMDIR*. Default value is `true`.
+                  type: boolean
+                Filename:
+                  description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in 1.12.7)
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.
+                  type: number
+                Resources:
+                  description: The list of Orthanc identifiers of interest.
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, create the archive in synchronous mode, which means that the HTTP answer will directly contain the ZIP file. This is the default, easy behavior. However, if global configuration option "SynchronousZipStream" is set to "false", asynchronous transfers should be preferred for large amount of data, as the creation of the temporary file might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: In asynchronous mode, user data that will be attached to the job.
+                  type: object
+                Utf8:
+                  description: If `true`, filenames will be encoded using UTF-8 in the ZIP archive, which may not be supported by your operating system or by your ZIP uncompression software. If `false`, filenames will be encoded using plain ASCII, which was the default in Orthanc <= 1.12.10. Default value is defined by the "ZipUseUtf8" configuration option. (new in 1.12.11)
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: 'In asynchronous mode, information about the job that has been submitted to generate the archive: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+                properties:
+                  ID:
+                    description: Identifier of the job
+                    type: string
+                  Path:
+                    description: Path to access the job in the REST API
+                    type: string
+            application/zip:
+              examples: {}
+              schema:
+                description: In synchronous mode, the ZIP file containing the archive
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - System
+      operationId: postToolsCreateMediaExtended
+      x-operation-id-source: derived
+  /tools/default-encoding:
+    get:
+      deprecated: false
+      description: Get the default encoding that is used by Orthanc if parsing a DICOM instance without the `SpecificCharacterEncoding` tag, or during C-FIND. This corresponds to the configuration option `DefaultEncoding`.
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The name of the encoding
+          description: ''
+      summary: Get default encoding
+      tags:
+      - System
+      operationId: getToolsDefaultEncoding
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Change the default encoding that is used by Orthanc if parsing a DICOM instance without the `SpecificCharacterEncoding` tag, or during C-FIND. This corresponds to the configuration option `DefaultEncoding`.
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: The name of the encoding. Check out configuration option `DefaultEncoding` for the allowed values.
+      responses:
+        '200':
+          description: ''
+      summary: Set default encoding
+      tags:
+      - System
+      operationId: putToolsDefaultEncoding
+      x-operation-id-source: derived
+  /tools/dicom-conformance:
+    get:
+      deprecated: false
+      description: Get the DICOM conformance statement of Orthanc
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The DICOM conformance statement
+          description: ''
+      summary: Get DICOM conformance
+      tags:
+      - System
+      operationId: getToolsDicomConformance
+      x-operation-id-source: derived
+  /tools/dicom-echo:
+    post:
+      deprecated: false
+      description: Trigger C-ECHO SCU command against a DICOM modality described in the POST body, without having to register the modality in some `/modalities/{id}` (new in Orthanc 1.8.1)
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                AET:
+                  description: AET of the remote DICOM modality
+                  type: string
+                CheckFind:
+                  description: Issue a dummy C-FIND command after the C-GET SCU, in order to check whether the remote modality knows about Orthanc. This field defaults to the value of the `DicomEchoChecksFind` configuration option. New in Orthanc 1.8.1.
+                  type: boolean
+                Host:
+                  description: Host address of the remote DICOM modality (typically, an IP address)
+                  type: string
+                LocalAet:
+                  description: Whether to override the default DicomAet in the SCU connection initiated by Orthanc to this modality
+                  type: string
+                Manufacturer:
+                  description: Manufacturer of the remote DICOM modality (check configuration option `DicomModalities` for possible values
+                  type: string
+                Port:
+                  description: TCP port of the remote DICOM modality
+                  type: number
+                Timeout:
+                  description: Whether to override the default DicomScuTimeout in the SCU connection initiated by Orthanc to this modality
+                  type: number
+                UseDicomTls:
+                  description: Whether to use DICOM TLS in the SCU connection initiated by Orthanc (new in Orthanc 1.9.0)
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Trigger C-ECHO SCU
+      tags:
+      - System
+      operationId: postToolsDicomEcho
+      x-operation-id-source: derived
+  /tools/execute-script:
+    post:
+      deprecated: false
+      description: Execute the provided Lua script by the Orthanc server. This is very insecure for Orthanc servers that are remotely accessible. Since Orthanc 1.5.8, this route is disabled by default and can be enabled thanks to the `ExecuteLuaEnabled` configuration.
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: The Lua script to be executed
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Output of the Lua script
+          description: ''
+      summary: Execute Lua script
+      tags:
+      - System
+      operationId: postToolsExecuteScript
+      x-operation-id-source: derived
+  /tools/find:
+    post:
+      deprecated: false
+      description: 'This URI can be used to perform a search on the content of the local Orthanc server, in a way that is similar to querying remote DICOM modalities using C-FIND SCU: https://orthanc.uclouvain.be/book/users/rest.html#performing-finds-within-orthanc'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                CaseSensitive:
+                  description: Enable case-sensitive search for PN value representations (defaults to configuration option `CaseSensitivePN`)
+                  type: boolean
+                Expand:
+                  description: If set to "true", retrieve detailed information about the individual resources, not only their Orthanc identifiers
+                  type: boolean
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Labels:
+                  description: List of strings specifying which labels to look for in the resources (new in Orthanc 1.12.0)
+                  items:
+                    type: string
+                  type: array
+                LabelsConstraint:
+                  description: 'Constraint on the labels, can be `All`, `Any`, or `None` (defaults to `All`, new in Orthanc 1.12.0). From 1.12.11: using `None` together with an empty list of labels looks for the resources that do not have any labels attached.'
+                  type: string
+                Level:
+                  description: Level of the query (`Patient`, `Study`, `Series` or `Instance`)
+                  type: string
+                Limit:
+                  description: Limit the number of reported resources
+                  type: number
+                MetadataQuery:
+                  description: Associative array containing the filter on the values of the metadata (new in Orthanc 1.12.5)
+                  type: object
+                OrderBy:
+                  description: Array of associative arrays containing the requested ordering (new in Orthanc 1.12.5)
+                  items:
+                    type: object
+                  type: array
+                ParentPatient:
+                  description: Limit the reported resources to descendants of this patient (new in Orthanc 1.12.5)
+                  type: string
+                ParentSeries:
+                  description: Limit the reported resources to descendants of this series (new in Orthanc 1.12.5)
+                  type: string
+                ParentStudy:
+                  description: Limit the reported resources to descendants of this study (new in Orthanc 1.12.5)
+                  type: string
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                RequestedTags:
+                  description: A list of DICOM tags to include in the response (applicable only if "Expand" is set to true).  The tags requested tags are returned in the 'RequestedTags' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.
+                  items:
+                    type: string
+                  type: array
+                ResponseContent:
+                  description: Defines the content of response for each returned resource. (this field, if present, overrides the "Expand" field).  Allowed values are `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`, `Attachments`.  If not specified, Orthanc will return `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`.(new in Orthanc 1.12.5)
+                  items:
+                    type: string
+                  type: array
+                Short:
+                  description: If set to `true`, report the DICOM tags in hexadecimal format
+                  type: boolean
+                Since:
+                  description: Show only the resources since the provided index (in conjunction with `Limit`)
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing either the Orthanc identifiers, or detailed information about the reported resources (if `Expand` argument is `true`)
+          description: ''
+      summary: Look for local resources
+      tags:
+      - System
+      operationId: postToolsFind
+      x-operation-id-source: derived
+  /tools/generate-uid:
+    get:
+      deprecated: false
+      description: Generate a random DICOM identifier
+      parameters:
+      - description: 'Type of DICOM resource among: `patient`, `study`, `series` or `instance`'
+        in: query
+        name: level
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The generated identifier
+          description: ''
+      summary: Generate an identifier
+      tags:
+      - System
+      operationId: getToolsGenerateUid
+      x-operation-id-source: derived
+  /tools/invalidate-tags:
+    post:
+      deprecated: false
+      description: Remove all the attachments of the type "DICOM-as-JSON" that are associated will all the DICOM instances stored in Orthanc. These summaries will be automatically re-created on the next access. This is notably useful after changes to the `Dictionary` configuration option. https://orthanc.uclouvain.be/book/faq/orthanc-storage.html#storage-area
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      summary: Invalidate DICOM-as-JSON summaries
+      tags:
+      - System
+      operationId: postToolsInvalidateTags
+      x-operation-id-source: derived
+  /tools/labels:
+    get:
+      deprecated: false
+      description: List all the labels that are associated with any resource of the Orthanc database
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the labels
+          description: ''
+      summary: Get all the used labels
+      tags:
+      - System
+      operationId: getToolsLabels
+      x-operation-id-source: derived
+  /tools/lookup:
+    post:
+      deprecated: false
+      description: This URI can be used to convert one DICOM identifier to a list of matching Orthanc resources
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: The DICOM identifier of interest (i.e. the value of `PatientID`, `StudyInstanceUID`, `SeriesInstanceUID`, or `SOPInstanceUID`)
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing a list of matching Orthanc resources, each item in the list corresponding to a JSON object with the fields `Type`, `ID` and `Path` identifying one DICOM resource that is stored by Orthanc
+          description: ''
+      summary: Look for DICOM identifiers
+      tags:
+      - System
+      operationId: postToolsLookup
+      x-operation-id-source: derived
+  /tools/metrics:
+    get:
+      deprecated: false
+      description: Returns a Boolean specifying whether Prometheus metrics are collected and exposed at `/tools/metrics-prometheus`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: '`1` if metrics are collected, `0` if metrics are disabled'
+          description: ''
+      summary: Are metrics collected?
+      tags:
+      - System
+      operationId: getToolsMetrics
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Enable or disable the collection and publication of metrics at `/tools/metrics-prometheus`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: '`1` if metrics are collected, `0` if metrics are disabled'
+      responses:
+        '200':
+          description: ''
+      summary: Enable collection of metrics
+      tags:
+      - System
+      operationId: putToolsMetrics
+      x-operation-id-source: derived
+  /tools/metrics-prometheus:
+    get:
+      deprecated: false
+      description: 'Get usage metrics of Orthanc in the Prometheus file format (OpenMetrics): https://orthanc.uclouvain.be/book/users/advanced-rest.html#instrumentation-with-prometheus'
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              example: 'orthanc_available_dicom_threads 4 1786830654645
+
+                orthanc_available_http_threads_count 49 1786831381722
+
+                orthanc_count_instances 2552 1786831388757
+
+                orthanc_count_patients 8 1786831388757
+
+                orthanc_count_series 26 1786831388757
+
+                orthanc_count_studies 8 1786831388757
+
+                orthanc_dicom_parser_available_threads 1 1786831382129
+
+                orthanc_dicom_parser_cache_count 1094 1786831387100
+
+                orthanc_dicom_parser_cache_hit_count 1409 1786831388571
+
+                orthanc_dicom_parser_cache_miss_count 1094 1786831387099
+
+                orthanc_dicom_parser_cache_size_mb 180.565399 1786831387100
+
+                orthanc_dicom_parser_memory_capacity_mb 256 1786831388571
+
+                orthanc_dicom_parser_memory_count 0 1786831388571
+
+                orthanc_dicom_parser_memory_max_usage_mb 5.39834976 1786831388571
+
+                orthanc_dicom_parser_memory_usage_mb 0 1786831388571
+
+                orthanc_dicomweb_wadors_average_bandwidth_per_call_mbytes_per_second_5m 0 1786831388756
+
+                orthanc_dicomweb_wadors_total_bytes_transferred 18923976 1786831388756
+
+                orthanc_disk_size_mb 983.235352 1786831388757
+
+                orthanc_jobs_pending 0 1786831388757
+
+                orthanc_jobs_running 0 1786831388757
+
+                orthanc_jobs_total_completed 1 1786830924198
+
+                orthanc_jobs_total_success 1 1786830924198
+
+                orthanc_last_change 6551 1786831388757
+
+                orthanc_logged_errors_count 28 1786830811928
+
+                orthanc_logged_warnings_count 426 1786831314046
+
+                orthanc_rest_api_active_requests 1 1786831381722
+
+                orthanc_rest_api_duration_ms 881 1786831387424
+
+                orthanc_sequential_reader_available_threads 4 1786830916520
+
+                orthanc_storage_available_threads 3 1786831382129
+
+                orthanc_storage_cache_count 567 1786831387100
+
+                orthanc_storage_cache_hit_count 167 1786831313647
+
+                orthanc_storage_cache_miss_count 1453 1786831387099
+
+                orthanc_storage_cache_size_mb 116.382149 1786831387100
+
+                orthanc_storage_memory_capacity_mb 512 1786831387100
+
+                orthanc_storage_memory_count 0 1786831387100
+
+                orthanc_storage_memory_max_usage_mb 46.4766159 1786831387100
+
+                orthanc_storage_memory_usage_mb 0 1786831387100
+
+                orthanc_storage_read_bytes 440209974 1786831387100
+
+                orthanc_storage_read_duration_ms 0 1786831387100
+
+                orthanc_transcoder_available_threads 4 1786830860422
+
+                orthanc_transcoder_cache_count 198 1786830832071
+
+                orthanc_transcoder_cache_hit_count 198 1786830865075
+
+                orthanc_transcoder_cache_miss_count 198 1786830832066
+
+                orthanc_transcoder_cache_size_mb 99.4703598 1786830832071
+
+                orthanc_transcoder_memory_capacity_mb 256 1786830865075
+
+                orthanc_transcoder_memory_count 0 1786830865075
+
+                orthanc_transcoder_memory_max_usage_mb 3.01407051 1786830865075
+
+                orthanc_transcoder_memory_usage_mb 0 1786830865075
+
+                orthanc_transfers_aborted_push_count 0 1786831388756
+
+                orthanc_transfers_available_push_count 4 1786831388756
+
+                orthanc_transfers_cache_hit_count 0 1786831388756
+
+                orthanc_transfers_cache_miss_count 0 1786831388756
+
+                orthanc_transfers_committed_push_count 0 1786831388756
+
+                orthanc_transfers_created_push_count 0 1786831388756
+
+                orthanc_transfers_push_total_received_bytes_count 0 1786831388756
+
+                orthanc_transfers_push_total_time_spent_in_commit_ms 0 1786831388756
+
+                orthanc_transfers_push_total_time_spent_in_reception_ms 0 1786831388756
+
+                orthanc_transfers_used_cache_size 0 1786831388756
+
+                orthanc_uncompressed_size_mb 983.235352 1786831388757
+
+                orthanc_up_time_s 734 1786831388757
+
+                '
+          description: ''
+      summary: Get usage metrics
+      tags:
+      - System
+      operationId: getToolsMetricsPrometheus
+      x-operation-id-source: derived
+  /tools/now:
+    get:
+      deprecated: false
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              example: 20260815T220308
+              schema:
+                description: The UTC time
+          description: ''
+      summary: Get UTC time
+      tags:
+      - System
+      operationId: getToolsNow
+      x-operation-id-source: derived
+  /tools/now-local:
+    get:
+      deprecated: false
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              example: 20260815T220308
+              schema:
+                description: The local time
+          description: ''
+      summary: Get local time
+      tags:
+      - System
+      operationId: getToolsNowLocal
+      x-operation-id-source: derived
+  /tools/reconstruct:
+    post:
+      deprecated: false
+      description: Reconstruct the index of all the tags of all the DICOM instances that are stored in Orthanc. This is notably useful after the deletion of resources whose children resources have inconsistent values with their sibling resources. Beware that this is a highly time-consuming operation, as all the DICOM instances will be parsed again, and as all the Orthanc index will be regenerated. If you have a large database to process, it is advised to use the Housekeeper plugin to perform this action resource by resource
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                ReconstructFiles:
+                  description: 'Also reconstruct the files of the resources (e.g: apply IngestTranscoding, StorageCompression). ''false'' by default. (New in Orthanc 1.11.0)'
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Reconstruct all the index
+      tags:
+      - System
+      operationId: postToolsReconstruct
+      x-operation-id-source: derived
+  /tools/reset:
+    post:
+      deprecated: false
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      summary: Restart Orthanc
+      tags:
+      - System
+      operationId: postToolsReset
+      x-operation-id-source: derived
+  /tools/shutdown:
+    post:
+      deprecated: false
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      summary: Shutdown Orthanc
+      tags:
+      - System
+      operationId: postToolsShutdown
+      x-operation-id-source: derived
+  /tools/unknown-sop-class-accepted:
+    get:
+      deprecated: false
+      description: Shall Orthanc C-STORE SCP accept DICOM instances with an unknown SOP class UID?
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: '`1` if accepted, `0` if not accepted'
+          description: ''
+      summary: Is unknown SOP class accepted?
+      tags:
+      - System
+      operationId: getToolsUnknownSopClassAccepted
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set whether Orthanc C-STORE SCP should accept DICOM instances with an unknown SOP class UID
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: '`1` if accepted, `0` if not accepted'
+      responses:
+        '200':
+          description: ''
+      summary: Set unknown SOP class accepted
+      tags:
+      - System
+      operationId: putToolsUnknownSopClassAccepted
+      x-operation-id-source: derived

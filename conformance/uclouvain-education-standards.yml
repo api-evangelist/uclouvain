@@ -1,0 +1,171 @@
+specification: API Evangelist Conformance
+specificationVersion: '0.1'
+provider: UCLouvain
+providerId: uclouvain
+generated: '2026-08-30'
+method: probed
+source: live HTTP probes of UCLouvain-operated hosts, 2026-08-30
+regime: education
+description: >-
+  Domain-standard conformance for UCLouvain, measured against the Kin Score `education`
+  regulatory regime standards[] list (scim, lti, oneroster, ed-fi, caliper, qti, oai-pmh,
+  shibboleth, saml, orcid, datacite, crossref). Every entry below was confirmed by a live
+  request against a host under a UCLouvain registrable domain (uclouvain.be / ucl.ac.be);
+  standards with no evidence are recorded as not_found rather than omitted, and nothing here
+  is inferred from a prose claim.
+notes: >-
+  REWARD-ONLY. `not_found` means we did not find a public, machine-readable surface asserting
+  the standard on 2026-08-30 — it is not a statement that the institution does not use it
+  internally. LTI, SCIM, OneRoster, Ed-Fi, Caliper and QTI would all live behind the Moodle /
+  SAP-SuccessFactors style administrative estate, which UCLouvain does not expose publicly.
+conformance:
+- standard: oai-pmh
+  status: conformant
+  version: '2.0'
+  detail: >-
+    Four independent OAI-PMH 2.0 repositories operated on UCLouvain hosts, each returning a
+    valid Identify response with a uclouvain.be adminEmail.
+  evidence:
+  - url: https://dataverse.uclouvain.be/oai?verb=Identify
+    status: 200
+    location: OAI-PMH/Identify/repositoryName
+    value: Open Data @ UCLouvain Dataverse OAI Archive
+    admin_email: cism-support@uclouvain.be
+  - url: https://research.dial.uclouvain.be/server/oai/request?verb=Identify
+    status: 200
+    location: OAI-PMH/Identify/repositoryName
+    value: Dial.pr
+    admin_email: bibsys@uclouvain.be
+  - url: https://thesis.dial.uclouvain.be/server/oai/request?verb=Identify
+    status: 200
+    location: OAI-PMH/Identify/repositoryName
+    value: Dial.mem
+    admin_email: bibsys@uclouvain.be
+  - url: https://oer.uclouvain.be/oai/request?verb=Identify
+    status: 200
+    location: OAI-PMH/Identify/repositoryName
+    value: OER-UCLouvain
+    admin_email: openeducation-lll@uclouvain.be
+  - url: https://research.dial.uclouvain.be/server/oai/request?verb=ListMetadataFormats
+    status: 200
+    location: OAI-PMH/ListMetadataFormats/metadataPrefix
+    value: didl, mods, mets, oai_dc
+- standard: shibboleth
+  status: conformant
+  detail: >-
+    UCLouvain operates its own Shibboleth Identity Provider and publishes signed SAML metadata
+    carrying a shibmd:Scope of uclouvain.be. Registered with the Belnet federation and exported
+    to eduGAIN, SIRTFI-asserted.
+  evidence:
+  - url: https://idp.uclouvain.be/idp/shibboleth
+    status: 200
+    location: EntityDescriptor/@entityID
+    value: https://idp.uclouvain.be/idp/shibboleth
+  - url: https://idp.uclouvain.be/idp/shibboleth
+    status: 200
+    location: IDPSSODescriptor/Extensions/shibmd:Scope
+    value: uclouvain.be
+  - url: https://technical.edugain.org/api.php?action=list_entities&format=json
+    status: 200
+    location: entity[entityid=https://idp.uclouvain.be/idp/shibboleth]
+    value: 'regauth=http://federation.belnet.be/, sirtfi_status=1, scopes=uclouvain.be, first_seen=2017-04-13'
+- standard: saml
+  status: conformant
+  version: '2.0'
+  detail: >-
+    SAML 2.0 IDPSSODescriptor and AttributeAuthorityDescriptor with HTTP-Redirect, HTTP-POST,
+    HTTP-POST-SimpleSign and SOAP bindings for SSO, SLO, ArtifactResolution and AttributeQuery.
+    Three UCLouvain SAML entities are published to eduGAIN through the Belnet federation.
+  evidence:
+  - url: https://idp.uclouvain.be/idp/shibboleth
+    status: 200
+    location: IDPSSODescriptor/@protocolSupportEnumeration
+    value: urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0
+  - url: https://idp.uclouvain.be/idp/shibboleth
+    status: 200
+    location: IDPSSODescriptor/SingleSignOnService/@Location
+    value: https://idp.uclouvain.be/idp/profile/SAML2/Redirect/SSO
+  - url: https://technical.edugain.org/api.php?action=list_entities&format=json
+    status: 200
+    location: entities matching *.uclouvain.be
+    value: >-
+      https://idp.uclouvain.be/idp/shibboleth (IdP+AA);
+      https://ipb.uclouvain.be/shibboleth (SP);
+      https://corpora.uclouvain.be/cecl/icle/shibboleth (SP)
+- standard: orcid
+  status: conformant
+  detail: >-
+    DSpace-CRIS 8.1 behind DIAL.pr exposes a live ORCID integration through its own configuration
+    and metadata-registry endpoints on the institution host — ORCID authorize URL configured and
+    ORCID identifier fields registered.
+  evidence:
+  - url: https://research.dial.uclouvain.be/server/api/config/properties/orcid.authorize-url
+    status: 200
+    location: values[0]
+    value: https://orcid.org/oauth/authorize
+  - url: https://research.dial.uclouvain.be/server/api/core/metadatafields?size=200
+    status: 200
+    location: metadatafields[].qualifier == orcid
+    value: 5 ORCID metadata fields registered (person.identifier.orcid, author.orcid, virtual.orcid, virtualsource.orcid)
+- standard: crossref
+  status: conformant
+  detail: >-
+    UCLouvain is a Crossref member in its own right (member 5552) and owns DOI prefix 10.14428,
+    the prefix minted by its Dataverse instance. 4,408 works registered under the prefix.
+  evidence:
+  - url: https://api.crossref.org/prefixes/10.14428
+    status: 200
+    location: message.name
+    value: Universite Catholique de Louvain
+  - url: https://api.crossref.org/prefixes/10.14428
+    status: 200
+    location: message.member
+    value: https://id.crossref.org/member/5552
+  - url: https://api.crossref.org/prefixes/10.14428/works?rows=1
+    status: 200
+    location: message.total-results
+    value: '4408'
+  - url: https://doi.org/doiRA/10.14428
+    status: 200
+    location: '[0].RA'
+    value: Crossref
+- standard: datacite
+  status: not_found
+  detail: >-
+    Checked and explicitly negative. The DOIs minted by dataverse.uclouvain.be (prefix 10.14428)
+    resolve, but the registration agency for that prefix is Crossref, not DataCite, and the
+    DataCite REST API holds no record of the prefix or of a UCLouvain repository client.
+  evidence:
+  - url: https://api.datacite.org/dois/10.14428%2FDVN%2FDEQCIM
+    status: 404
+  - url: https://api.datacite.org/dois?query=prefix%3A10.14428
+    status: 200
+    location: meta.total
+    value: '0'
+  - url: https://doi.org/doiRA/10.14428
+    status: 200
+    location: '[0].RA'
+    value: Crossref
+- standard: lti
+  status: not_found
+  detail: No public LTI platform or tool registration surface found on a UCLouvain host.
+- standard: scim
+  status: not_found
+  detail: >-
+    No public SCIM 2.0 service-provider configuration found. Identity is federated through SAML
+    rather than provisioned over a public SCIM endpoint.
+- standard: oneroster
+  status: not_found
+  detail: No OneRoster REST or CSV surface found on a UCLouvain host.
+- standard: ed-fi
+  status: not_found
+  detail: Ed-Fi is a US K-12/state-longitudinal standard; no surface found and none expected for a Belgian university.
+- standard: caliper
+  status: not_found
+  detail: No Caliper Analytics event store or sensor endpoint found on a UCLouvain host.
+- standard: qti
+  status: not_found
+  detail: No QTI assessment item or package surface found on a UCLouvain host.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

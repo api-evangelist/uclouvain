@@ -1,0 +1,1647 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Networking API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Networking
+paths:
+  /modalities:
+    get:
+      deprecated: false
+      description: List all the DICOM modalities that are known to Orthanc. This corresponds either to the content of the `DicomModalities` configuration option, or to the information stored in the database if `DicomModalitiesInDatabase` is `true`.
+      parameters:
+      - description: If present, retrieve detailed information about the individual DICOM modalities
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing either the identifiers of the modalities, or detailed information about the modalities (if `expand` argument is provided)
+          description: ''
+      summary: List DICOM modalities
+      tags:
+      - Networking
+      operationId: getModalities
+      x-operation-id-source: derived
+  /modalities/{id}:
+    delete:
+      deprecated: false
+      description: Delete one DICOM modality. This change is permanent iff. `DicomModalitiesInDatabase` is `true`, otherwise it is lost at the next restart of Orthanc.
+      parameters:
+      - description: Identifier of the DICOM modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete DICOM modality
+      tags:
+      - Networking
+      operationId: deleteModalitiesById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: List the operations that are available for a DICOM modality.
+      parameters:
+      - description: Identifier of the DICOM modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: List of the available operations
+          description: ''
+      summary: List operations on modality
+      tags:
+      - Networking
+      operationId: getModalitiesById
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Define a new DICOM modality, or update an existing one. This change is permanent iff. `DicomModalitiesInDatabase` is `true`, otherwise it is lost at the next restart of Orthanc.
+      parameters:
+      - description: Identifier of the new/updated DICOM modality
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                AET:
+                  description: AET of the remote DICOM modality
+                  type: string
+                AllowEcho:
+                  description: Whether to accept C-ECHO SCU commands issued by the remote modality
+                  type: boolean
+                AllowFind:
+                  description: Whether to accept C-FIND SCU commands issued by the remote modality
+                  type: boolean
+                AllowFindWorklist:
+                  description: Whether to accept C-FIND SCU commands for worklists issued by the remote modality
+                  type: boolean
+                AllowGet:
+                  description: Whether to accept C-GET SCU commands issued by the remote modality
+                  type: boolean
+                AllowMove:
+                  description: Whether to accept C-MOVE SCU commands issued by the remote modality
+                  type: boolean
+                AllowStorageCommitment:
+                  description: Whether to accept storage commitment requests issued by the remote modality
+                  type: boolean
+                AllowStore:
+                  description: Whether to accept C-STORE SCU commands issued by the remote modality
+                  type: boolean
+                AllowTranscoding:
+                  description: Whether to allow transcoding for operations initiated by this modality. This option applies to Orthanc C-GET SCP and to Orthanc C-STORE SCU. It only has an effect if the global option `EnableTranscoding` is set to `true`.
+                  type: boolean
+                Host:
+                  description: Host address of the remote DICOM modality (typically, an IP address)
+                  type: string
+                LocalAet:
+                  description: Whether to override the default DicomAet in the SCU connection initiated by Orthanc to this modality
+                  type: string
+                Manufacturer:
+                  description: Manufacturer of the remote DICOM modality (check configuration option `DicomModalities` for possible values
+                  type: string
+                Port:
+                  description: TCP port of the remote DICOM modality
+                  type: number
+                Timeout:
+                  description: Whether to override the default DicomScuTimeout in the SCU connection initiated by Orthanc to this modality
+                  type: number
+                UseDicomTls:
+                  description: Whether to use DICOM TLS in the SCU connection initiated by Orthanc (new in Orthanc 1.9.0)
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Update DICOM modality
+      tags:
+      - Networking
+      operationId: putModalitiesById
+      x-operation-id-source: derived
+  /modalities/{id}/configuration:
+    get:
+      deprecated: false
+      description: Get detailed information about the configuration of some DICOM modality
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Configuration of the modality
+                example:
+                  AET: ORTHANCTEST
+                  AllowEcho: true
+                  AllowEventReport: true
+                  AllowFind: true
+                  AllowFindWorklist: true
+                  AllowGet: true
+                  AllowMove: true
+                  AllowNAction: true
+                  AllowStore: true
+                  AllowTranscoding: true
+                  Host: 127.0.1.1
+                  Manufacturer: Generic
+                  Port: 5001
+          description: ''
+      summary: Get modality configuration
+      tags:
+      - Networking
+      operationId: getModalitiesByIdConfiguration
+      x-operation-id-source: derived
+  /modalities/{id}/echo:
+    post:
+      deprecated: false
+      description: 'Trigger C-ECHO SCU command against the DICOM modality whose identifier is provided in URL: https://orthanc.uclouvain.be/book/users/rest.html#performing-c-echo'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                CheckFind:
+                  description: Issue a dummy C-FIND command after the C-GET SCU, in order to check whether the remote modality knows about Orthanc. This field defaults to the value of the `DicomEchoChecksFind` configuration option. New in Orthanc 1.8.1.
+                  type: boolean
+                Timeout:
+                  description: DICOM SCU Timeout for this C-ECHO command, in seconds.  Orthanc will close the DICOM association if no C-ECHO answer is received within this time period.
+                  type: number
+      responses:
+        '200':
+          description: ''
+      summary: Trigger C-ECHO SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdEcho
+      x-operation-id-source: derived
+  /modalities/{id}/find:
+    post:
+      deprecated: true
+      description: Trigger a sequence of C-FIND SCU commands against the DICOM modality whose identifier is provided in URL, in order to discover a hierarchy of matching patients/studies/series. Deprecated in favor of `/modalities/{id}/query`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Associative array containing the query on the values of the DICOM tags
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching patients, embedding the matching studies, then the matching series.
+          description: ''
+      summary: Hierarchical C-FIND SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFind
+      x-operation-id-source: derived
+  /modalities/{id}/find-instance:
+    post:
+      deprecated: true
+      description: Trigger C-FIND SCU command against the DICOM modality whose identifier is provided in URL, in order to find an instance. Deprecated in favor of `/modalities/{id}/query`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Associative array containing the query on the values of the DICOM tags
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching instances
+          description: ''
+      summary: C-FIND SCU for instances
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFindInstance
+      x-operation-id-source: derived
+  /modalities/{id}/find-patient:
+    post:
+      deprecated: true
+      description: Trigger C-FIND SCU command against the DICOM modality whose identifier is provided in URL, in order to find a patient. Deprecated in favor of `/modalities/{id}/query`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Associative array containing the query on the values of the DICOM tags
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching patients
+          description: ''
+      summary: C-FIND SCU for patients
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFindPatient
+      x-operation-id-source: derived
+  /modalities/{id}/find-series:
+    post:
+      deprecated: true
+      description: Trigger C-FIND SCU command against the DICOM modality whose identifier is provided in URL, in order to find a series. Deprecated in favor of `/modalities/{id}/query`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Associative array containing the query on the values of the DICOM tags
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching series
+          description: ''
+      summary: C-FIND SCU for series
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFindSeries
+      x-operation-id-source: derived
+  /modalities/{id}/find-study:
+    post:
+      deprecated: true
+      description: Trigger C-FIND SCU command against the DICOM modality whose identifier is provided in URL, in order to find a study. Deprecated in favor of `/modalities/{id}/query`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Associative array containing the query on the values of the DICOM tags
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching studies
+          description: ''
+      summary: C-FIND SCU for studies
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFindStudy
+      x-operation-id-source: derived
+  /modalities/{id}/find-worklist:
+    post:
+      deprecated: false
+      description: Trigger C-FIND SCU command against the remote worklists of the DICOM modality whose identifier is provided in URL
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Short:
+                  description: If set to `true`, report the DICOM tags in hexadecimal format
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array describing the DICOM tags of the matching worklists
+          description: ''
+      summary: C-FIND SCU for worklist
+      tags:
+      - Networking
+      operationId: postModalitiesByIdFindWorklist
+      x-operation-id-source: derived
+  /modalities/{id}/get:
+    post:
+      deprecated: false
+      description: 'Start a C-GET SCU command as a job, in order to retrieve DICOM resources from a remote DICOM modality whose identifier is provided in the URL:'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Level:
+                  description: Level of the query (`Patient`, `Study`, `Series` or `Instance`)
+                  type: string
+                LocalAet:
+                  description: 'Local AET that is used for this commands, defaults to `DicomAet` configuration option or `LocalAet` in the `DicomModalities`. '
+                  type: string
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                Resources:
+                  description: List of queries identifying all the DICOM resources to be sent.  Usage of wildcards is prohibited and the query shall only contain DICOM ID tags.  Additionally, you may provide SOPClassesInStudy to limit the scope of the DICOM negotiation to certain SOPClassUID or to present uncommon SOPClassUID during the DICOM negotiation.  By default, Orhanc will propose the most 120 common SOPClassUIDs.
+                  items:
+                    type: object
+                  type: array
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Timeout:
+                  description: DICOM SCU Timeout for this C-GET command, in seconds.  Orthanc will close the DICOM association if no DICOM messages are received within this time period.
+                  type: number
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Trigger C-GET SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdGet
+      x-operation-id-source: derived
+  /modalities/{id}/move:
+    post:
+      deprecated: false
+      description: 'Start a C-MOVE SCU command as a job, in order to drive the execution of a sequence of C-STORE commands by some remote DICOM modality whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/rest.html#performing-c-move'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Level:
+                  description: Level of the query (`Patient`, `Study`, `Series` or `Instance`)
+                  type: string
+                LocalAet:
+                  description: 'Local AET that is used for this commands, defaults to `DicomAet` configuration option or `LocalAet` in the `DicomModalities`. '
+                  type: string
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                Resources:
+                  description: List of queries identifying all the DICOM resources to be sent
+                  items:
+                    type: object
+                  type: array
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                TargetAet:
+                  description: Target AET that will be used by the remote DICOM modality as a target for its C-STORE SCU commands, defaults to `DicomAet` configuration option in order to do a simple query/retrieve
+                  type: string
+                Timeout:
+                  description: DICOM SCU Timeout for this C-MOVE command, in seconds.  Orthanc will close the DICOM association if no DICOM messages (e.g., C-STORE sub-operations or responses) are received within this time period.
+                  type: number
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Trigger C-MOVE SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdMove
+      x-operation-id-source: derived
+  /modalities/{id}/query:
+    post:
+      deprecated: false
+      description: 'Trigger C-FIND SCU command against the DICOM modality whose identifier is provided in URL: https://orthanc.uclouvain.be/book/users/rest.html#performing-query-retrieve-c-find-and-find-with-rest'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Level:
+                  description: Level of the query (`Patient`, `Study`, `Series` or `Instance`)
+                  type: string
+                LocalAet:
+                  description: 'Local AET that is used for this commands, defaults to `DicomAet` configuration option or `LocalAet` in the `DicomModalities`. '
+                  type: string
+                Normalize:
+                  description: Whether to normalize the query, i.e. whether to wipe out from the query, the DICOM tags that are not applicable for the query-retrieve level of interest
+                  type: boolean
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Timeout:
+                  description: DICOM SCU Timeout for this C-FIND command and subsequent C-GET/C-MOVE retrievals, in seconds (new in Orthanc 1.9.1).  Orthanc will close the related DICOM associations if no DICOM messages are received within this time period.
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Identifier of the query, to be used with `/queries/{id}`
+                    type: string
+                  Path:
+                    description: Root path to the query in the REST API
+                    type: string
+          description: ''
+      summary: Trigger C-FIND SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdQuery
+      x-operation-id-source: derived
+  /modalities/{id}/storage-commitment:
+    post:
+      deprecated: false
+      description: 'Trigger a storage commitment request to some remote DICOM modality whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/storage-commitment.html#storage-commitment-scu'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                DicomInstances:
+                  description: List of DICOM resources that are not necessarily stored within Orthanc, but that must be checked by storage commitment. This is a list of JSON objects that must contain the `SOPClassUID` and `SOPInstanceUID` fields.
+                  items:
+                    type: object
+                  type: array
+                Resources:
+                  description: List of the Orthanc identifiers of the DICOM resources to be checked by storage commitment
+                  items:
+                    type: string
+                  type: array
+                Timeout:
+                  description: DICOM SCU Timeout for this storage commitment command (new in Orthanc 1.9.1)
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Identifier of the storage commitment report, to be used with `/storage-commitment/{id}`
+                    type: object
+                  Path:
+                    description: Root path to the storage commitment report in the REST API
+                    type: object
+          description: ''
+      summary: Trigger storage commitment request
+      tags:
+      - Networking
+      operationId: postModalitiesByIdStorageCommitment
+      x-operation-id-source: derived
+  /modalities/{id}/store:
+    post:
+      deprecated: false
+      description: 'Start a C-STORE SCU command as a job, in order to send DICOM resources stored locally to some remote DICOM modality whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/rest.html#rest-store-scu'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                CalledAet:
+                  description: Called AET that is used for this commands, defaults to `AET` configuration option. Allows you to overwrite the destination AET for a specific operation.
+                  type: string
+                Host:
+                  description: Host that is used for this commands, defaults to `Host` configuration option. Allows you to overwrite the destination host for a specific operation.
+                  type: string
+                LocalAet:
+                  description: 'Local AET that is used for this commands, defaults to `DicomAet` configuration option or `LocalAet` in the `DicomModalities`. '
+                  type: string
+                MoveOriginatorAet:
+                  description: Move originator AET that is used for this commands, in order to fake a C-MOVE SCU
+                  type: string
+                MoveOriginatorID:
+                  description: Move originator ID that is used for this commands, in order to fake a C-MOVE SCU
+                  type: number
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Port:
+                  description: Port that is used for this command, defaults to `Port` configuration option. Allows you to overwrite the destination port for a specific operation.
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                Resources:
+                  description: List of the Orthanc identifiers of all the DICOM resources to be sent
+                  items:
+                    type: string
+                  type: array
+                StorageCommitment:
+                  description: 'Whether to chain C-STORE with DICOM storage commitment to validate the success of the transmission: https://orthanc.uclouvain.be/book/users/storage-commitment.html#chaining-c-store-with-storage-commitment'
+                  type: boolean
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Timeout:
+                  description: DICOM SCU Timeout for this C-STORE command, in seconds.  Orthanc will close the DICOM association if no DICOM messages (e.g., C-STORE responses) are received within this time period.
+                  type: number
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+          text/plain:
+            schema:
+              description: The Orthanc identifier of one resource to be sent
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Trigger C-STORE SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdStore
+      x-operation-id-source: derived
+  /modalities/{id}/store-straight:
+    post:
+      deprecated: false
+      description: Synchronously send the DICOM instance in the POST body to the remote DICOM modality whose identifier is provided in URL, without having to first store it locally within Orthanc. This is an alternative to command-line tools such as `storescu` from DCMTK or dcm4che.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/dicom:
+            schema:
+              description: DICOM instance to be sent
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  SOPClassUID:
+                    description: SOP class UID of the DICOM instance, if the C-STORE SCU has succeeded
+                    type: string
+                  SOPInstanceUID:
+                    description: SOP instance UID of the DICOM instance, if the C-STORE SCU has succeeded
+                    type: string
+          description: ''
+      summary: Straight C-STORE SCU
+      tags:
+      - Networking
+      operationId: postModalitiesByIdStoreStraight
+      x-operation-id-source: derived
+  /peers:
+    get:
+      deprecated: false
+      description: List all the Orthanc peers that are known to Orthanc. This corresponds either to the content of the `OrthancPeers` configuration option, or to the information stored in the database if `OrthancPeersInDatabase` is `true`.
+      parameters:
+      - description: If present, retrieve detailed information about the individual Orthanc peers
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing either the identifiers of the peers, or detailed information about the peers (if `expand` argument is provided)
+          description: ''
+      summary: List Orthanc peers
+      tags:
+      - Networking
+      operationId: getPeers
+      x-operation-id-source: derived
+  /peers/{id}:
+    delete:
+      deprecated: false
+      description: Delete one Orthanc peer. This change is permanent iff. `OrthancPeersInDatabase` is `true`, otherwise it is lost at the next restart of Orthanc.
+      parameters:
+      - description: Identifier of the Orthanc peer of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete Orthanc peer
+      tags:
+      - Networking
+      operationId: deletePeersById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: List the operations that are available for an Orthanc peer.
+      parameters:
+      - description: Identifier of the peer of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: List of the available operations
+          description: ''
+      summary: List operations on peer
+      tags:
+      - Networking
+      operationId: getPeersById
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Define a new Orthanc peer, or update an existing one. This change is permanent iff. `OrthancPeersInDatabase` is `true`, otherwise it is lost at the next restart of Orthanc.
+      parameters:
+      - description: Identifier of the new/updated Orthanc peer
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                CertificateFile:
+                  description: SSL certificate for the HTTPS connections
+                  type: string
+                CertificateKeyFile:
+                  description: Key file for the SSL certificate for the HTTPS connections
+                  type: string
+                CertificateKeyPassword:
+                  description: Key password for the SSL certificate for the HTTPS connections
+                  type: string
+                HttpHeaders:
+                  description: HTTP headers to be used for the connections to the remote peer
+                  type: object
+                Password:
+                  description: Password for the credentials
+                  type: string
+                URL:
+                  description: URL of the root of the REST API of the remote Orthanc peer, for instance `http://localhost:8042/`
+                  type: string
+                Username:
+                  description: Username for the credentials
+                  type: string
+      responses:
+        '200':
+          description: ''
+      summary: Update Orthanc peer
+      tags:
+      - Networking
+      operationId: putPeersById
+      x-operation-id-source: derived
+  /peers/{id}/configuration:
+    get:
+      deprecated: false
+      description: Get detailed information about the configuration of some Orthanc peer
+      parameters:
+      - description: Identifier of the peer of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Configuration of the peer
+                example:
+                  HttpHeaders: {}
+                  Password: null
+                  Pkcs11: false
+                  Url: http://127.0.1.1:5000/
+                  Username: alice
+          description: ''
+      summary: Get peer configuration
+      tags:
+      - Networking
+      operationId: getPeersByIdConfiguration
+      x-operation-id-source: derived
+  /peers/{id}/store:
+    post:
+      deprecated: false
+      description: 'Send DICOM resources stored locally to some remote Orthanc peer whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/rest.html#sending-one-resource'
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Compress:
+                  description: Whether to compress the DICOM instances using gzip before the actual sending
+                  type: boolean
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                Resources:
+                  description: List of the Orthanc identifiers of all the DICOM resources to be sent
+                  items:
+                    type: string
+                  type: array
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: Transcode to the provided DICOM transfer syntax before the actual sending
+                  type: string
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+          text/plain:
+            schema:
+              description: The Orthanc identifier of one resource to be sent
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Send to Orthanc peer
+      tags:
+      - Networking
+      operationId: postPeersByIdStore
+      x-operation-id-source: derived
+  /peers/{id}/store-straight:
+    post:
+      deprecated: false
+      description: Synchronously send the DICOM instance in the POST body to the Orthanc peer whose identifier is provided in URL, without having to first store it locally within Orthanc. This is an alternative to command-line tools such as `curl`.
+      parameters:
+      - description: Identifier of the modality of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/dicom:
+            schema:
+              description: DICOM instance to be sent
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Orthanc identifier of the DICOM instance in the remote Orthanc peer
+                    type: string
+                  ParentPatient:
+                    description: Orthanc identifier of the parent patient in the remote Orthanc peer
+                    type: string
+                  ParentSeries:
+                    description: Orthanc identifier of the parent series in the remote Orthanc peer
+                    type: string
+                  ParentStudy:
+                    description: Orthanc identifier of the parent study in the remote Orthanc peer
+                    type: string
+                  Path:
+                    description: Path to the DICOM instance in the remote Orthanc server
+                    type: string
+                  Status:
+                    description: Status of the store operation
+                    type: string
+          description: ''
+      summary: Straight store to peer
+      tags:
+      - Networking
+      operationId: postPeersByIdStoreStraight
+      x-operation-id-source: derived
+  /peers/{id}/system:
+    get:
+      deprecated: false
+      description: Get system information about some Orthanc peer. This corresponds to doing a `GET` request against the `/system` URI of the remote peer. This route can be used to test connectivity.
+      parameters:
+      - description: Identifier of the peer of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: System information about the peer
+          description: ''
+      summary: Get peer system information
+      tags:
+      - Networking
+      operationId: getPeersByIdSystem
+      x-operation-id-source: derived
+  /queries:
+    get:
+      deprecated: false
+      description: List the identifiers of all the query/retrieve operations on DICOM modalities, as initiated by calls to `/modalities/{id}/query`. The length of this list is bounded by the `QueryRetrieveSize` configuration option of Orthanc. https://orthanc.uclouvain.be/book/users/rest.html#performing-query-retrieve-c-find-and-find-with-rest
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the identifiers
+          description: ''
+      summary: List query/retrieve operations
+      tags:
+      - Networking
+      operationId: getQueries
+      x-operation-id-source: derived
+  /queries/{id}:
+    delete:
+      deprecated: false
+      description: Delete the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete a query
+      tags:
+      - Networking
+      operationId: deleteQueriesById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: List the available operations for the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the list of operations
+          description: ''
+      summary: List operations on a query
+      tags:
+      - Networking
+      operationId: getQueriesById
+      x-operation-id-source: derived
+  /queries/{id}/answers:
+    get:
+      deprecated: false
+      description: List the indices of all the available answers resulting from a query/retrieve operation on some DICOM modality, whose identifier is provided in the URL
+      parameters:
+      - description: If present, retrieve detailed information about the individual answers
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the indices of the answers, or detailed information about the reported answers (if `expand` argument is provided)
+          description: ''
+      summary: List answers to a query
+      tags:
+      - Networking
+      operationId: getQueriesByIdAnswers
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}:
+    get:
+      deprecated: false
+      description: List the available operations on an answer associated with the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON array containing the list of operations
+          description: ''
+      summary: List operations on an answer
+      tags:
+      - Networking
+      operationId: getQueriesByIdAnswersByIndex
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}/content:
+    get:
+      deprecated: false
+      description: Get the content (DICOM tags) of one answer associated with the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: JSON object containing the DICOM tags of the answer
+          description: ''
+      summary: Get one answer
+      tags:
+      - Networking
+      operationId: getQueriesByIdAnswersByIndexContent
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}/query-instances:
+    post:
+      deprecated: false
+      description: Issue a second DICOM C-FIND operation, in order to query the child instances associated with one answer to some query/retrieve operation whose identifiers are provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Timeout:
+                  description: DICOM SCU Timeout for this C-FIND command, in seconds (new in Orthanc 1.9.1)
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Identifier of the query, to be used with `/queries/{id}`
+                    type: object
+                  Path:
+                    description: Root path to the query in the REST API
+                    type: object
+          description: ''
+      summary: Query the child instances of an answer
+      tags:
+      - Networking
+      operationId: postQueriesByIdAnswersByIndexQueryInstances
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}/query-series:
+    post:
+      deprecated: false
+      description: Issue a second DICOM C-FIND operation, in order to query the child series associated with one answer to some query/retrieve operation whose identifiers are provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Timeout:
+                  description: DICOM SCU Timeout for this C-FIND command, in seconds (new in Orthanc 1.9.1)
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Identifier of the query, to be used with `/queries/{id}`
+                    type: object
+                  Path:
+                    description: Root path to the query in the REST API
+                    type: object
+          description: ''
+      summary: Query the child series of an answer
+      tags:
+      - Networking
+      operationId: postQueriesByIdAnswersByIndexQuerySeries
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}/query-studies:
+    post:
+      deprecated: false
+      description: Issue a second DICOM C-FIND operation, in order to query the child studies associated with one answer to some query/retrieve operation whose identifiers are provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Query:
+                  description: Associative array containing the filter on the values of the DICOM tags
+                  type: object
+                Timeout:
+                  description: DICOM SCU Timeout for this C-FIND command, in seconds (new in Orthanc 1.9.1)
+                  type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: Identifier of the query, to be used with `/queries/{id}`
+                    type: object
+                  Path:
+                    description: Root path to the query in the REST API
+                    type: object
+          description: ''
+      summary: Query the child studies of an answer
+      tags:
+      - Networking
+      operationId: postQueriesByIdAnswersByIndexQueryStudies
+      x-operation-id-source: derived
+  /queries/{id}/answers/{index}/retrieve:
+    post:
+      deprecated: false
+      description: 'Start a C-MOVE or a C-GET SCU command as a job, in order to retrieve one answer associated with the query/retrieve operation whose identifiers are provided in the URL: https://orthanc.uclouvain.be/book/users/rest.html#performing-retrieve-c-move'
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Index of the answer
+        in: path
+        name: index
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                RetrieveMethod:
+                  description: Force usage of C-MOVE or C-GET to retrieve the resource.  If note defined in the payload, the retrieve method is defined in the DicomDefaultRetrieveMethod configuration or in DicomModalities->..->RetrieveMethod
+                  type: string
+                Simplify:
+                  description: If set to `true`, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+                  type: boolean
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                TargetAet:
+                  description: AET of the target modality. By default, the AET of Orthanc is used, as defined in the `DicomAet` configuration option.
+                  type: string
+                Timeout:
+                  description: DICOM SCU Timeout for this C-MOVE or C-GET command, in seconds.  Orthanc will close the DICOM association if no DICOM messages (e.g., C-STORE sub-operations or responses) are received within this time period.
+                  type: number
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+          text/plain:
+            schema:
+              description: AET of the target modality
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Retrieve one answer with a C-MOVE or a C-GET SCU
+      tags:
+      - Networking
+      operationId: postQueriesByIdAnswersByIndexRetrieve
+      x-operation-id-source: derived
+  /queries/{id}/level:
+    get:
+      deprecated: false
+      description: Get the query level (value of the `QueryRetrieveLevel` tag) of the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The level
+          description: ''
+      summary: Get level of original query
+      tags:
+      - Networking
+      operationId: getQueriesByIdLevel
+      x-operation-id-source: derived
+  /queries/{id}/modality:
+    get:
+      deprecated: false
+      description: Get the identifier of the DICOM modality that was targeted by the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The identifier of the DICOM modality
+          description: ''
+      summary: Get modality of original query
+      tags:
+      - Networking
+      operationId: getQueriesByIdModality
+      x-operation-id-source: derived
+  /queries/{id}/query:
+    get:
+      deprecated: false
+      description: Get the original DICOM filter associated with the query/retrieve operation whose identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Content of the original query
+          description: ''
+      summary: Get original query arguments
+      tags:
+      - Networking
+      operationId: getQueriesByIdQuery
+      x-operation-id-source: derived
+  /queries/{id}/retrieve:
+    post:
+      deprecated: false
+      description: 'Start a C-MOVE SCU command as a job, in order to retrieve all the answers associated with the query/retrieve operation whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/rest.html#performing-retrieve-c-move'
+      parameters:
+      - description: Identifier of the query of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Full:
+                  description: If set to `true`, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+                  type: boolean
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                RetrieveMethod:
+                  description: Force usage of C-MOVE or C-GET to retrieve the resource.  If note defined in the payload, the retrieve method is defined in the DicomDefaultRetrieveMethod configuration or in DicomModalities->..->RetrieveMethod
+                  type: string
+                Simplify:
+                  description: If set to `true`, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+                  type: boolean
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                TargetAet:
+                  description: AET of the target modality. By default, the AET of Orthanc is used, as defined in the `DicomAet` configuration option.
+                  type: string
+                Timeout:
+                  description: DICOM SCU Timeout for this C-MOVE or C-GET command, in seconds.  Orthanc will close the DICOM association if no DICOM messages (e.g., C-STORE sub-operations or responses) are received within this time period.
+                  type: number
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+          text/plain:
+            schema:
+              description: AET of the target modality
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Retrieve all answers with C-MOVE SCU
+      tags:
+      - Networking
+      operationId: postQueriesByIdRetrieve
+      x-operation-id-source: derived
+  /storage-commitment/{id}:
+    get:
+      deprecated: false
+      description: 'Get the storage commitment report whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/storage-commitment.html#storage-commitment-scu'
+      parameters:
+      - description: Identifier of the storage commitment report
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  Failures:
+                    description: List of failures that have been encountered during the storage commitment request
+                    items:
+                      type: object
+                    type: array
+                  RemoteAET:
+                    description: AET of the remote DICOM modality
+                    type: string
+                  Status:
+                    description: Can be `Success`, `Failure`, or `Pending` (the latter means that no report has been received yet)
+                    type: string
+                  Success:
+                    description: List of DICOM instances that have been acknowledged by the remote modality, each one is reported as a JSON object containing the `SOPClassUID` and `SOPInstanceUID` DICOM tags
+                    items:
+                      type: object
+                    type: array
+          description: ''
+      summary: Get storage commitment report
+      tags:
+      - Networking
+      operationId: getStorageCommitmentById
+      x-operation-id-source: derived
+  /storage-commitment/{id}/remove:
+    post:
+      deprecated: false
+      description: Remove out of Orthanc, the DICOM instances that have been reported to have been properly received in the storage commitment report whose identifier is provided in the URL. This is only possible if the `Status` of the storage commitment report is `Success`. https://orthanc.uclouvain.be/book/users/storage-commitment.html#removing-the-instances
+      parameters:
+      - description: Identifier of the storage commitment report
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Remove after storage commitment
+      tags:
+      - Networking
+      operationId: postStorageCommitmentByIdRemove
+      x-operation-id-source: derived

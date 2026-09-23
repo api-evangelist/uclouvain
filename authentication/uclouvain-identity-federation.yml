@@ -1,0 +1,76 @@
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: UCLouvain
+providerId: uclouvain
+generated: '2026-08-30'
+method: probed
+source: https://idp.uclouvain.be/idp/shibboleth
+operator: institution
+description: >-
+  UCLouvain operates its own SAML 2.0 / Shibboleth identity provider and publishes signed
+  entity metadata at a stable, unauthenticated URL. This is the institution's most clearly
+  institution-owned machine-readable surface: the software is Shibboleth, but the entity, the
+  scope, the keys and the endpoints are UCLouvain's, registered by UCLouvain with the Belnet
+  federation and exported to eduGAIN. Authentication to UCLouvain-gated services is federated
+  through this IdP rather than through per-service API keys; there is no public key-issuing
+  developer portal on any UCLouvain host.
+federation:
+  entityID: https://idp.uclouvain.be/idp/shibboleth
+  metadataURL: https://idp.uclouvain.be/idp/shibboleth
+  organizationName: Universite catholique de Louvain
+  scope: uclouvain.be
+  registrationAuthority: http://federation.belnet.be/
+  registrationInstant: '2012-03-27T12:00:00Z'
+  interfederation: eduGAIN
+  sirtfi: true
+  first_seen_edugain: '2017-04-13'
+  roles:
+  - IDPSSODescriptor
+  - AttributeAuthorityDescriptor
+  protocols:
+  - urn:oasis:names:tc:SAML:2.0:protocol
+  - urn:oasis:names:tc:SAML:1.1:protocol
+  - urn:mace:shibboleth:1.0
+  endpoints:
+  - service: SingleSignOnService
+    binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+    location: https://idp.uclouvain.be/idp/profile/SAML2/Redirect/SSO
+  - service: SingleSignOnService
+    binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST
+    location: https://idp.uclouvain.be/idp/profile/SAML2/POST/SSO
+  - service: SingleLogoutService
+    binding: urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect
+    location: https://idp.uclouvain.be/idp/profile/SAML2/Redirect/SLO
+  - service: AttributeService
+    binding: urn:oasis:names:tc:SAML:2.0:bindings:SOAP
+    location: https://idp.uclouvain.be:8443/idp/profile/SAML2/SOAP/AttributeQuery
+  - service: ArtifactResolutionService
+    binding: urn:oasis:names:tc:SAML:2.0:bindings:SOAP
+    location: https://idp.uclouvain.be:8443/idp/profile/SAML2/SOAP/ArtifactResolution
+  related_entities:
+  - entityID: https://ipb.uclouvain.be/shibboleth
+    role: SPSSODescriptor
+    displayName: Catholic University of Louvain
+    sirtfi: true
+  - entityID: https://corpora.uclouvain.be/cecl/icle/shibboleth
+    role: SPSSODescriptor
+    displayName: ICLE - International Corpus of Learner English (Centre for English Corpus Linguistics)
+    sirtfi: false
+findings:
+- >-
+  The IdP's mdui:UIInfo block is still carrying unedited Shibboleth boilerplate — DisplayName
+  "A name for the IdP at sso.unc.edu", Description "Enter a description for the IdP at sso.unc.edu"
+  and a logo URL under sso.unc.edu. Discovery services that read mdui will render UCLouvain with
+  another university's placeholder text. Observed 2026-08-30 in the self-published metadata.
+evidence:
+- url: https://idp.uclouvain.be/idp/shibboleth
+  status: 200
+  content_type: application/xml;charset=utf-8
+  bytes: 14917
+- url: https://technical.edugain.org/api.php?action=show_entity&e_id=https%3A%2F%2Fidp.uclouvain.be%2Fidp%2Fshibboleth&format=json
+  status: 200
+- url: https://technical.edugain.org/api.php?action=list_entities&format=json
+  status: 200
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

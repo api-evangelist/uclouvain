@@ -1,0 +1,147 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Tracking changes API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Tracking changes
+paths:
+  /changes:
+    delete:
+      deprecated: false
+      description: Clear the full history stored in the changes log
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      summary: Clear changes
+      tags:
+      - Tracking changes
+      operationId: deleteChanges
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Whenever Orthanc receives a new DICOM instance, this event is recorded in the so-called _Changes Log_. This enables remote scripts to react to the arrival of new DICOM resources. A typical application is auto-routing, where an external script waits for a new DICOM instance to arrive into Orthanc, then forward this instance to another modality. Please note that, when resources are deleted, their corresponding change entries are also removed from the Changes Log, which helps ensuring that this log does not grow indefinitely.
+      parameters:
+      - description: Request only the last change id (this argument must be used alone)
+        in: query
+        name: last
+        required: false
+        schema:
+          type: number
+      - description: Limit the number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: number
+      - description: Show only the resources since the provided index excluded
+        in: query
+        name: since
+        required: false
+        schema:
+          type: number
+      - description: Show only the resources till the provided index included (only available if your DB backend supports ExtendedChanges)
+        in: query
+        name: to
+        required: false
+        schema:
+          type: number
+      - description: Show only the changes of the provided type (only available if your DB backend supports ExtendedChanges).  Multiple values can be provided and must be separated by a ';'.
+        in: query
+        name: type
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: The list of changes
+                example:
+                  Changes:
+                  - ChangeType: NewInstance
+                    Date: 20231109T160739
+                    ID: 26d2e33b-3239a2d5-64f57e0b-d8da59a7-2ef362e7
+                    Path: /instances/26d2e33b-3239a2d5-64f57e0b-d8da59a7-2ef362e7
+                    ResourceType: Instance
+                    Seq: 1
+                  - ChangeType: NewSeries
+                    Date: 20231109T160739
+                    ID: 1de00990-03680ef4-0be6bd5b-73a7d350-fb46abfa
+                    Path: /series/1de00990-03680ef4-0be6bd5b-73a7d350-fb46abfa
+                    ResourceType: Series
+                    Seq: 2
+                  Done: false
+                  First: 1
+                  Last: 2
+                properties:
+                  Changes:
+                    description: The individual changes
+                    items:
+                      type: object
+                    type: array
+                  Done:
+                    description: Whether the last reported change is the last of the full history.
+                    type: boolean
+                  First:
+                    description: The index of the first reported change, its value-1 can be used for the `to` argument in subsequent calls to this route when browsing the changes in reverse order
+                    type: number
+                  Last:
+                    description: The index of the last reported change, can be used for the `since` argument in subsequent calls to this route
+                    type: number
+          description: ''
+      summary: List changes
+      tags:
+      - Tracking changes
+      operationId: getChanges
+      x-operation-id-source: derived
+  /exports:
+    delete:
+      deprecated: false
+      description: Clear the full history stored in the exports log
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      summary: Clear exports
+      tags:
+      - Tracking changes
+      operationId: deleteExports
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: For medical traceability, Orthanc can be configured to store a log of all the resources that have been exported to remote modalities. In auto-routing scenarios, it is important to prevent this log to grow indefinitely as incoming instances are routed. You can either disable this logging by setting the option `LogExportedResources` to `false` in the configuration file, or periodically clear this log by `DELETE`-ing this URI. This route might be removed in future versions of Orthanc.
+      parameters:
+      - description: Limit the number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: number
+      - description: Show only the resources since the provided index
+        in: query
+        name: since
+        required: false
+        schema:
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: The list of exports
+          description: ''
+      summary: List exports
+      tags:
+      - Tracking changes
+      operationId: getExports
+      x-operation-id-source: derived

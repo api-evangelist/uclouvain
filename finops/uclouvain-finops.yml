@@ -6,6 +6,10 @@ providerId: uclouvain
 created: '2026-06-03'
 modified: '2026-06-03'
 reconciled: false
+generated: '2026-08-30'
+method: derived
+source: >-
+  apis.yml; UCLouvain publishes no usage-based API billing
 tags:
 - Education
 - Higher Education

@@ -1,0 +1,48 @@
+{
+  "provider": "uclouvain",
+  "sources": [
+    "_original/uclouvain-orthanc-api.json"
+  ],
+  "outputs": [
+    "uclouvain-instances-api-openapi.yml",
+    "uclouvain-jobs-api-openapi.yml",
+    "uclouvain-logs-api-openapi.yml",
+    "uclouvain-networking-api-openapi.yml",
+    "uclouvain-other-api-openapi.yml",
+    "uclouvain-patients-api-openapi.yml",
+    "uclouvain-series-api-openapi.yml",
+    "uclouvain-studies-api-openapi.yml",
+    "uclouvain-system-api-openapi.yml",
+    "uclouvain-tracking-changes-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "uclouvain-orthanc-api.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "uclouvain-orthanc-api.json: declared missing tag: Instances",
+    "uclouvain-orthanc-api.json: declared missing tag: Jobs",
+    "uclouvain-orthanc-api.json: declared missing tag: Logs",
+    "uclouvain-orthanc-api.json: declared missing tag: Networking",
+    "uclouvain-orthanc-api.json: declared missing tag: Other",
+    "uclouvain-orthanc-api.json: declared missing tag: Patients",
+    "uclouvain-orthanc-api.json: declared missing tag: Series",
+    "uclouvain-orthanc-api.json: declared missing tag: Studies",
+    "uclouvain-orthanc-api.json: declared missing tag: System",
+    "uclouvain-orthanc-api.json: declared missing tag: Tracking changes",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "uclouvain-instances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-logs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-networking-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-other-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-patients-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-series-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-studies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-system-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uclouvain-tracking-changes-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

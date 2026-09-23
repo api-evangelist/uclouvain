@@ -1,0 +1,294 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Logs API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Logs
+paths:
+  /tools/log-level:
+    get:
+      deprecated: false
+      description: Get the main log level of Orthanc
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get main log level
+      tags:
+      - Logs
+      operationId: getToolsLogLevel
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the main log level of Orthanc
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set main log level
+      tags:
+      - Logs
+      operationId: putToolsLogLevel
+      x-operation-id-source: derived
+  /tools/log-level-dicom:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `dicom`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `dicom`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelDicom
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `dicom`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `dicom`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelDicom
+      x-operation-id-source: derived
+  /tools/log-level-generic:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `generic`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `generic`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelGeneric
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `generic`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `generic`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelGeneric
+      x-operation-id-source: derived
+  /tools/log-level-http:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `http`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `http`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelHttp
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `http`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `http`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelHttp
+      x-operation-id-source: derived
+  /tools/log-level-jobs:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `jobs`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `jobs`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelJobs
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `jobs`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `jobs`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelJobs
+      x-operation-id-source: derived
+  /tools/log-level-lua:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `lua`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `lua`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelLua
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `lua`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `lua`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelLua
+      x-operation-id-source: derived
+  /tools/log-level-plugins:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `plugins`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `plugins`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelPlugins
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `plugins`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `plugins`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelPlugins
+      x-operation-id-source: derived
+  /tools/log-level-sqlite:
+    get:
+      deprecated: false
+      description: Get the log level of the log category `sqlite`
+      parameters: []
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Possible values: `default`, `verbose` or `trace`'
+          description: ''
+      summary: Get log level for `sqlite`
+      tags:
+      - Logs
+      operationId: getToolsLogLevelSqlite
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the log level of the log category `sqlite`
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: 'Possible values: `default`, `verbose` or `trace`'
+      responses:
+        '200':
+          description: ''
+      summary: Set log level for `sqlite`
+      tags:
+      - Logs
+      operationId: putToolsLogLevelSqlite
+      x-operation-id-source: derived

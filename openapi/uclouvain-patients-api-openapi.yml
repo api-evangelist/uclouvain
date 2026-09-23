@@ -1,0 +1,1911 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Patients API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Patients
+paths:
+  /patients:
+    get:
+      deprecated: false
+      description: List the Orthanc identifiers of all the available DICOM patients
+      parameters:
+      - description: If present, retrieve detailed information about the individual resources, not only their Orthanc identifiers
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: Limit the number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: number
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: 'Defines the content of response for each returned resource.  Allowed values are `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`, `Attachments`.  If not specified, Orthanc will return `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`.e.g: ''response-content=MainDicomTags;Children (new in Orthanc 1.12.5 - overrides `expand`)'
+        in: query
+        name: response-content
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Show only the resources since the provided index
+        in: query
+        name: since
+        required: false
+        schema:
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing either the Orthanc identifiers, or detailed information about the reported patients (if `expand` argument is provided)
+                example:
+                - 0946fcb6-cf12ab43-bad958c1-bf057ad5-0fc6f54c
+                - 16738bc3-e47ed42a-43ce044c-a3414a45-cb069bd0
+          description: ''
+      summary: List the available patients
+      tags:
+      - Patients
+      operationId: getPatients
+      x-operation-id-source: derived
+  /patients/{id}:
+    delete:
+      deprecated: false
+      description: Delete the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete some patient
+      tags:
+      - Patients
+      operationId: deletePatientsById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Get detailed information about the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the DICOM patient
+                example:
+                  ID: 46e6332c-677825b6-202fcf7c-f787bc5f-7b07c382
+                  IsProtected: false
+                  IsStable: true
+                  Labels: []
+                  LastUpdate: 20231109T160830
+                  MainDicomTags:
+                    PatientID: SOtNwu
+                    PatientName: INCISIX
+                  Studies:
+                  - e98b9ac7-dd31ac40-ff046cb2-f0400d30-12f81d85
+                  Type: Patient
+          description: ''
+      summary: Get information about some patient
+      tags:
+      - Patients
+      operationId: getPatientsById
+      x-operation-id-source: derived
+  /patients/{id}/anonymize:
+    post:
+      deprecated: false
+      description: Start a job that will anonymize all the DICOM instances within the patient whose identifier is provided in the URL. The modified DICOM instances will be stored into a brand new patient, whose Orthanc identifiers will be returned by the job. https://orthanc.uclouvain.be/book/users/anonymization.html#anonymization-of-patients-studies-or-series
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                DicomVersion:
+                  description: Version of the DICOM standard to be used for anonymization. Check out configuration option `DeidentifyLogsDicomVersion` for possible values.
+                  type: string
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: List of DICOM tags whose value must not be destroyed by the anonymization. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                KeepLabels:
+                  description: Keep the labels of all resources level (defaults to `false`)
+                  type: boolean
+                KeepPrivateTags:
+                  description: Keep the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of additional tags to be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Anonymize patient
+      tags:
+      - Patients
+      operationId: postPatientsByIdAnonymize
+      x-operation-id-source: derived
+  /patients/{id}/archive:
+    get:
+      deprecated: false
+      description: Synchronously create a ZIP archive containing the DICOM patient whose Orthanc identifier is provided in the URL. This flavor is synchronous, which might *not* be desirable to archive large amount of data, as it might lead to network timeouts. Prefer the asynchronous version using `POST` method.
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/zip:
+              examples: {}
+              schema:
+                description: ZIP file containing the archive
+          description: ''
+      summary: Create ZIP archive
+      tags:
+      - Patients
+      operationId: getPatientsByIdArchive
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      description: Create a ZIP archive containing the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, create the archive in asynchronous mode, which means that a job is submitted to create the archive in background.
+                  type: boolean
+                Filename:
+                  description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in 1.12.7)
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.
+                  type: number
+                Synchronous:
+                  description: If `true`, create the archive in synchronous mode, which means that the HTTP answer will directly contain the ZIP file. This is the default, easy behavior. However, if global configuration option "SynchronousZipStream" is set to "false", asynchronous transfers should be preferred for large amount of data, as the creation of the temporary file might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: In asynchronous mode, user data that will be attached to the job.
+                  type: object
+                Utf8:
+                  description: If `true`, filenames will be encoded using UTF-8 in the ZIP archive, which may not be supported by your operating system or by your ZIP uncompression software. If `false`, filenames will be encoded using plain ASCII, which was the default in Orthanc <= 1.12.10. Default value is defined by the "ZipUseUtf8" configuration option. (new in 1.12.11)
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: 'In asynchronous mode, information about the job that has been submitted to generate the archive: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+                properties:
+                  ID:
+                    description: Identifier of the job
+                    type: string
+                  Path:
+                    description: Path to access the job in the REST API
+                    type: string
+            application/zip:
+              examples: {}
+              schema:
+                description: In synchronous mode, the ZIP file containing the archive
+          description: ''
+      summary: Create ZIP archive
+      tags:
+      - Patients
+      operationId: postPatientsByIdArchive
+      x-operation-id-source: derived
+  /patients/{id}/attachments:
+    get:
+      deprecated: false
+      description: Get the list of attachments that are associated with the given patient
+      parameters:
+      - description: If present, retrieve the attachments list and their numerical ids
+        in: query
+        name: full
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the attachments
+                example: []
+          description: ''
+      summary: List attachments
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachments
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}:
+    delete:
+      deprecated: false
+      description: Delete an attachment associated with the given DICOM patient. This call will fail if trying to delete a system attachment (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the attachment, to check if its content has not changed and can be deleted. This header is mandatory if `CheckRevisions` option is `true`.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete attachment
+      tags:
+      - Patients
+      operationId: deletePatientsByIdAttachmentsByName
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Attach a file to the given DICOM patient. This call will fail if trying to modify a system attachment (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the attachment, if this is not the first time this attachment is set.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              description: Binary data containing the attachment
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Set attachment
+      tags:
+      - Patients
+      operationId: putPatientsByIdAttachmentsByName
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/compress:
+    post:
+      deprecated: false
+      description: Change the compression scheme that is used to store an attachment.
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Compress attachment
+      tags:
+      - Patients
+      operationId: postPatientsByIdAttachmentsByNameCompress
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/compressed-data:
+    get:
+      deprecated: false
+      description: Get the (binary) content of one attachment associated with the given patient. The attachment will not be decompressed if `StorageCompression` is `true`.
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Optional content range to access part of the attachment (new in Orthanc 1.12.5)
+        in: header
+        name: Range
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get attachment (no decompression)
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameCompressedData
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/compressed-md5:
+    get:
+      deprecated: false
+      description: Get the MD5 hash of one attachment associated with the given patient, as stored on the disk. This is different from `.../md5` iff `EnableStorage` is `true`.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The MD5 of the attachment, as stored on the disk
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get MD5 of attachment on disk
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameCompressedMd5
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/compressed-size:
+    get:
+      deprecated: false
+      description: Get the size of one attachment associated with the given patient, as stored on the disk. This is different from `.../size` iff `EnableStorage` is `true`.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The size of the attachment, as stored on the disk
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get size of attachment on disk
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameCompressedSize
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/data:
+    get:
+      deprecated: false
+      description: Get the (binary) content of one attachment associated with the given patient
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Optional content range to access part of the attachment (new in Orthanc 1.12.5)
+        in: header
+        name: Range
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get attachment
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameData
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/info:
+    get:
+      deprecated: false
+      description: Get all the information about the attachment associated with the given patient
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the information about the attachment
+                example:
+                  CompressedMD5: 26f3fad6ca0c355f02d57c7fa6770248
+                  CompressedSize: 526970
+                  ContentType: 1
+                  UncompressedMD5: 26f3fad6ca0c355f02d57c7fa6770248
+                  UncompressedSize: 526970
+                  Uuid: ada05909-0efc-43fd-b615-c5cafbaeacf8
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get info about the attachment
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameInfo
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/is-compressed:
+    get:
+      deprecated: false
+      description: Test whether the attachment has been stored as a compressed file on the disk.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: '`0` if the attachment was stored uncompressed, `1` if it was compressed'
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Is attachment compressed?
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameIsCompressed
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/md5:
+    get:
+      deprecated: false
+      description: Get the MD5 hash of one attachment associated with the given patient
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The MD5 of the attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get MD5 of attachment
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameMd5
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/size:
+    get:
+      deprecated: false
+      description: Get the size of one attachment associated with the given patient
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The size of the attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get size of attachment
+      tags:
+      - Patients
+      operationId: getPatientsByIdAttachmentsByNameSize
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/uncompress:
+    post:
+      deprecated: false
+      description: Change the compression scheme that is used to store an attachment.
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Uncompress attachment
+      tags:
+      - Patients
+      operationId: postPatientsByIdAttachmentsByNameUncompress
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}/verify-md5:
+    post:
+      deprecated: false
+      description: Verify that the attachment is not corrupted, by validating its MD5 hash
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: On success, a valid JSON object is returned
+          description: ''
+      summary: Verify attachment
+      tags:
+      - Patients
+      operationId: postPatientsByIdAttachmentsByNameVerifyMd5
+      x-operation-id-source: derived
+  /patients/{id}/instances:
+    get:
+      deprecated: false
+      description: Get detailed information about the child instances of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If false or missing, only retrieve the list of child instances
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing information about the child DICOM instances
+                example:
+                - FileSize: 526868
+                  FileUuid: acda3ad0-00b2-40d3-86c0-8805eb051fa6
+                  ID: 011ead8d-f2508edd-da315604-80b002df-e678b796
+                  IndexInSeries: 96
+                  Labels: []
+                  '{...}': '...'
+                - FileSize: 526870
+                  FileUuid: e2afef9a-75f7-486c-ad05-b36ceb24af46
+                  ID: 01252811-30d1c47b-a8c03da5-73177742-48495192
+                  IndexInSeries: 46
+                  Labels: []
+                  '{...}': '...'
+                - FileSize: 526870
+                  FileUuid: a348ecf1-186d-46f6-b39f-e493999df8fa
+                  ID: 04a30982-835a4b0a-3082b997-060f01f5-071a0f8d
+                  IndexInSeries: 16
+                  Labels: []
+                  '{...}': '...'
+                - FileSize: 526868
+                  FileUuid: dcba15cf-a1fd-44bc-bbb3-1a2fb8cac4a1
+                  ID: 04efd8b9-2ae1f3db-deb0f226-e3267002-6cd8fa3c
+                  IndexInSeries: 88
+                  Labels: []
+                  '{...}': '...'
+                - FileSize: 526870
+                  FileUuid: a14daac5-ac96-481b-a721-fdcc98ec1376
+                  ID: 0df992f4-0a841d5c-aeb8cdda-9c1a0573-dbd49c3f
+                  IndexInSeries: 138
+                  Labels: []
+                  '{...}': '...'
+                - '...'
+          description: ''
+      summary: Get child instances
+      tags:
+      - Patients
+      operationId: getPatientsByIdInstances
+      x-operation-id-source: derived
+  /patients/{id}/instances-tags:
+    get:
+      deprecated: false
+      description: Get the tags of all the child instances of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Also include the DICOM tags that are provided in this list, even if their associated value is long
+        in: query
+        name: ignore-length
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object associating the Orthanc identifiers of the instances, with the values of their DICOM tags
+                example:
+                  011ead8d-f2508edd-da315604-80b002df-e678b796:
+                    0008,0005:
+                      Name: SpecificCharacterSet
+                      Type: String
+                      Value: ISO_IR 100
+                    0008,0008:
+                      Name: ImageType
+                      Type: String
+                      Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                    0008,0016:
+                      Name: SOPClassUID
+                      Type: String
+                      Value: 1.2.840.10008.5.1.4.1.1.2
+                    0008,0018:
+                      Name: SOPInstanceUID
+                      Type: String
+                      Value: 1.3.12.2.1107.5.1.4.54693.30000006053107175587500014840
+                    0008,0020:
+                      Name: StudyDate
+                      Type: String
+                      Value: '20060531'
+                    '{...}': '...'
+                  01252811-30d1c47b-a8c03da5-73177742-48495192:
+                    0008,0005:
+                      Name: SpecificCharacterSet
+                      Type: String
+                      Value: ISO_IR 100
+                    0008,0008:
+                      Name: ImageType
+                      Type: String
+                      Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                    0008,0016:
+                      Name: SOPClassUID
+                      Type: String
+                      Value: 1.2.840.10008.5.1.4.1.1.2
+                    0008,0018:
+                      Name: SOPInstanceUID
+                      Type: String
+                      Value: 1.3.12.2.1107.5.1.4.54693.30000006053107175587500014790
+                    0008,0020:
+                      Name: StudyDate
+                      Type: String
+                      Value: '20060531'
+                    '{...}': '...'
+                  04a30982-835a4b0a-3082b997-060f01f5-071a0f8d:
+                    0008,0005:
+                      Name: SpecificCharacterSet
+                      Type: String
+                      Value: ISO_IR 100
+                    0008,0008:
+                      Name: ImageType
+                      Type: String
+                      Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                    0008,0016:
+                      Name: SOPClassUID
+                      Type: String
+                      Value: 1.2.840.10008.5.1.4.1.1.2
+                    0008,0018:
+                      Name: SOPInstanceUID
+                      Type: String
+                      Value: 1.3.12.2.1107.5.1.4.54693.30000006053107175587500014760
+                    0008,0020:
+                      Name: StudyDate
+                      Type: String
+                      Value: '20060531'
+                    '{...}': '...'
+                  04efd8b9-2ae1f3db-deb0f226-e3267002-6cd8fa3c:
+                    0008,0005:
+                      Name: SpecificCharacterSet
+                      Type: String
+                      Value: ISO_IR 100
+                    0008,0008:
+                      Name: ImageType
+                      Type: String
+                      Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                    0008,0016:
+                      Name: SOPClassUID
+                      Type: String
+                      Value: 1.2.840.10008.5.1.4.1.1.2
+                    0008,0018:
+                      Name: SOPInstanceUID
+                      Type: String
+                      Value: 1.3.12.2.1107.5.1.4.54693.30000006053107175587500014832
+                    0008,0020:
+                      Name: StudyDate
+                      Type: String
+                      Value: '20060531'
+                    '{...}': '...'
+                  0df992f4-0a841d5c-aeb8cdda-9c1a0573-dbd49c3f:
+                    0008,0005:
+                      Name: SpecificCharacterSet
+                      Type: String
+                      Value: ISO_IR 100
+                    0008,0008:
+                      Name: ImageType
+                      Type: String
+                      Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                    0008,0016:
+                      Name: SOPClassUID
+                      Type: String
+                      Value: 1.2.840.10008.5.1.4.1.1.2
+                    0008,0018:
+                      Name: SOPInstanceUID
+                      Type: String
+                      Value: 1.3.12.2.1107.5.1.4.54693.30000006053107175587500014882
+                    0008,0020:
+                      Name: StudyDate
+                      Type: String
+                      Value: '20060531'
+                    '{...}': '...'
+                  '{...}': '...'
+          description: ''
+      summary: Get tags of instances
+      tags:
+      - Patients
+      operationId: getPatientsByIdInstancesTags
+      x-operation-id-source: derived
+  /patients/{id}/labels:
+    get:
+      deprecated: false
+      description: Get the labels that are associated with the given patient (new in Orthanc 1.12.0)
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the labels
+                example: []
+          description: ''
+      summary: List labels
+      tags:
+      - Patients
+      operationId: getPatientsByIdLabels
+      x-operation-id-source: derived
+  /patients/{id}/labels/{label}:
+    delete:
+      deprecated: false
+      description: Remove a label associated with a patient
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label to be removed
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Remove label
+      tags:
+      - Patients
+      operationId: deletePatientsByIdLabelsByLabel
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Test whether the patient is associated with the given label
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label of interest
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Empty string is returned in the case of presence, error 404 in the case of absence
+          description: ''
+      summary: Test label
+      tags:
+      - Patients
+      operationId: getPatientsByIdLabelsByLabel
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Associate a label with a patient
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label to be added
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Add label
+      tags:
+      - Patients
+      operationId: putPatientsByIdLabelsByLabel
+      x-operation-id-source: derived
+  /patients/{id}/media:
+    get:
+      deprecated: false
+      description: Synchronously create a DICOMDIR media containing the DICOM patient whose Orthanc identifier is provided in the URL. This flavor is synchronous, which might *not* be desirable to archive large amount of data, as it might lead to network timeouts. Prefer the asynchronous version using `POST` method.
+      parameters:
+      - description: If present, will include additional tags such as `SeriesDescription`, leading to a so-called *extended DICOMDIR*
+        in: query
+        name: extended
+        required: false
+        schema:
+          type: string
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/zip:
+              examples: {}
+              schema:
+                description: ZIP file containing the archive
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - Patients
+      operationId: getPatientsByIdMedia
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      description: Create a DICOMDIR media containing the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, create the archive in asynchronous mode, which means that a job is submitted to create the archive in background.
+                  type: boolean
+                Extended:
+                  description: If `true`, will include additional tags such as `SeriesDescription`, leading to a so-called *extended DICOMDIR*. Default value is `false`.
+                  type: boolean
+                Filename:
+                  description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+                  type: string
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in 1.12.7)
+                  type: number
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.
+                  type: number
+                Synchronous:
+                  description: If `true`, create the archive in synchronous mode, which means that the HTTP answer will directly contain the ZIP file. This is the default, easy behavior. However, if global configuration option "SynchronousZipStream" is set to "false", asynchronous transfers should be preferred for large amount of data, as the creation of the temporary file might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'If present, the DICOM files in the archive will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: In asynchronous mode, user data that will be attached to the job.
+                  type: object
+                Utf8:
+                  description: If `true`, filenames will be encoded using UTF-8 in the ZIP archive, which may not be supported by your operating system or by your ZIP uncompression software. If `false`, filenames will be encoded using plain ASCII, which was the default in Orthanc <= 1.12.10. Default value is defined by the "ZipUseUtf8" configuration option. (new in 1.12.11)
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: 'In asynchronous mode, information about the job that has been submitted to generate the archive: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+                properties:
+                  ID:
+                    description: Identifier of the job
+                    type: string
+                  Path:
+                    description: Path to access the job in the REST API
+                    type: string
+            application/zip:
+              examples: {}
+              schema:
+                description: In synchronous mode, the ZIP file containing the archive
+          description: ''
+      summary: Create DICOMDIR media
+      tags:
+      - Patients
+      operationId: postPatientsByIdMedia
+      x-operation-id-source: derived
+  /patients/{id}/metadata:
+    get:
+      deprecated: false
+      description: Get the list of metadata that are associated with the given patient
+      parameters:
+      - description: If present, also retrieve the value of the individual metadata
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, use the numeric identifier of the metadata instead of its symbolic name
+        in: query
+        name: numeric
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the available metadata, or JSON associative array mapping metadata to their values (if `expand` argument is provided)
+                example:
+                - LastUpdate
+                - MainDicomTagsSignature
+          description: ''
+      summary: List metadata
+      tags:
+      - Patients
+      operationId: getPatientsByIdMetadata
+      x-operation-id-source: derived
+  /patients/{id}/metadata/{name}:
+    delete:
+      deprecated: false
+      description: Delete some metadata associated with the given DICOM patient. This call will fail if trying to delete a system metadata (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the metadata, to check if its content has not changed and can be deleted. This header is mandatory if `CheckRevisions` option is `true`.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete metadata
+      tags:
+      - Patients
+      operationId: deletePatientsByIdMetadataByName
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Get the value of a metadata that is associated with the given patient
+      parameters:
+      - description: Optional revision of the metadata, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Value of the metadata
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the metadata, to be used in further `PUT` or `DELETE` operations
+      summary: Get metadata
+      tags:
+      - Patients
+      operationId: getPatientsByIdMetadataByName
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the value of some metadata in the given DICOM patient. This call will fail if trying to modify a system metadata (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the metadata, if this is not the first time this metadata is set.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: String value of the metadata
+      responses:
+        '200':
+          description: ''
+      summary: Set metadata
+      tags:
+      - Patients
+      operationId: putPatientsByIdMetadataByName
+      x-operation-id-source: derived
+  /patients/{id}/modify:
+    post:
+      deprecated: false
+      description: Start a job that will modify all the DICOM instances within the patient whose identifier is provided in the URL. The modified DICOM instances will be stored into a brand new patient, whose Orthanc identifiers will be returned by the job. https://orthanc.uclouvain.be/book/users/anonymization.html#modification-of-studies-or-series
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Asynchronous:
+                  description: If `true`, run the job in asynchronous mode, which means that the REST API call will immediately return, reporting the identifier of a job. Prefer this flavor wherever possible.
+                  type: boolean
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: Keep the original value of the specified tags, to be chosen among the `StudyInstanceUID`, `SeriesInstanceUID` and `SOPInstanceUID` tags. Avoid this feature as much as possible, as this breaks the DICOM model of the real world.
+                  items:
+                    type: string
+                  type: array
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                Permissive:
+                  description: If `true`, ignore errors during the individual steps of the job.  Default value is `false`.
+                  type: boolean
+                Priority:
+                  description: In asynchronous mode, the priority of the job. The higher the value, the higher the priority.  Default value is `0`
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of tags that must be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                RemovePrivateTags:
+                  description: Remove the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Synchronous:
+                  description: If `true`, run the job in synchronous mode, which means that the HTTP answer will directly contain the result of the job. This is the default, easy behavior, but it is *not* desirable for long jobs, as it might lead to network timeouts.
+                  type: boolean
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+                UserData:
+                  description: User data that will travel along with the job.
+                  type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: ''
+                properties:
+                  ID:
+                    description: In asynchronous mode, identifier of the job
+                    type: string
+                  Path:
+                    description: In asynchronous mode, path to access the job in the REST API
+                    type: string
+          description: ''
+      summary: Modify patient
+      tags:
+      - Patients
+      operationId: postPatientsByIdModify
+      x-operation-id-source: derived
+  /patients/{id}/module:
+    get:
+      deprecated: false
+      description: Get the patient module of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Also include the DICOM tags that are provided in this list, even if their associated value is long
+        in: query
+        name: ignore-length
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the DICOM patient
+                example:
+                  0010,0010:
+                    Name: PatientName
+                    Type: String
+                    Value: INCISIX
+                  0010,0020:
+                    Name: PatientID
+                    Type: String
+                    Value: SOtNwu
+          description: ''
+      summary: Get patient module
+      tags:
+      - Patients
+      operationId: getPatientsByIdModule
+      x-operation-id-source: derived
+  /patients/{id}/protected:
+    get:
+      deprecated: false
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: '`1` if protected, `0` if not protected'
+          description: ''
+      summary: Is the patient protected against recycling?
+      tags:
+      - Patients
+      operationId: getPatientsByIdProtected
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: 'Protects a patient by sending `1` or `true` in the payload request. Unprotects a patient by sending `0` or `false` in the payload requests. More info: https://orthanc.uclouvain.be/book/faq/features.html#recycling-protection'
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Protect/Unprotect a patient against recycling
+      tags:
+      - Patients
+      operationId: putPatientsByIdProtected
+      x-operation-id-source: derived
+  /patients/{id}/reconstruct:
+    post:
+      deprecated: false
+      description: Reconstruct the main DICOM tags in DB of the patient whose Orthanc identifier is provided in the URL. This is useful if child studies/series/instances have inconsistent values for higher-level tags, in order to force Orthanc to use the value from the resource of interest. Beware that this is a time-consuming operation, as all the children DICOM instances will be parsed again, and the Orthanc index will be updated accordingly.
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                LimitToThisLevelMainDicomTags:
+                  description: Only reconstruct this level MainDicomTags by re-reading them from a random child instance of the resource. This option is much faster than a full reconstruct and is useful e.g. if you have modified the 'ExtraMainDicomTags' at the Study level to optimize the speed of some C-Find. 'false' by default. (New in Orthanc 1.12.4)
+                  type: boolean
+                ReconstructFiles:
+                  description: 'Also reconstruct the files of the resources (e.g: apply IngestTranscoding, StorageCompression). ''false'' by default. (New in Orthanc 1.11.0)'
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Reconstruct tags & optionally files of patient
+      tags:
+      - Patients
+      operationId: postPatientsByIdReconstruct
+      x-operation-id-source: derived
+  /patients/{id}/series:
+    get:
+      deprecated: false
+      description: Get detailed information about the child series of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If false or missing, only retrieve the list of child series
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing information about the child DICOM series
+                example:
+                - ExpectedNumberOfInstances: null
+                  ID: 52cc572c-3ee31930-c4b6d5e7-16c786dc-97bc209b
+                  Instances:
+                  - 011ead8d-f2508edd-da315604-80b002df-e678b796
+                  - 01252811-30d1c47b-a8c03da5-73177742-48495192
+                  - 04a30982-835a4b0a-3082b997-060f01f5-071a0f8d
+                  - 04efd8b9-2ae1f3db-deb0f226-e3267002-6cd8fa3c
+                  - 0df992f4-0a841d5c-aeb8cdda-9c1a0573-dbd49c3f
+                  - '...'
+                  IsStable: true
+                  Labels: []
+                  '{...}': '...'
+          description: ''
+      summary: Get child series
+      tags:
+      - Patients
+      operationId: getPatientsByIdSeries
+      x-operation-id-source: derived
+  /patients/{id}/shared-tags:
+    get:
+      deprecated: false
+      description: Extract the DICOM tags whose value is constant across all the child instances of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the values of the DICOM tags
+                example:
+                  0008,0005:
+                    Name: SpecificCharacterSet
+                    Type: String
+                    Value: ISO_IR 100
+                  0008,0008:
+                    Name: ImageType
+                    Type: String
+                    Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                  0008,0016:
+                    Name: SOPClassUID
+                    Type: String
+                    Value: 1.2.840.10008.5.1.4.1.1.2
+                  0008,0020:
+                    Name: StudyDate
+                    Type: String
+                    Value: '20060531'
+                  0008,0021:
+                    Name: SeriesDate
+                    Type: String
+                    Value: '20060531'
+                  '{...}': '...'
+          description: ''
+      summary: Get shared tags
+      tags:
+      - Patients
+      operationId: getPatientsByIdSharedTags
+      x-operation-id-source: derived
+  /patients/{id}/statistics:
+    get:
+      deprecated: false
+      description: Get statistics about the given patient
+      parameters:
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: ''
+                example:
+                  CountInstances: 166
+                  CountSeries: 1
+                  CountStudies: 1
+                  DicomDiskSize: '87460012'
+                  DicomDiskSizeMB: 83
+                  DicomUncompressedSize: '87460012'
+                  DicomUncompressedSizeMB: 83
+                  DiskSize: '87460012'
+                  DiskSizeMB: 83
+                  UncompressedSize: '87460012'
+                  UncompressedSizeMB: 83
+                properties:
+                  CountInstances:
+                    description: Number of child instances within this patient
+                    type: number
+                  CountSeries:
+                    description: Number of child series within this patient
+                    type: number
+                  CountStudies:
+                    description: Number of child studies within this patient
+                    type: number
+                  DicomDiskSize:
+                    description: Size on the disk of the DICOM instances associated with the patient, expressed in bytes
+                    type: string
+                  DicomDiskSizeMB:
+                    description: Size on the disk of the DICOM instances associated with the patient, expressed in megabytes (MB)
+                    type: number
+                  DicomUncompressedSize:
+                    description: Size on the disk of the uncompressed DICOM instances associated with the patient, expressed in bytes
+                    type: string
+                  DicomUncompressedSizeMB:
+                    description: Size on the disk of the uncompressed DICOM instances associated with the patient, expressed in megabytes (MB)
+                    type: number
+                  DiskSize:
+                    description: Size of the patient on the disk in bytes, expressed as a string for 64bit compatibility with JSON
+                    type: string
+                  DiskSizeMB:
+                    description: Size of the patient on the disk, expressed in megabytes (MB)
+                    type: number
+                  UncompressedSize:
+                    description: Size of the patient after decompression in bytes, expressed as a string for 64bit compatibility with JSON
+                    type: string
+                  UncompressedSizeMB:
+                    description: Size of the patient after decompression, expressed in megabytes (MB). This is different from `DiskSizeMB` iff `StorageCompression` is `true`.
+                    type: number
+          description: ''
+      summary: Get patient statistics
+      tags:
+      - Patients
+      operationId: getPatientsByIdStatistics
+      x-operation-id-source: derived
+  /patients/{id}/studies:
+    get:
+      deprecated: false
+      description: Get detailed information about the child studies of the DICOM patient whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If false or missing, only retrieve the list of child studies
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing information about the child DICOM studies
+                example:
+                - ID: e98b9ac7-dd31ac40-ff046cb2-f0400d30-12f81d85
+                  IsStable: true
+                  Labels: []
+                  LastUpdate: 20231109T160830
+                  MainDicomTags:
+                    AccessionNumber: '0'
+                    InstitutionName: dPJ
+                    ReferringPhysicianName: YzTEkpkak0p0Tk5
+                    RequestedProcedureDescription: CT2 tête, face, sinus
+                    StudyDate: '20060531'
+                    '{...}': '...'
+                  '{...}': '...'
+          description: ''
+      summary: Get child studies
+      tags:
+      - Patients
+      operationId: getPatientsByIdStudies
+      x-operation-id-source: derived

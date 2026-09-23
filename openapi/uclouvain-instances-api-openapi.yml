@@ -1,0 +1,2589 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Instances API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Instances
+paths:
+  /instances:
+    get:
+      deprecated: false
+      description: List the Orthanc identifiers of all the available DICOM instances
+      parameters:
+      - description: If present, retrieve detailed information about the individual resources, not only their Orthanc identifiers
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: Limit the number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: number
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: 'Defines the content of response for each returned resource.  Allowed values are `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`, `Attachments`.  If not specified, Orthanc will return `MainDicomTags`, `Metadata`, `Children`, `Parent`, `Labels`, `Status`, `IsStable`, `IsProtected`.e.g: ''response-content=MainDicomTags;Children (new in Orthanc 1.12.5 - overrides `expand`)'
+        in: query
+        name: response-content
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Show only the resources since the provided index
+        in: query
+        name: since
+        required: false
+        schema:
+          type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing either the Orthanc identifiers, or detailed information about the reported instances (if `expand` argument is provided)
+                example:
+                - 001a7d82-54008387-7b23ad57-8fb6202a-6d3b305b
+                - 001b6592-37c2fbe4-2c07c724-ce9607e2-2bd210e8
+          description: ''
+      summary: List the available instances
+      tags:
+      - Instances
+      operationId: getInstances
+      x-operation-id-source: derived
+    post:
+      deprecated: false
+      parameters: []
+      requestBody:
+        content:
+          application/dicom:
+            schema:
+              description: DICOM file to be uploaded
+          application/zip:
+            schema:
+              description: ZIP archive containing DICOM files (new in Orthanc 1.8.2)
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the uploaded instance, or list of information for each uploaded instance in the case of ZIP archive
+                example:
+                  ID: 19816330-cb02e1cf-df3a8fe8-bf510623-ccefe9f5
+                  ParentPatient: ef9d77db-eb3b2bef-9b31fd3e-bf42ae46-dbdb0cc3
+                  ParentSeries: 3774320f-ccda46d8-69ee8641-9e791cbf-3ecbbcc6
+                  ParentStudy: 66c8e41e-ac3a9029-0b85e42a-8195ee0a-92c2e62e
+                  Path: /instances/19816330-cb02e1cf-df3a8fe8-bf510623-ccefe9f5
+                  Status: Success
+                properties:
+                  ID:
+                    description: Orthanc identifier of the new instance
+                    type: string
+                  ParentPatient:
+                    description: Orthanc identifier of the parent patient
+                    type: string
+                  ParentSeries:
+                    description: Orthanc identifier of the parent series
+                    type: string
+                  ParentStudy:
+                    description: Orthanc identifier of the parent study
+                    type: string
+                  Path:
+                    description: Path to the new instance in the REST API
+                    type: string
+                  Status:
+                    description: Can be `Success`, `AlreadyStored`, `Failure`, or `FilteredOut` (removed by some `NewInstanceFilter`)
+                    type: string
+          description: ''
+      summary: Upload DICOM instances
+      tags:
+      - Instances
+      operationId: postInstances
+      x-operation-id-source: derived
+  /instances/{id}:
+    delete:
+      deprecated: false
+      description: Delete the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete some instance
+      tags:
+      - Instances
+      operationId: deleteInstancesById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Get detailed information about the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the DICOM instance
+                example:
+                  FileSize: 368852
+                  FileUuid: eec5367e-b460-475c-a808-75343dbf9136
+                  ID: 6582b1c0-292ad5ab-ba0f088f-f7a1766f-9a29a54f
+                  IndexInSeries: 1
+                  Labels: []
+                  MainDicomTags:
+                    ImageOrientationPatient: 0\1\0\0\0\-1
+                    ImagePositionPatient: 0\-159\-425.915649
+                    InstanceCreationDate: '20050927'
+                    InstanceCreationTime: '155030.000000'
+                    InstanceNumber: '1'
+                    SOPInstanceUID: 1.2.840.113704.7.1.1.6632.1127829031.2
+                  ParentSeries: 37836232-d13a2350-fa1dedc5-962b31aa-010f8e52
+                  Type: Instance
+          description: ''
+      summary: Get information about some instance
+      tags:
+      - Instances
+      operationId: getInstancesById
+      x-operation-id-source: derived
+  /instances/{id}/anonymize:
+    post:
+      deprecated: false
+      description: 'Download an anonymized version of the DICOM instance whose Orthanc identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/anonymization.html#anonymization-of-a-single-instance'
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                DicomVersion:
+                  description: Version of the DICOM standard to be used for anonymization. Check out configuration option `DeidentifyLogsDicomVersion` for possible values.
+                  type: string
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: List of DICOM tags whose value must not be destroyed by the anonymization. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                KeepLabels:
+                  description: Keep the labels of all resources level (defaults to `false`)
+                  type: boolean
+                KeepPrivateTags:
+                  description: Keep the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of additional tags to be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+      responses:
+        '200':
+          content:
+            application/dicom:
+              examples: {}
+              schema:
+                description: The anonymized DICOM instance
+          description: ''
+      summary: Anonymize instance
+      tags:
+      - Instances
+      operationId: postInstancesByIdAnonymize
+      x-operation-id-source: derived
+  /instances/{id}/attachments:
+    get:
+      deprecated: false
+      description: Get the list of attachments that are associated with the given instance
+      parameters:
+      - description: If present, retrieve the attachments list and their numerical ids
+        in: query
+        name: full
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the attachments
+                example:
+                - dicom
+          description: ''
+      summary: List attachments
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachments
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}:
+    delete:
+      deprecated: false
+      description: Delete an attachment associated with the given DICOM instance. This call will fail if trying to delete a system attachment (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the attachment, to check if its content has not changed and can be deleted. This header is mandatory if `CheckRevisions` option is `true`.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete attachment
+      tags:
+      - Instances
+      operationId: deleteInstancesByIdAttachmentsByName
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Attach a file to the given DICOM instance. This call will fail if trying to modify a system attachment (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the attachment, if this is not the first time this attachment is set.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              description: Binary data containing the attachment
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Set attachment
+      tags:
+      - Instances
+      operationId: putInstancesByIdAttachmentsByName
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/compress:
+    post:
+      deprecated: false
+      description: Change the compression scheme that is used to store an attachment.
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Compress attachment
+      tags:
+      - Instances
+      operationId: postInstancesByIdAttachmentsByNameCompress
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/compressed-data:
+    get:
+      deprecated: false
+      description: Get the (binary) content of one attachment associated with the given instance. The attachment will not be decompressed if `StorageCompression` is `true`.
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Optional content range to access part of the attachment (new in Orthanc 1.12.5)
+        in: header
+        name: Range
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get attachment (no decompression)
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameCompressedData
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/compressed-md5:
+    get:
+      deprecated: false
+      description: Get the MD5 hash of one attachment associated with the given instance, as stored on the disk. This is different from `.../md5` iff `EnableStorage` is `true`.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The MD5 of the attachment, as stored on the disk
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get MD5 of attachment on disk
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameCompressedMd5
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/compressed-size:
+    get:
+      deprecated: false
+      description: Get the size of one attachment associated with the given instance, as stored on the disk. This is different from `.../size` iff `EnableStorage` is `true`.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The size of the attachment, as stored on the disk
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get size of attachment on disk
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameCompressedSize
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/data:
+    get:
+      deprecated: false
+      description: Get the (binary) content of one attachment associated with the given instance
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Optional content range to access part of the attachment (new in Orthanc 1.12.5)
+        in: header
+        name: Range
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get attachment
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameData
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/info:
+    get:
+      deprecated: false
+      description: Get all the information about the attachment associated with the given instance
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the information about the attachment
+                example:
+                  CompressedMD5: 26f3fad6ca0c355f02d57c7fa6770248
+                  CompressedSize: 526970
+                  ContentType: 1
+                  UncompressedMD5: 26f3fad6ca0c355f02d57c7fa6770248
+                  UncompressedSize: 526970
+                  Uuid: ada05909-0efc-43fd-b615-c5cafbaeacf8
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get info about the attachment
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameInfo
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/is-compressed:
+    get:
+      deprecated: false
+      description: Test whether the attachment has been stored as a compressed file on the disk.
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: '`0` if the attachment was stored uncompressed, `1` if it was compressed'
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Is attachment compressed?
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameIsCompressed
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/md5:
+    get:
+      deprecated: false
+      description: Get the MD5 hash of one attachment associated with the given instance
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The MD5 of the attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get MD5 of attachment
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameMd5
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/size:
+    get:
+      deprecated: false
+      description: Get the size of one attachment associated with the given instance
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: The size of the attachment
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: Get size of attachment
+      tags:
+      - Instances
+      operationId: getInstancesByIdAttachmentsByNameSize
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/uncompress:
+    post:
+      deprecated: false
+      description: Change the compression scheme that is used to store an attachment.
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Uncompress attachment
+      tags:
+      - Instances
+      operationId: postInstancesByIdAttachmentsByNameUncompress
+      x-operation-id-source: derived
+  /instances/{id}/attachments/{name}/verify-md5:
+    post:
+      deprecated: false
+      description: Verify that the attachment is not corrupted, by validating its MD5 hash
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: On success, a valid JSON object is returned
+          description: ''
+      summary: Verify attachment
+      tags:
+      - Instances
+      operationId: postInstancesByIdAttachmentsByNameVerifyMd5
+      x-operation-id-source: derived
+  /instances/{id}/content/{path}:
+    get:
+      deprecated: false
+      description: Get the raw content of one DICOM tag in the hierarchy of DICOM dataset
+      parameters:
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Path to the DICOM tag. This is the interleaving of one DICOM tag, possibly followed by an index for sequences. Sequences are accessible as, for instance, `/0008-1140/1/0008-1150`
+        in: path
+        name: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The raw value of the tag of intereset (binary data, whose memory layout depends on the underlying transfer syntax), or JSON array containing the list of available tags if accessing a dataset
+          description: ''
+      summary: Get raw tag
+      tags:
+      - Instances
+      operationId: getInstancesByIdContentByPath
+      x-operation-id-source: derived
+  /instances/{id}/export:
+    post:
+      deprecated: false
+      description: Write the DICOM file onto the filesystem where Orthanc is running. This is insecure for Orthanc servers that are remotely accessible since one could overwrite any system file. Since Orthanc 1.12.0, this route is disabled by default, but can be enabled using the `RestApiWriteToFileSystemEnabled` configuration option.
+      parameters:
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: Target path on the filesystem
+      responses:
+        '200':
+          description: ''
+      summary: Write DICOM onto filesystem
+      tags:
+      - Instances
+      operationId: postInstancesByIdExport
+      x-operation-id-source: derived
+  /instances/{id}/file:
+    get:
+      deprecated: false
+      description: Download one DICOM instance
+      parameters:
+      - description: Filename to set in the "Content-Disposition" HTTP header (including file extension)
+        in: query
+        name: filename
+        required: false
+        schema:
+          type: string
+      - description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+        in: query
+        name: lossy-quality
+        required: false
+        schema:
+          type: number
+      - description: 'If present, the DICOM file will be transcoded to the provided transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+        in: query
+        name: transcode
+        required: false
+        schema:
+          type: string
+      - description: This HTTP header can be set to retrieve the DICOM instance in DICOMweb format
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/dicom:
+              examples: {}
+              schema:
+                description: The DICOM instance
+            application/dicom+json:
+              examples: {}
+              schema:
+                description: The DICOM instance, in DICOMweb JSON format
+            application/dicom+xml:
+              examples: {}
+              schema:
+                description: The DICOM instance, in DICOMweb XML format
+          description: ''
+      summary: Download DICOM
+      tags:
+      - Instances
+      operationId: getInstancesByIdFile
+      x-operation-id-source: derived
+  /instances/{id}/frames:
+    get:
+      deprecated: false
+      description: List the frames that are available in the DICOM instance of interest
+      parameters:
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: The list of the indices of the available frames
+                example:
+                - 0
+          description: ''
+      summary: List available frames
+      tags:
+      - Instances
+      operationId: getInstancesByIdFrames
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/image-int16:
+    get:
+      deprecated: false
+      description: Decode one frame of interest from the given DICOM instance. Pixels of grayscale images are truncated to the [-32768,32767] range. Negative values must be interpreted according to two's complement.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode a frame (int16)
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameImageInt16
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/image-uint16:
+    get:
+      deprecated: false
+      description: Decode one frame of interest from the given DICOM instance. Pixels of grayscale images are truncated to the [0,65535] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode a frame (uint16)
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameImageUint16
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/image-uint8:
+    get:
+      deprecated: false
+      description: Decode one frame of interest from the given DICOM instance. Pixels of grayscale images are truncated to the [0,255] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode a frame (uint8)
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameImageUint8
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/matlab:
+    get:
+      deprecated: false
+      description: 'Decode one frame of interest from the given DICOM instance, and export this frame as a Octave/Matlab matrix to be imported with `eval()`: https://orthanc.uclouvain.be/book/faq/matlab.html'
+      parameters:
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Octave/Matlab matrix
+          description: ''
+      summary: Decode frame for Matlab
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameMatlab
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/numpy:
+    get:
+      deprecated: false
+      description: 'Decode one frame of interest from the given DICOM instance, for use with numpy in Python. The numpy array has 3 dimensions: (height, width, color channel).'
+      parameters:
+      - description: Compress the file as `.npz`
+        in: query
+        name: compress
+        required: false
+        schema:
+          type: boolean
+      - description: On grayscale images, apply the rescaling and return floating-point values
+        in: query
+        name: rescale
+        required: false
+        schema:
+          type: boolean
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM resource of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Numpy file: https://numpy.org/devdocs/reference/generated/numpy.lib.format.html'
+          description: ''
+      summary: Decode frame for numpy
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameNumpy
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/preview:
+    get:
+      deprecated: false
+      description: Decode one frame of interest from the given DICOM instance. The full dynamic range of grayscale images is rescaled to the [0,255] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode a frame (preview)
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFramePreview
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/raw:
+    get:
+      deprecated: false
+      description: Access the raw content of one individual frame of the DICOM instance of interest, bypassing image decoding. This is notably useful to access the source files in compressed transfer syntaxes.
+      parameters:
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: The raw frame
+          description: ''
+      summary: Access raw frame
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameRaw
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/raw.gz:
+    get:
+      deprecated: false
+      description: Access the raw content of one individual frame of the DICOM instance of interest, bypassing image decoding. This is notably useful to access the source files in compressed transfer syntaxes. The image is compressed using gzip
+      parameters:
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/gzip:
+              examples: {}
+              schema:
+                description: The raw frame, compressed using gzip
+          description: ''
+      summary: Access raw frame (compressed)
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameRawGz
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}/rendered:
+    get:
+      deprecated: false
+      description: Render one frame of interest from the given DICOM instance. This function takes scaling into account (`RescaleSlope` and `RescaleIntercept` tags), as well as the default windowing stored in the DICOM file (`WindowCenter` and `WindowWidth`tags), and can be used to resize the resulting image. Color images are not affected by windowing.
+      parameters:
+      - description: Height of the resized image
+        in: query
+        name: height
+        required: false
+        schema:
+          type: number
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Whether to smooth image on resize
+        in: query
+        name: smooth
+        required: false
+        schema:
+          type: boolean
+      - description: Width of the resized image
+        in: query
+        name: width
+        required: false
+        schema:
+          type: number
+      - description: Windowing center
+        in: query
+        name: window-center
+        required: false
+        schema:
+          type: number
+      - description: Windowing width
+        in: query
+        name: window-width
+        required: false
+        schema:
+          type: number
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Index of the frame (starts at `0`)
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: number
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Render a frame
+      tags:
+      - Instances
+      operationId: getInstancesByIdFramesByFrameRendered
+      x-operation-id-source: derived
+  /instances/{id}/header:
+    get:
+      deprecated: false
+      description: Get the DICOM tags in the meta-header of the DICOM instance. By default, the `full` format is used, which combines hexadecimal tags with human-readable description.
+      parameters:
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the DICOM tags and their associated value
+                example:
+                  0002,0000:
+                    Name: FileMetaInformationGroupLength
+                    Type: String
+                    Value: '202'
+                  0002,0002:
+                    Name: MediaStorageSOPClassUID
+                    Type: String
+                    Value: 1.2.840.10008.5.1.4.1.1.2
+                  0002,0003:
+                    Name: MediaStorageSOPInstanceUID
+                    Type: String
+                    Value: 1.3.12.2.1107.5.1.4.54693.30000006100507010800000005269
+                  0002,0010:
+                    Name: TransferSyntaxUID
+                    Type: String
+                    Value: 1.2.840.10008.1.2.1
+                  0002,0012:
+                    Name: ImplementationClassUID
+                    Type: String
+                    Value: 1.3.6.1.4.1.19291.2.1
+                  0002,0013:
+                    Name: ImplementationVersionName
+                    Type: String
+                    Value: OSIRIX001
+                  0002,0016:
+                    Name: SourceApplicationEntityTitle
+                    Type: String
+                    Value: OSIRIX
+          description: ''
+      summary: Get DICOM meta-header
+      tags:
+      - Instances
+      operationId: getInstancesByIdHeader
+      x-operation-id-source: derived
+  /instances/{id}/image-int16:
+    get:
+      deprecated: false
+      description: Decode the first frame of the given DICOM instance. Pixels of grayscale images are truncated to the [-32768,32767] range. Negative values must be interpreted according to two's complement.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode an image (int16)
+      tags:
+      - Instances
+      operationId: getInstancesByIdImageInt16
+      x-operation-id-source: derived
+  /instances/{id}/image-uint16:
+    get:
+      deprecated: false
+      description: Decode the first frame of the given DICOM instance. Pixels of grayscale images are truncated to the [0,65535] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode an image (uint16)
+      tags:
+      - Instances
+      operationId: getInstancesByIdImageUint16
+      x-operation-id-source: derived
+  /instances/{id}/image-uint8:
+    get:
+      deprecated: false
+      description: Decode the first frame of the given DICOM instance. Pixels of grayscale images are truncated to the [0,255] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode an image (uint8)
+      tags:
+      - Instances
+      operationId: getInstancesByIdImageUint8
+      x-operation-id-source: derived
+  /instances/{id}/labels:
+    get:
+      deprecated: false
+      description: Get the labels that are associated with the given instance (new in Orthanc 1.12.0)
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the labels
+                example: []
+          description: ''
+      summary: List labels
+      tags:
+      - Instances
+      operationId: getInstancesByIdLabels
+      x-operation-id-source: derived
+  /instances/{id}/labels/{label}:
+    delete:
+      deprecated: false
+      description: Remove a label associated with a instance
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label to be removed
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Remove label
+      tags:
+      - Instances
+      operationId: deleteInstancesByIdLabelsByLabel
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Test whether the instance is associated with the given label
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label of interest
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Empty string is returned in the case of presence, error 404 in the case of absence
+          description: ''
+      summary: Test label
+      tags:
+      - Instances
+      operationId: getInstancesByIdLabelsByLabel
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Associate a label with a instance
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The label to be added
+        in: path
+        name: label
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Add label
+      tags:
+      - Instances
+      operationId: putInstancesByIdLabelsByLabel
+      x-operation-id-source: derived
+  /instances/{id}/matlab:
+    get:
+      deprecated: false
+      description: 'Decode the first frame of the given DICOM instance., and export this frame as a Octave/Matlab matrix to be imported with `eval()`: https://orthanc.uclouvain.be/book/faq/matlab.html'
+      parameters:
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Octave/Matlab matrix
+          description: ''
+      summary: Decode frame for Matlab
+      tags:
+      - Instances
+      operationId: getInstancesByIdMatlab
+      x-operation-id-source: derived
+  /instances/{id}/metadata:
+    get:
+      deprecated: false
+      description: Get the list of metadata that are associated with the given instance
+      parameters:
+      - description: If present, also retrieve the value of the individual metadata
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      - description: If present, use the numeric identifier of the metadata instead of its symbolic name
+        in: query
+        name: numeric
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing the names of the available metadata, or JSON associative array mapping metadata to their values (if `expand` argument is provided)
+                example:
+                - IndexInSeries
+                - ReceptionDate
+                - RemoteAET
+                - Origin
+                - TransferSyntax
+                - SopClassUid
+                - RemoteIP
+                - HttpUsername
+                - PixelDataOffset
+                - MainDicomTagsSignature
+                - '4202'
+          description: ''
+      summary: List metadata
+      tags:
+      - Instances
+      operationId: getInstancesByIdMetadata
+      x-operation-id-source: derived
+  /instances/{id}/metadata/{name}:
+    delete:
+      deprecated: false
+      description: Delete some metadata associated with the given DICOM instance. This call will fail if trying to delete a system metadata (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the metadata, to check if its content has not changed and can be deleted. This header is mandatory if `CheckRevisions` option is `true`.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete metadata
+      tags:
+      - Instances
+      operationId: deleteInstancesByIdMetadataByName
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Get the value of a metadata that is associated with the given instance
+      parameters:
+      - description: Optional revision of the metadata, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: Value of the metadata
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the metadata, to be used in further `PUT` or `DELETE` operations
+      summary: Get metadata
+      tags:
+      - Instances
+      operationId: getInstancesByIdMetadataByName
+      x-operation-id-source: derived
+    put:
+      deprecated: false
+      description: Set the value of some metadata in the given DICOM instance. This call will fail if trying to modify a system metadata (i.e. whose index is < 1024).
+      parameters:
+      - description: Revision of the metadata, if this is not the first time this metadata is set.
+        in: header
+        name: If-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the metadata, or its index (cf. `UserMetadata` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              description: String value of the metadata
+      responses:
+        '200':
+          description: ''
+      summary: Set metadata
+      tags:
+      - Instances
+      operationId: putInstancesByIdMetadataByName
+      x-operation-id-source: derived
+  /instances/{id}/modify:
+    post:
+      deprecated: false
+      description: 'Download a modified version of the DICOM instance whose Orthanc identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/anonymization.html#modification-of-a-single-instance'
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                Force:
+                  description: Allow the modification of tags related to DICOM identifiers, at the risk of breaking the DICOM model of the real world
+                  type: boolean
+                Keep:
+                  description: Keep the original value of the specified tags, to be chosen among the `StudyInstanceUID`, `SeriesInstanceUID` and `SOPInstanceUID` tags. Avoid this feature as much as possible, as this breaks the DICOM model of the real world.
+                  items:
+                    type: string
+                  type: array
+                KeepSource:
+                  description: If set to `false`, instructs Orthanc to the remove original resources. By default, the original resources are kept in Orthanc.
+                  type: boolean
+                LossyQuality:
+                  description: If transcoding to a lossy transfer syntax, this entry defines the quality as an integer between 1 and 100.  If not provided, the value is defined by the "DicomLossyTranscodingQuality" configuration. (new in v1.12.7)
+                  type: number
+                PrivateCreator:
+                  description: The private creator to be used for private tags in `Replace`
+                  type: string
+                Remove:
+                  description: List of tags that must be removed from the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  items:
+                    type: string
+                  type: array
+                RemovePrivateTags:
+                  description: Remove the private tags from the DICOM instances (defaults to `false`)
+                  type: boolean
+                Replace:
+                  description: Associative array to change the value of some DICOM tags in the DICOM instances. Starting with Orthanc 1.9.4, paths to subsequences can be provided using the same syntax as the `dcmodify` command-line tool (wildcards are supported as well).
+                  type: object
+                Transcode:
+                  description: 'Transcode the DICOM instances to the provided DICOM transfer syntax: https://orthanc.uclouvain.be/book/faq/transcoding.html'
+                  type: string
+      responses:
+        '200':
+          content:
+            application/dicom:
+              examples: {}
+              schema:
+                description: The modified DICOM instance
+          description: ''
+      summary: Modify instance
+      tags:
+      - Instances
+      operationId: postInstancesByIdModify
+      x-operation-id-source: derived
+  /instances/{id}/module:
+    get:
+      deprecated: false
+      description: Get the instance module of the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: Also include the DICOM tags that are provided in this list, even if their associated value is long
+        in: query
+        name: ignore-length
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the DICOM instance
+                example:
+                  0008,0005:
+                    Name: SpecificCharacterSet
+                    Type: String
+                    Value: ISO_IR 100
+                  0008,0012:
+                    Name: InstanceCreationDate
+                    Type: String
+                    Value: '20050927'
+                  0008,0013:
+                    Name: InstanceCreationTime
+                    Type: String
+                    Value: '155030.000000'
+                  0008,0016:
+                    Name: SOPClassUID
+                    Type: String
+                    Value: 1.2.840.10008.5.1.4.1.1.2
+                  0008,0018:
+                    Name: SOPInstanceUID
+                    Type: String
+                    Value: 1.2.840.113704.7.1.1.6632.1127829031.2
+                  0020,0013:
+                    Name: InstanceNumber
+                    Type: String
+                    Value: '1'
+          description: ''
+      summary: Get instance module
+      tags:
+      - Instances
+      operationId: getInstancesByIdModule
+      x-operation-id-source: derived
+  /instances/{id}/numpy:
+    get:
+      deprecated: false
+      description: 'Decode the given DICOM instance, for use with numpy in Python. The numpy array has 4 dimensions: (frame, height, width, color channel).'
+      parameters:
+      - description: Compress the file as `.npz`
+        in: query
+        name: compress
+        required: false
+        schema:
+          type: boolean
+      - description: On grayscale images, apply the rescaling and return floating-point values
+        in: query
+        name: rescale
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the DICOM resource of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              examples: {}
+              schema:
+                description: 'Numpy file: https://numpy.org/devdocs/reference/generated/numpy.lib.format.html'
+          description: ''
+      summary: Decode instance for numpy
+      tags:
+      - Instances
+      operationId: getInstancesByIdNumpy
+      x-operation-id-source: derived
+  /instances/{id}/patient:
+    get:
+      deprecated: false
+      description: Get detailed information about the parent patient of the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the parent DICOM patient
+                example:
+                  ID: 2f74083e-9b042648-10edac14-b26950f8-f82ec3a0
+                  IsProtected: false
+                  IsStable: true
+                  Labels: []
+                  LastUpdate: 20231109T160911
+                  MainDicomTags:
+                    PatientBirthDate: '19910101'
+                    PatientID: Vafk,T,6
+                    PatientName: PHENIX
+                    PatientSex: ''
+                  Studies:
+                  - 49974143-ec23cb52-6b2a1c46-14d5daa0-0822ce1a
+                  Type: Patient
+          description: ''
+      summary: Get parent patient
+      tags:
+      - Instances
+      operationId: getInstancesByIdPatient
+      x-operation-id-source: derived
+  /instances/{id}/pdf:
+    get:
+      deprecated: false
+      description: Get the PDF file that is embedded in one DICOM instance. If the DICOM instance doesn't contain the `EncapsulatedDocument` tag or if the `MIMETypeOfEncapsulatedDocument` tag doesn't correspond to the PDF type, a `404` HTTP error is raised.
+      parameters:
+      - description: Orthanc identifier of the instance interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/pdf:
+              examples: {}
+              schema:
+                description: PDF file
+          description: ''
+      summary: Get embedded PDF
+      tags:
+      - Instances
+      operationId: getInstancesByIdPdf
+      x-operation-id-source: derived
+  /instances/{id}/preview:
+    get:
+      deprecated: false
+      description: Decode the first frame of the given DICOM instance. The full dynamic range of grayscale images is rescaled to the [0,255] range.
+      parameters:
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Decode an image (preview)
+      tags:
+      - Instances
+      operationId: getInstancesByIdPreview
+      x-operation-id-source: derived
+  /instances/{id}/reconstruct:
+    post:
+      deprecated: false
+      description: Reconstruct the main DICOM tags in DB of the instance whose Orthanc identifier is provided in the URL. This is useful if child studies/series/instances have inconsistent values for higher-level tags, in order to force Orthanc to use the value from the resource of interest. Beware that this is a time-consuming operation, as all the children DICOM instances will be parsed again, and the Orthanc index will be updated accordingly.
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                LimitToThisLevelMainDicomTags:
+                  description: Only reconstruct this level MainDicomTags by re-reading them from a random child instance of the resource. This option is much faster than a full reconstruct and is useful e.g. if you have modified the 'ExtraMainDicomTags' at the Study level to optimize the speed of some C-Find. 'false' by default. (New in Orthanc 1.12.4)
+                  type: boolean
+                ReconstructFiles:
+                  description: 'Also reconstruct the files of the resources (e.g: apply IngestTranscoding, StorageCompression). ''false'' by default. (New in Orthanc 1.11.0)'
+                  type: boolean
+      responses:
+        '200':
+          description: ''
+      summary: Reconstruct tags & optionally files of instance
+      tags:
+      - Instances
+      operationId: postInstancesByIdReconstruct
+      x-operation-id-source: derived
+  /instances/{id}/rendered:
+    get:
+      deprecated: false
+      description: Render the first frame of the given DICOM instance. This function takes scaling into account (`RescaleSlope` and `RescaleIntercept` tags), as well as the default windowing stored in the DICOM file (`WindowCenter` and `WindowWidth`tags), and can be used to resize the resulting image. Color images are not affected by windowing.
+      parameters:
+      - description: Height of the resized image
+        in: query
+        name: height
+        required: false
+        schema:
+          type: number
+      - description: Quality for JPEG images (between 1 and 100, defaults to 90)
+        in: query
+        name: quality
+        required: false
+        schema:
+          type: number
+      - description: Returns an unsupported.png placeholder image if unable to provide the image instead of returning a 415 HTTP error (value is true if option is present)
+        in: query
+        name: returnUnsupportedImage
+        required: false
+        schema:
+          type: boolean
+      - description: Whether to smooth image on resize
+        in: query
+        name: smooth
+        required: false
+        schema:
+          type: boolean
+      - description: Width of the resized image
+        in: query
+        name: width
+        required: false
+        schema:
+          type: number
+      - description: Windowing center
+        in: query
+        name: window-center
+        required: false
+        schema:
+          type: number
+      - description: Windowing width
+        in: query
+        name: window-width
+        required: false
+        schema:
+          type: number
+      - description: Format of the resulting image. Can be `image/png` (default), `image/jpeg` or `image/x-portable-arbitrarymap`
+        in: header
+        name: Accept
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            image/jpeg:
+              examples: {}
+              schema:
+                description: JPEG image
+            image/png:
+              examples: {}
+              schema:
+                description: PNG image
+            image/x-portable-arbitrarymap:
+              examples: {}
+              schema:
+                description: PAM image (Portable Arbitrary Map)
+          description: ''
+      summary: Render an image
+      tags:
+      - Instances
+      operationId: getInstancesByIdRendered
+      x-operation-id-source: derived
+  /instances/{id}/series:
+    get:
+      deprecated: false
+      description: Get detailed information about the parent series of the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the parent DICOM series
+                example:
+                  ExpectedNumberOfInstances: null
+                  ID: 37836232-d13a2350-fa1dedc5-962b31aa-010f8e52
+                  Instances:
+                  - 6582b1c0-292ad5ab-ba0f088f-f7a1766f-9a29a54f
+                  IsStable: true
+                  Labels: []
+                  LastUpdate: 20231109T160851
+                  MainDicomTags:
+                    ImageOrientationPatient: 0\1\0\0\0\-1
+                    Manufacturer: Philips
+                    Modality: CT
+                    PerformedProcedureStepDescription: CT2 tête, face, sinus
+                    ProtocolName: COU 2 mm/Neck/Sv
+                    SeriesInstanceUID: 1.2.840.113704.1.111.5692.1127828999.2
+                    SeriesNumber: '2276'
+                    StationName: ctrad
+                  ParentStudy: 49974143-ec23cb52-6b2a1c46-14d5daa0-0822ce1a
+                  Status: Unknown
+                  Type: Series
+          description: ''
+      summary: Get parent series
+      tags:
+      - Instances
+      operationId: getInstancesByIdSeries
+      x-operation-id-source: derived
+  /instances/{id}/simplified-tags:
+    get:
+      deprecated: false
+      description: Get the DICOM tags in human-readable format (same as the `/instances/{id}/tags?simplify` route)
+      parameters:
+      - description: Also include the DICOM tags that are provided in this list, even if their associated value is long
+        in: query
+        name: ignore-length
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Whether to read the whole DICOM file from the storage area (new in Orthanc 1.12.4). If set to "false" (default value), the DICOM file is read until the pixel data tag (7fe0,0010) to optimize access to storage. Setting the option to "true" provides access to the DICOM tags stored after the pixel data tag.
+        in: query
+        name: whole
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the DICOM tags and their associated value
+                example:
+                  AccessionNumber: '0'
+                  AcquisitionDate: '20061005'
+                  AcquisitionNumber: '3'
+                  AcquisitionTime: '101812.967223'
+                  BitsAllocated: '16'
+                  BitsStored: '12'
+                  BodyPartExamined: EXTREMITY
+                  Columns: '512'
+                  ContentDate: '20061005'
+                  ContentTime: '101812.967223'
+                  '{...}': '...'
+          description: ''
+      summary: Get human-readable tags
+      tags:
+      - Instances
+      operationId: getInstancesByIdSimplifiedTags
+      x-operation-id-source: derived
+  /instances/{id}/statistics:
+    get:
+      deprecated: false
+      description: Get statistics about the given instance
+      parameters:
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: ''
+                example:
+                  DicomDiskSize: '368852'
+                  DicomDiskSizeMB: 0
+                  DicomUncompressedSize: '368852'
+                  DicomUncompressedSizeMB: 0
+                  DiskSize: '368852'
+                  DiskSizeMB: 0
+                  UncompressedSize: '368852'
+                  UncompressedSizeMB: 0
+                properties:
+                  DicomDiskSize:
+                    description: Size on the disk of the DICOM instances associated with the instance, expressed in bytes
+                    type: string
+                  DicomDiskSizeMB:
+                    description: Size on the disk of the DICOM instances associated with the instance, expressed in megabytes (MB)
+                    type: number
+                  DicomUncompressedSize:
+                    description: Size on the disk of the uncompressed DICOM instances associated with the instance, expressed in bytes
+                    type: string
+                  DicomUncompressedSizeMB:
+                    description: Size on the disk of the uncompressed DICOM instances associated with the instance, expressed in megabytes (MB)
+                    type: number
+                  DiskSize:
+                    description: Size of the instance on the disk in bytes, expressed as a string for 64bit compatibility with JSON
+                    type: string
+                  DiskSizeMB:
+                    description: Size of the instance on the disk, expressed in megabytes (MB)
+                    type: number
+                  UncompressedSize:
+                    description: Size of the instance after decompression in bytes, expressed as a string for 64bit compatibility with JSON
+                    type: string
+                  UncompressedSizeMB:
+                    description: Size of the instance after decompression, expressed in megabytes (MB). This is different from `DiskSizeMB` iff `StorageCompression` is `true`.
+                    type: number
+          description: ''
+      summary: Get instance statistics
+      tags:
+      - Instances
+      operationId: getInstancesByIdStatistics
+      x-operation-id-source: derived
+  /instances/{id}/study:
+    get:
+      deprecated: false
+      description: Get detailed information about the parent study of the DICOM instance whose Orthanc identifier is provided in the URL
+      parameters:
+      - description: If present, report the DICOM tags in full format (tags indexed by their hexadecimal format, associated with their symbolic name and their value)
+        in: query
+        name: full
+        required: false
+        schema:
+          type: boolean
+      - description: 'If present, list the DICOM Tags you want to list in the response.  This argument is a semi-column separated list of DICOM Tags identifiers; e.g: ''requested-tags=0010,0010;PatientBirthDate''.  The tags requested tags are returned in the ''RequestedTags'' field in the response.  Note that, if you are requesting tags that are not listed in the Main Dicom Tags stored in DB, building the response might be slow since Orthanc will need to access the DICOM files.  If not specified, Orthanc will return all Main Dicom Tags to keep backward compatibility with Orthanc prior to 1.11.0.'
+        in: query
+        name: requested-tags
+        required: false
+        schema:
+          type: string
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Information about the parent DICOM study
+                example:
+                  ID: 49974143-ec23cb52-6b2a1c46-14d5daa0-0822ce1a
+                  IsStable: true
+                  Labels: []
+                  LastUpdate: 20231109T160911
+                  MainDicomTags:
+                    AccessionNumber: A10011234814
+                    InstitutionName: HUG
+                    ReferringPhysicianName: CHIR-PED^CHIR-PE
+                    RequestedProcedureDescription: CT2 TÊTE, FACE, SINUS
+                    RequestingPhysician: KOHLER^Romain
+                    StudyDate: '20050927'
+                    StudyDescription: CT2 tête, face, sinus
+                    StudyID: '1361'
+                    StudyInstanceUID: 2.16.840.1.113669.632.20.1211.10000098591
+                    StudyTime: '154952.000000'
+                  ParentPatient: 2f74083e-9b042648-10edac14-b26950f8-f82ec3a0
+                  PatientMainDicomTags:
+                    PatientBirthDate: '19910101'
+                    PatientID: Vafk,T,6
+                    PatientName: PHENIX
+                    PatientSex: ''
+                  Series:
+                  - 17cc7e52-4f1a3e4d-9182f727-56e9cc71-c037892f
+                  - 37836232-d13a2350-fa1dedc5-962b31aa-010f8e52
+                  - 7696013f-4c89c563-2b071693-5d1f97f6-f8ab232d
+                  Type: Study
+          description: ''
+      summary: Get parent study
+      tags:
+      - Instances
+      operationId: getInstancesByIdStudy
+      x-operation-id-source: derived
+  /instances/{id}/tags:
+    get:
+      deprecated: false
+      description: Get the DICOM tags in the specified format. By default, the `full` format is used, which combines hexadecimal tags with human-readable description.
+      parameters:
+      - description: Also include the DICOM tags that are provided in this list, even if their associated value is long
+        in: query
+        name: ignore-length
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: If present, report the DICOM tags in hexadecimal format
+        in: query
+        name: short
+        required: false
+        schema:
+          type: boolean
+      - description: If present, report the DICOM tags in human-readable format (using the symbolic name of the tags)
+        in: query
+        name: simplify
+        required: false
+        schema:
+          type: boolean
+      - description: Whether to read the whole DICOM file from the storage area (new in Orthanc 1.12.4). If set to "false" (default value), the DICOM file is read until the pixel data tag (7fe0,0010) to optimize access to storage. Setting the option to "true" provides access to the DICOM tags stored after the pixel data tag.
+        in: query
+        name: whole
+        required: false
+        schema:
+          type: boolean
+      - description: Orthanc identifier of the DICOM instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object containing the DICOM tags and their associated value
+                example:
+                  0008,0005:
+                    Name: SpecificCharacterSet
+                    Type: String
+                    Value: ISO_IR 100
+                  0008,0008:
+                    Name: ImageType
+                    Type: String
+                    Value: ORIGINAL\PRIMARY\AXIAL\CT_SOM5 SPI
+                  0008,0016:
+                    Name: SOPClassUID
+                    Type: String
+                    Value: 1.2.840.10008.5.1.4.1.1.2
+                  0008,0018:
+                    Name: SOPInstanceUID
+                    Type: String
+                    Value: 1.3.12.2.1107.5.1.4.54693.30000006100507010800000005269
+                  0008,0020:
+                    Name: StudyDate
+                    Type: String
+                    Value: '20061005'
+                  0008,0021:
+                    Name: SeriesDate
+                    Type: String
+                    Value: '20061005'
+                  0008,0022:
+                    Name: AcquisitionDate
+                    Type: String
+                    Value: '20061005'
+                  0008,0023:
+                    Name: ContentDate
+                    Type: String
+                    Value: '20061005'
+                  0008,0030:
+                    Name: StudyTime
+                    Type: String
+                    Value: '101556.921000'
+                  0008,0031:
+                    Name: SeriesTime
+                    Type: String
+                    Value: '102051.046000'
+                  '{...}': '...'
+          description: ''
+      summary: Get DICOM tags
+      tags:
+      - Instances
+      operationId: getInstancesByIdTags
+      x-operation-id-source: derived

@@ -1,0 +1,307 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Other API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Other
+paths:
+  /instances/{id}/attachments/{name}:
+    get:
+      deprecated: false
+      description: Get the list of the operations that are available for attachments associated with the given instance
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the instance of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - compress
+                - compressed-data
+                - compressed-md5
+                - compressed-size
+                - data
+                - info
+                - is-compressed
+                - md5
+                - size
+                - uncompress
+                - verify-md5
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: List operations on attachments
+      tags:
+      - Other
+      operationId: getInstancesByIdAttachmentsByName
+      x-operation-id-source: derived
+  /instances/{id}/frames/{frame}:
+    get:
+      deprecated: false
+      description: List the available operations under URI `/instances/{id}/frames/{frame}/`
+      parameters:
+      - description: ''
+        in: path
+        name: frame
+        required: true
+        schema:
+          type: string
+      - description: ''
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - image-int16
+                - image-uint16
+                - image-uint8
+                - matlab
+                - numpy
+                - preview
+                - raw
+                - raw.gz
+                - rendered
+          description: ''
+      summary: List operations
+      tags:
+      - Other
+      operationId: getInstancesByIdFramesByFrame
+      x-operation-id-source: derived
+  /patients/{id}/attachments/{name}:
+    get:
+      deprecated: false
+      description: Get the list of the operations that are available for attachments associated with the given patient
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the patient of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - compress
+                - compressed-data
+                - compressed-md5
+                - compressed-size
+                - data
+                - info
+                - is-compressed
+                - md5
+                - size
+                - uncompress
+                - verify-md5
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: List operations on attachments
+      tags:
+      - Other
+      operationId: getPatientsByIdAttachmentsByName
+      x-operation-id-source: derived
+  /series/{id}/attachments/{name}:
+    get:
+      deprecated: false
+      description: Get the list of the operations that are available for attachments associated with the given series
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the series of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - compress
+                - compressed-data
+                - compressed-md5
+                - compressed-size
+                - data
+                - info
+                - is-compressed
+                - md5
+                - size
+                - uncompress
+                - verify-md5
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: List operations on attachments
+      tags:
+      - Other
+      operationId: getSeriesByIdAttachmentsByName
+      x-operation-id-source: derived
+  /studies/{id}/attachments/{name}:
+    get:
+      deprecated: false
+      description: Get the list of the operations that are available for attachments associated with the given study
+      parameters:
+      - description: Optional revision of the attachment, to check if its content has changed
+        in: header
+        name: If-None-Match
+        required: false
+        schema:
+          type: string
+      - description: Orthanc identifier of the study of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The name of the attachment, or its index (cf. `UserContentType` configuration option)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - compress
+                - compressed-data
+                - compressed-md5
+                - compressed-size
+                - data
+                - info
+                - is-compressed
+                - md5
+                - size
+                - uncompress
+                - verify-md5
+          description: ''
+          headers:
+            ETag:
+              description: Revision of the attachment, to be used in further `PUT` or `DELETE` operations
+      summary: List operations on attachments
+      tags:
+      - Other
+      operationId: getStudiesByIdAttachmentsByName
+      x-operation-id-source: derived
+  /tools:
+    get:
+      deprecated: false
+      description: List the available operations under URI `/tools/`
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: List of the available operations
+                example:
+                - accepted-sop-classes
+                - accepted-transfer-syntaxes
+                - bulk-anonymize
+                - bulk-content
+                - bulk-delete
+                - bulk-modify
+                - count-resources
+                - create-archive
+                - create-dicom
+                - create-media
+                - create-media-extended
+                - default-encoding
+                - dicom-conformance
+                - dicom-echo
+                - execute-script
+                - find
+                - generate-uid
+                - invalidate-tags
+                - labels
+                - log-level
+                - log-level-dicom
+                - log-level-generic
+                - log-level-http
+                - log-level-jobs
+                - log-level-lua
+                - log-level-plugins
+                - log-level-sqlite
+                - lookup
+                - metrics
+                - metrics-prometheus
+                - now
+                - now-local
+                - reconstruct
+                - reset
+                - shutdown
+                - unknown-sop-class-accepted
+          description: ''
+      summary: List operations
+      tags:
+      - Other
+      operationId: getTools
+      x-operation-id-source: derived

@@ -1,0 +1,247 @@
+openapi: 3.2.0
+info:
+  description: 'This is the full documentation of the REST API of Orthanc.
+
+    This reference is automatically generated from the source code of Orthanc. A shorter cheat sheet is part of the Orthanc Book.
+
+    An earlier, manually crafted version from August 2019, is still available, but is not up-to-date anymore (source).'
+  title: Orthanc Jobs API
+  version: 1.13.0
+servers:
+- url: https://orthanc.uclouvain.be/demo/
+tags:
+- name: Jobs
+paths:
+  /jobs:
+    get:
+      deprecated: false
+      description: List all the available jobs
+      parameters:
+      - description: If present, retrieve detailed information about the individual jobs
+        in: query
+        name: expand
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON array containing either the jobs identifiers, or detailed information about the reported jobs (if `expand` argument is provided)
+                example:
+                - 8d01242e-41cb-425c-a2be-ea692d448c80
+          description: ''
+      summary: List jobs
+      tags:
+      - Jobs
+      operationId: getJobs
+      x-operation-id-source: derived
+  /jobs/{id}:
+    delete:
+      deprecated: false
+      description: Delete the job from the jobs history. Only a completed job can be deleted. If the job has not run or not completed yet, you must cancel it first. If the job has outputs, all outputs will be deleted as well.
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete a job from history
+      tags:
+      - Jobs
+      operationId: deleteJobsById
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: 'Retrieve detailed information about the job whose identifier is provided in the URL: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: JSON object detailing the job
+                example:
+                  CompletionTime: 20201227T161842.520129
+                  Content:
+                    ArchiveSizeMB: 22
+                    Description: REST API
+                    InstancesCount: 232
+                    UncompressedSizeMB: 64
+                  CreationTime: 20201227T161836.428311
+                  EffectiveRuntime: 6.081
+                  ErrorCode: 0
+                  ErrorDescription: Success
+                  ID: 645ecb02-7c0e-4465-b767-df873222dcfb
+                  Priority: 0
+                  Progress: 100
+                  State: Success
+                  Timestamp: 20201228T160340.253201
+                  Type: Media
+          description: ''
+      summary: Get job
+      tags:
+      - Jobs
+      operationId: getJobsById
+      x-operation-id-source: derived
+  /jobs/{id}/cancel:
+    post:
+      deprecated: false
+      description: 'Cancel the job whose identifier is provided in the URL. Check out the Orthanc Book for more information about the state machine applicable to jobs: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Cancel job
+      tags:
+      - Jobs
+      operationId: postJobsByIdCancel
+      x-operation-id-source: derived
+  /jobs/{id}/pause:
+    post:
+      deprecated: false
+      description: 'Pause the job whose identifier is provided in the URL. Check out the Orthanc Book for more information about the state machine applicable to jobs: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Pause job
+      tags:
+      - Jobs
+      operationId: postJobsByIdPause
+      x-operation-id-source: derived
+  /jobs/{id}/resubmit:
+    post:
+      deprecated: false
+      description: 'Resubmit the job whose identifier is provided in the URL. Check out the Orthanc Book for more information about the state machine applicable to jobs: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Resubmit job
+      tags:
+      - Jobs
+      operationId: postJobsByIdResubmit
+      x-operation-id-source: derived
+  /jobs/{id}/resume:
+    post:
+      deprecated: false
+      description: 'Resume the job whose identifier is provided in the URL. Check out the Orthanc Book for more information about the state machine applicable to jobs: https://orthanc.uclouvain.be/book/users/advanced-rest.html#jobs'
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples: {}
+              schema:
+                description: Empty JSON object in the case of a success
+          description: ''
+      summary: Resume job
+      tags:
+      - Jobs
+      operationId: postJobsByIdResume
+      x-operation-id-source: derived
+  /jobs/{id}/{key}:
+    delete:
+      deprecated: false
+      description: Delete the output produced by a job. As of Orthanc 1.12.1, only the jobs that generate a DICOMDIR media or a ZIP archive provide such an output (with `key` equals to `archive`).
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Name of the output of interest
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+      summary: Delete a job output
+      tags:
+      - Jobs
+      operationId: deleteJobsByIdByKey
+      x-operation-id-source: derived
+    get:
+      deprecated: false
+      description: Retrieve some output produced by a job. As of Orthanc 1.8.2, only the jobs that generate a DICOMDIR media or a ZIP archive provide such an output (with `key` equals to `archive`).
+      parameters:
+      - description: Identifier of the job of interest
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Name of the output of interest
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              examples: {}
+              schema:
+                description: Content of the output of the job
+          description: ''
+      summary: Get job output
+      tags:
+      - Jobs
+      operationId: getJobsByIdByKey
+      x-operation-id-source: derived
