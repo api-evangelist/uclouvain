@@ -60,7 +60,7 @@ tags:
 - Institutional Repository
 - OAI-PMH
 - Identity Federation
-- Open-Source
+- Open Source
 - Medical Imaging
 - Library
 tags_raw:
@@ -78,6 +78,7 @@ tags_raw:
 - Open Source
 - Medical Imaging
 - Library
+- Open-Source
 created: '2026-06-03'
 modified: '2026-08-30'
 specificationVersion: '0.23'
