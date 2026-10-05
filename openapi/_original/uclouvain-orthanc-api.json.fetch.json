@@ -1,0 +1,12 @@
+{
+ "url": "https://orthanc.uclouvain.be/api/orthanc-openapi.json",
+ "requested_url": "https://orthanc.uclouvain.be/api/orthanc-openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 766274,
+ "sha256": "dbfb49bf0bc7bea4d9ba6d37fc8b46bb3b3d0a9d14345a4f2898e0d07eb2b712",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
