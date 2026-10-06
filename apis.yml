@@ -80,7 +80,7 @@ tags_raw:
 - Library
 - Open-Source
 created: '2026-06-03'
-modified: '2026-08-30'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 x-coverage:
   state: covered
@@ -548,6 +548,8 @@ apis:
   - type: x-example
     url: examples/uclouvain-orthanc-system-example.json
 common:
+- url: https://uclouvain.be/fr/rss.xml
+  type: BlogRSS
 - type: Website
   url: https://uclouvain.be/en
 - type: GitHubOrganization
