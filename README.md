@@ -1,4 +1,4 @@
-# UCLouvain (uclouvain)
+# UCLouvain
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,75 +64,135 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-UCLouvain (Universite catholique de Louvain) is Belgium's largest French-speaking university -- a private institution subsidised by public authorities, based in Louvain-la-Neuve, ranked #203 in the QS World University Rankings 2025. This repository catalogs the institution's public, machine-readable footprint as an [APIs.json](https://apisjson.org) profile.
+UCLouvain (Universite catholique de Louvain) is Belgium's largest French-speaking university -- a private institution subsidised by public authorities, Catholic in identity, based in Louvain-la-Neuve with campuses in Brussels, Mons, Tournai, Charleroi and Namur, and ranked #203 in the QS World University Rankings 2025. Its programmable footprint is small, real, and mostly NOT its own engineering. UCLouvain operates no public developer portal, issues no API keys, and api.uclouvain.be answers 503 with no backend behind it. What it does operate, verified live on 2026-08-30: the Orthanc medical-imaging ecosystem -- a genuinely UCLouvain-authored open-source project run out of ICTEAM's Health Informatics Lab, publishing a 239-path OpenAPI 3.0 contract and a public demo server; four OAI-PMH 2.0 repositories (Dataverse open data, DIAL.pr research publications, DIAL.mem master's theses, OER-UCLouvain open educational resources); a SAML 2.0 / Shibboleth identity provider registered with the Belnet federation and exported to eduGAIN; and Crossref membership in its own right, minting DOIs under prefix 10.14428. Everything else that looks like a UCLouvain API is a product's contract running on a UCLouvain host: the Dataverse 6.8 Native API and the DSpace-CRIS 8.1 REST API behind DIAL are recorded here as tenant deployments, not as UCLouvain's contracts. An earlier profile of this repository credited UCLouvain with 36 OpenAPI definitions that were in fact one Dataverse product spec split by tag -- a contract eight institutions in this catalog ship identically. Those have been removed.
 
-UCLouvain operates **no public developer portal and issues no API keys**; `api.uclouvain.be` resolves but answers 503 with no backend. What it does operate, verified live on 2026-08-30, is the Orthanc medical-imaging API (its own open-source project), four OAI-PMH 2.0 repositories, and a SAML 2.0 / Shibboleth identity provider federated through Belnet into eduGAIN.
+**Areas:** University · Higher Education · Education · Belgium · Private Research University · Open Data · Research Data · Open Science · Institutional Repository · OAI-PMH · Identity Federation · Open Source
 
-- APIs.json: https://raw.githubusercontent.com/api-evangelist/uclouvain/refs/heads/main/apis.yml
-- Run it with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=uclouvain-api-evangelist&utm_content=repo
+## UCLouvain on APIs.io
 
-## Type
+Everything profiled for UCLouvain is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/uclouvain/](https://apis.io/providers/uclouvain/)** — or go straight to one of the APIs or properties below.
 
-Index / Consumer / Public — `x-type: university`, `x-category: Private Research University`
+### APIs (18)
 
-## Tags
+- [Open Data @ UCLouvain -- Dataverse deployment (Native + Search API)](https://apis.io/apis/uclouvain/dataverse-native-api/) — Open Data @ UCLouvain is the institution's research-data repository, running Dataverse 6.8 on UCLouvain infrastructure at dataverse.uclouvain.be and minting…
+- [Open Data @ UCLouvain Dataverse OAI-PMH](https://apis.io/apis/uclouvain/dataverse-oai/) — OAI-PMH 2.0 metadata-harvesting endpoint for the UCLouvain research-data repository. Identify returns repositoryName "Open Data @ UCLouvain Dataverse OAI…
+- [DIAL.pr (BOREAL) -- DSpace-CRIS REST API](https://apis.io/apis/uclouvain/dial-pr-rest/) — DIAL.pr, branded BOREAL, is UCLouvain's institutional repository for the research publications of its professors and staff. It runs DSpace-CRIS 8.1…
+- [DIAL.pr OAI-PMH](https://apis.io/apis/uclouvain/dial-pr-oai/) — OAI-PMH 2.0 harvesting endpoint for DIAL.pr, UCLouvain's research-publications repository. Identify returns repositoryName "Dial.pr", adminEmail…
+- [DIAL.mem -- DSpace-CRIS REST API](https://apis.io/apis/uclouvain/dial-mem-rest/) — DIAL.mem is UCLouvain's institutional repository for master's theses, part of the DIAL (Digital Access to Libraries) family. It runs the same DSpace-CRIS…
+- [DIAL.mem OAI-PMH](https://apis.io/apis/uclouvain/dial-mem-oai/) — OAI-PMH 2.0 harvesting endpoint for DIAL.mem, UCLouvain's master's-thesis repository. Identify returns repositoryName "Dial.mem", adminEmail…
+- [OER-UCLouvain OAI-PMH](https://apis.io/apis/uclouvain/oer-oai/) — OER-UCLouvain is the institution's open educational resources repository, running DSpace JSPUI on oer.uclouvain.be (CNAME dspace.sipr.ucl.ac.be, UCLouvain's…
+- [UCLouvain Shibboleth Identity Provider -- SAML 2.0 metadata](https://apis.io/apis/uclouvain/identity-federation/) — UCLouvain runs its own Shibboleth identity provider and publishes signed SAML 2.0 entity metadata at a stable, unauthenticated URL. entityID…
+- [UCLouvain Instances API](https://apis.io/apis/uclouvain/uclouvain-instances-api/) — The Instances API from UCLouvain — 51 operation(s) for instances.
+- [UCLouvain Jobs API](https://apis.io/apis/uclouvain/uclouvain-jobs-api/) — The Jobs API from UCLouvain — 7 operation(s) for jobs.
+- [UCLouvain Logs API](https://apis.io/apis/uclouvain/uclouvain-logs-api/) — The Logs API from UCLouvain — 8 operation(s) for logs.
+- [UCLouvain Networking API](https://apis.io/apis/uclouvain/uclouvain-networking-api/) — The Networking API from UCLouvain — 37 operation(s) for networking.
+- [UCLouvain Other API](https://apis.io/apis/uclouvain/uclouvain-other-api/) — The Other API from UCLouvain — 6 operation(s) for other.
+- [UCLouvain Patients API](https://apis.io/apis/uclouvain/uclouvain-patients-api/) — The Patients API from UCLouvain — 32 operation(s) for patients.
+- [UCLouvain Series API](https://apis.io/apis/uclouvain/uclouvain-series-api/) — The Series API from UCLouvain — 33 operation(s) for series.
+- [UCLouvain Studies API](https://apis.io/apis/uclouvain/uclouvain-studies-api/) — The Studies API from UCLouvain — 34 operation(s) for studies.
+- [UCLouvain System API](https://apis.io/apis/uclouvain/uclouvain-system-api/) — The System API from UCLouvain — 33 operation(s) for system.
+- [UCLouvain Tracking changes API](https://apis.io/apis/uclouvain/uclouvain-tracking-changes-api/) — The Tracking changes API from UCLouvain — 2 operation(s) for tracking changes.
 
-University, Higher Education, Education, Belgium, Private Research University, Open Data, Research Data, Open Science, Institutional Repository, OAI-PMH, Identity Federation, Open Source, Medical Imaging, Library
+### Published properties
 
-## Who operates what
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Every surface below carries an `x-operator` in `apis.yml`. A university is a federation of buyers, and most of what looks like an institutional API is a product's contract running on an institutional host.
+#### Vocabulary (1)
 
-### Institution-operated
+The provider's domain terms, defined.
 
-- **Orthanc API** — `institution`. Free and open-source vendor-neutral DICOM server, authored and maintained by UCLouvain's Health Informatics Lab (ICTEAM) and hosted by INGI. 239 paths / 299 operations, OpenAPI 3.0. Contract: [openapi/uclouvain-orthanc-api-openapi.yml](openapi/uclouvain-orthanc-api-openapi.yml) — base: `https://orthanc.uclouvain.be/demo/`
-- **UCLouvain Shibboleth Identity Provider** — `institution`. SAML 2.0 entity metadata, scope `uclouvain.be`, registered with the Belnet federation since 2012 and exported to eduGAIN, SIRTFI asserted. See [authentication/uclouvain-identity-federation.yml](authentication/uclouvain-identity-federation.yml) — base: `https://idp.uclouvain.be/idp/shibboleth`
-- **Open Data @ UCLouvain Dataverse OAI-PMH** — `institution` — base: `https://dataverse.uclouvain.be/oai`
-- **DIAL.pr OAI-PMH** — `institution` — base: `https://research.dial.uclouvain.be/server/oai/request`
-- **DIAL.mem OAI-PMH** — `institution` — base: `https://thesis.dial.uclouvain.be/server/oai/request`
-- **OER-UCLouvain OAI-PMH** — `institution` — base: `https://oer.uclouvain.be/oai/request`
+- [UCLouvain Open Data and Repository Vocabulary](https://apis.io/vocabularies/uclouvain/uclouvain-vocabulary/)
 
-### Tenant deployments (institution's data, vendor's contract)
+#### Examples (1)
 
-- **Open Data @ UCLouvain Dataverse Native + Search API** — `tenant`. Dataverse 6.8 on UCLouvain infrastructure — base: `https://dataverse.uclouvain.be/api`
-- **DIAL.pr (BOREAL) DSpace-CRIS REST API** — `tenant`. DSpace-CRIS 8.1 — base: `https://research.dial.uclouvain.be/server/api`
-- **DIAL.mem DSpace-CRIS REST API** — `tenant`. DSpace-CRIS 8.1 — base: `https://thesis.dial.uclouvain.be/server/api`
+Example requests and responses.
 
-## Domain standards (Kin Score `education` regime)
+- [Uclouvain Orthanc System Example](https://apis.io/examples/uclouvain/uclouvain-orthanc-system-example/)
 
-Confirmed live, with evidence in [conformance/uclouvain-education-standards.yml](conformance/uclouvain-education-standards.yml): **oai-pmh**, **shibboleth**, **saml**, **orcid**, **crossref** (UCLouvain is Crossref member 5552, prefix 10.14428, 4,408 works). Explicitly negative: **datacite** — the prefix is a Crossref prefix, and the DataCite REST API holds no record of it. Not found: lti, scim, oneroster, ed-fi, caliper, qti.
+#### Security (2)
 
-## Plans / Rate Limits / FinOps
+Authentication, trust centre, and vulnerability disclosure.
 
-[plans/uclouvain-plans-pricing.yml](plans/uclouvain-plans-pricing.yml) · [rate-limits/uclouvain-rate-limits.yml](rate-limits/uclouvain-rate-limits.yml) · [finops/uclouvain-finops.yml](finops/uclouvain-finops.yml)
+- [Uclouvain Domain Security](https://apis.io/security/uclouvain/uclouvain-domain-security/)
+- [Uclouvain Vulnerability Disclosure](https://apis.io/security/uclouvain/uclouvain-vulnerability-disclosure/)
 
-## Timestamps
+#### Plans and pricing (1)
 
-- Created: 2026-06-03
-- Modified: 2026-08-30
+Published plans, tiers and prices.
 
-## Common Properties
+- [Uclouvain Plans Pricing](https://apis.io/plans/uclouvain/uclouvain-plans-pricing/)
 
-- Website: https://uclouvain.be/en
-- GitHub Organization: https://github.com/uclouvain
-- Open Data: https://dataverse.uclouvain.be/
-- Research Repository: https://research.dial.uclouvain.be/home
-- Identity Federation: https://idp.uclouvain.be/idp/shibboleth
-- Research Computing: https://uclouvain.be/en/cism/cism-platform
-- Course Catalog: https://uclouvain.be/en/study-programme
-- AI Policy: https://uclouvain.be/en/ai/documents
-- AI Tooling: https://uclouvain.be/en/ai
-- Privacy: https://uclouvain.be/en/privacy
-- LinkedIn: https://be.linkedin.com/school/uclouvain/
+#### Rate limits (1)
 
-## Attribution correction, 2026-08-30
+Published request limits.
 
-This repository previously credited UCLouvain with **36 OpenAPI definitions**. They were one document: the Dataverse project's own product contract (`info.title: Dataverse API`, `description: Open source research data repository software.`), fetched, re-based onto `dataverse.uclouvain.be` and split by tag. Eight institutions in this catalog ship the same contract. All 36, their pristine source, and everything derived from them — 72 Postman/OpenCollection files, the Dataverse-shaped JSON Schema and JSON Structure, the JSON-LD context, the vocabulary, both Spectral rulesets, a 541-operation agentic-access classification and one recorded Dataverse search example — have been removed. The **deployment** is kept, correctly labelled `x-operator: tenant`.
+- [Uclouvain Rate Limits](https://apis.io/rate-limits/uclouvain/uclouvain-rate-limits/)
 
-Two pointers were confirmed dead and removed: `https://dial.uclouvain.be/oai` (the host is TCP-unreachable on 80 and 443; DIAL has migrated to DSpace-CRIS) and `https://github.com/uclouvain/osis` (404 — the `uclouvain` GitHub org now holds four public repositories, and OSIS is not among them).
+#### FinOps (1)
 
-This correction **lowers** the repository's artifact count and very likely its Kin Score. That is the pipeline working: the previous number measured Dataverse's engineering, not UCLouvain's.
+What the API costs to run, by operation.
 
-## Maintainers
+- [Uclouvain Finops](https://apis.io/finops/uclouvain/uclouvain-finops/)
 
-- Kin Lane — kin@apievangelist.com
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://uclouvain.be/en)
+- [Documentation](https://orthanc.uclouvain.be/book/)
+- [API reference](https://orthanc.uclouvain.be/api/index.html)
+- [Privacy policy](https://uclouvain.be/en/privacy)
+- [GitHub](https://github.com/uclouvain)
+
+## API Evangelist rating
+
+**Kin Score 27.9** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 43.5 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 28.6 |
+| Access clarity | 15.8 |
+
+**Agent readiness 22.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 26.5** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/uclouvain/](https://apis.io/providers/uclouvain/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for UCLouvain: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/uclouvain/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
